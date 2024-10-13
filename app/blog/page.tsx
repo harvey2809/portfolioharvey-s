@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useTransform } from 'framer-motion'
@@ -8,58 +8,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
 import { ChevronRight, Search, Calendar, User, ArrowRight } from "lucide-react"
+import { get } from 'lodash';
+import { Post, PostData, OffsetPageInfo } from '@/types/types';
+import { getMyPosts } from '@/lib/graphqlClient';
 
-const blogPosts = [
-  {
-    id: 1,
-    title: "The Future of Frontend Development: Trends to Watch in 2024",
-    excerpt: "Explore the cutting-edge technologies and methodologies shaping the future of frontend development. From AI-assisted coding to advanced state management techniques, discover what's on the horizon for web developers.",
-    date: "2024-03-15",
-    author: "Jane Doe",
-    image: "/placeholder.svg?height=600&width=800",
-    tags: ["Frontend", "Web Development", "Trends"]
-  },
-  {
-    id: 2,
-    title: "Mastering React Hooks: Advanced Patterns and Best Practices",
-    excerpt: "Dive deep into React Hooks and learn advanced patterns that will elevate your React applications. This comprehensive guide covers custom hooks, memoization techniques, and performance optimization strategies.",
-    date: "2024-03-10",
-    author: "Jane Doe",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["React", "Hooks", "JavaScript"]
-  },
-  {
-    id: 3,
-    title: "Building Accessible Web Applications: A Comprehensive Guide",
-    excerpt: "Learn how to create web applications that are truly accessible to all users. This guide covers ARIA attributes, keyboard navigation, color contrast, and other essential techniques for building inclusive digital experiences.",
-    date: "2024-03-05",
-    author: "Jane Doe",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["Accessibility", "Web Development", "UX"]
-  },
-  {
-    id: 4,
-    title: "Optimizing Web Performance: Strategies for Lightning-Fast Websites",
-    excerpt: "Discover proven techniques to boost your website's performance. From lazy loading and code splitting to advanced caching strategies, learn how to create blazing-fast web experiences that users will love.",
-    date: "2024-02-28",
-    author: "Jane Doe",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["Performance", "Optimization", "Web Development"]
-  },
-  {
-    id: 5,
-    title: "The Art of Clean Code: Writing Maintainable JavaScript",
-    excerpt: "Explore best practices for writing clean, maintainable JavaScript code. Learn about modular architecture, design patterns, and coding standards that will make your codebase a joy to work with for you and your team.",
-    date: "2024-02-20",
-    author: "Jane Doe",
-    image: "/placeholder.svg?height=400&width=600",
-    tags: ["JavaScript", "Clean Code", "Best Practices"]
-  }
-]
-
-const FeaturedPost = ({ post }) => {
+const FeaturedPost = ({ post }: { post: Post }) => {
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], [0, -50])
 
@@ -73,7 +27,7 @@ const FeaturedPost = ({ post }) => {
     >
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/70 to-pink-500/70 mix-blend-multiply" />
       <Image
-        src={post.image}
+        src={post.coverImage?.url || "/placeholder.svg?height=600&width=800"}
         alt={post.title}
         width={800}
         height={600}
@@ -86,16 +40,14 @@ const FeaturedPost = ({ post }) => {
           transition={{ delay: 0.3, duration: 0.5 }}
         >
           <h2 className="text-4xl font-bold mb-4">{post.title}</h2>
-          <p className="text-lg mb-4">{post.excerpt}</p>
+          <p className="text-lg mb-4">{post.brief}</p>
           <div className="flex items-center text-sm mb-4">
             <Calendar className="mr-2 h-4 w-4" />
-            <span>{new Date(post.date).toLocaleDateString()}</span>
-            <User className="ml-4 mr-2 h-4 w-4" />
-            <span>{post.author}</span>
+            <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
           </div>
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="bg-white/20 text-white">{tag}</Badge>
+              <Badge key={tag.name} variant="secondary" className="bg-white/20 text-white">{tag.name}</Badge>
             ))}
           </div>
           <Button className="bg-white text-purple-600 hover:bg-purple-100">
@@ -107,7 +59,7 @@ const FeaturedPost = ({ post }) => {
   )
 }
 
-const BlogPost = ({ post, index }) => (
+const BlogPost = ({ post, index }: { post: Post, index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
     animate={{ opacity: 1, y: 0 }}
@@ -116,7 +68,7 @@ const BlogPost = ({ post, index }) => (
     <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl">
       <div className="relative h-48">
         <Image
-          src={post.image}
+          src={post.coverImage?.url || "/placeholder.svg?height=400&width=600"}
           alt={post.title}
           layout="fill"
           objectFit="cover"
@@ -126,22 +78,20 @@ const BlogPost = ({ post, index }) => (
       </div>
       <CardContent className="flex-grow p-6">
         <CardTitle className="text-xl font-bold mb-2 line-clamp-2">{post.title}</CardTitle>
-        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{post.excerpt}</p>
+        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{post.brief}</p>
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
           <Calendar className="mr-2 h-4 w-4" />
-          <span>{new Date(post.date).toLocaleDateString()}</span>
-          <User className="ml-4 mr-2 h-4 w-4" />
-          <span>{post.author}</span>
+          <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
           {post.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">{tag}</Badge>
+            <Badge key={tag.name} variant="secondary">{tag.name}</Badge>
           ))}
         </div>
       </CardContent>
       <CardFooter>
         <Button variant="outline" className="w-full group">
-          Read More 
+          Read More
           <ChevronRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </Button>
       </CardFooter>
@@ -158,25 +108,59 @@ const ShimmerEffect = () => (
   </div>
 )
 
+
+
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+  const [posts, setPosts] = useState<Post[]>([])
+  const [pageInfo, setPageInfo] = useState<OffsetPageInfo | null>(null);
+  const [currentPage, setCurrentPage] = useState(1)
+
+
+  let observerRef = useRef<IntersectionObserver | null>(null)
+  const lastPostElementRef = useCallback((node: HTMLDivElement | null) => {
+    if (isLoading) return
+    if (observerRef.current) observerRef?.current?.disconnect()
+    observerRef.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && pageInfo?.hasNextPage) {
+        setCurrentPage(prevPage => Number(pageInfo.nextPage) - 1)
+      }
+    })
+    if (node) observerRef.current?.observe(node)
+  }, [isLoading, pageInfo?.hasNextPage])
 
   useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => setIsLoading(false), 1000)
-    return () => clearTimeout(timer)
-  }, [])
+    const fetchPosts = async () => {
+      setIsLoading(true)
+      try {
+        const data: PostData = await getMyPosts(currentPage, 10)
+        const posts = get(data, 'publication.postsViaPage.nodes', []);
+        const pageInfo: OffsetPageInfo | null = get(data, 'publication.postsViaPage.pageInfo', null)
+        setPosts(posts)
+        setPageInfo(pageInfo)
+      } catch (error) {
+        console.error('Error fetching posts:', error)
+      }
+      setIsLoading(false)
+    }
 
-  const filteredPosts = blogPosts.filter(post =>
+    fetchPosts()
+  }, [currentPage])
+
+  const filteredPosts = posts.filter(post =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+    post.brief.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.tags.some(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-
+      <header className="bg-white dark:bg-gray-800 shadow-lg">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Blog</h1>
+        </div>
+      </header>
       <main className="max-w-7xl mx-auto py-12 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0">
           <div className="mb-8">
@@ -191,8 +175,8 @@ export default function BlogPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
           </div>
-          
-          {isLoading ? (
+
+          {posts.length === 0 && isLoading ? (
             <div className="space-y-8">
               <ShimmerEffect />
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -203,39 +187,24 @@ export default function BlogPage() {
             </div>
           ) : (
             <>
-              {searchTerm === "" && <FeaturedPost post={blogPosts[0]} />}
+              {searchTerm === "" && posts.length > 0 && <FeaturedPost post={posts[0]} />}
 
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {filteredPosts.slice(searchTerm === "" ? 1 : 0).map((post, index) => (
-                  <BlogPost key={post.id} post={post} index={index} />
+                  <div key={post.id} ref={index === filteredPosts.length - 1 ? lastPostElementRef : null}>
+                    <BlogPost post={post} index={index} />
+                  </div>
                 ))}
               </div>
             </>
           )}
 
           <div className="mt-12">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">2</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            {isLoading && (
+              <div className="mt-8 flex justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+              </div>
+            )}
           </div>
         </div>
       </main>
