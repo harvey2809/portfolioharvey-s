@@ -1,21 +1,20 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react'
-import Link from "next/link"
-import Image from "next/image"
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { ChevronRight, Search, Calendar, User, ArrowRight } from "lucide-react"
-import { get } from 'lodash';
-import { Post, PostData, OffsetPageInfo } from '@/types/types';
-import { getMyPosts } from '@/lib/graphqlClient';
+import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Calendar, ChevronRight, Search } from "lucide-react";
+import { get } from "lodash";
+import { OffsetPageInfo, Post, PostData } from "@/types/types";
+import { getMyPosts } from "@/lib/graphqlClient";
 
 const FeaturedPost = ({ post }: { post: Post }) => {
-  const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 1], [0, -50])
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   return (
     <motion.div
@@ -47,7 +46,13 @@ const FeaturedPost = ({ post }: { post: Post }) => {
           </div>
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag) => (
-              <Badge key={tag.name} variant="secondary" className="bg-white/20 text-white">{tag.name}</Badge>
+              <Badge
+                key={tag.name}
+                variant="secondary"
+                className="bg-white/20 text-white"
+              >
+                {tag.name}
+              </Badge>
             ))}
           </div>
           <Button className="bg-white text-purple-600 hover:bg-purple-100">
@@ -56,10 +61,10 @@ const FeaturedPost = ({ post }: { post: Post }) => {
         </motion.div>
       </div>
     </motion.div>
-  )
-}
+  );
+};
 
-const BlogPost = ({ post, index }: { post: Post, index: number }) => (
+const BlogPost = ({ post, index }: { post: Post; index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 50 }}
     animate={{ opacity: 1, y: 0 }}
@@ -77,15 +82,21 @@ const BlogPost = ({ post, index }: { post: Post, index: number }) => (
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 to-pink-500/30 mix-blend-multiply" />
       </div>
       <CardContent className="flex-grow p-6">
-        <CardTitle className="text-xl font-bold mb-2 line-clamp-2">{post.title}</CardTitle>
-        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{post.brief}</p>
+        <CardTitle className="text-xl font-bold mb-2 line-clamp-2">
+          {post.title}
+        </CardTitle>
+        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+          {post.brief}
+        </p>
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
           <Calendar className="mr-2 h-4 w-4" />
           <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
           {post.tags.map((tag) => (
-            <Badge key={tag.name} variant="secondary">{tag.name}</Badge>
+            <Badge key={tag.name} variant="secondary">
+              {tag.name}
+            </Badge>
           ))}
         </div>
       </CardContent>
@@ -97,7 +108,7 @@ const BlogPost = ({ post, index }: { post: Post, index: number }) => (
       </CardFooter>
     </Card>
   </motion.div>
-)
+);
 
 const ShimmerEffect = () => (
   <div className="animate-pulse">
@@ -106,59 +117,68 @@ const ShimmerEffect = () => (
     <div className="h-4 bg-gray-300 rounded dark:bg-gray-700 w-3/4 mb-2" />
     <div className="h-4 bg-gray-300 rounded dark:bg-gray-700 w-1/2" />
   </div>
-)
-
-
+);
 
 export default function BlogPage() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
-  const [posts, setPosts] = useState<Post[]>([])
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [pageInfo, setPageInfo] = useState<OffsetPageInfo | null>(null);
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
-
-  let observerRef = useRef<IntersectionObserver | null>(null)
-  const lastPostElementRef = useCallback((node: HTMLDivElement | null) => {
-    if (isLoading) return
-    if (observerRef.current) observerRef?.current?.disconnect()
-    observerRef.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && pageInfo?.hasNextPage) {
-        setCurrentPage(prevPage => Number(pageInfo.nextPage) - 1)
-      }
-    })
-    if (node) observerRef.current?.observe(node)
-  }, [isLoading, pageInfo?.hasNextPage])
+  let observerRef = useRef<IntersectionObserver | null>(null);
+  const lastPostElementRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isLoading) return;
+      if (observerRef.current) observerRef?.current?.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && pageInfo?.hasNextPage) {
+          setCurrentPage((prevPage) => Number(pageInfo.nextPage) - 1);
+        }
+      });
+      if (node) observerRef.current?.observe(node);
+    },
+    [isLoading, pageInfo?.hasNextPage]
+  );
 
   useEffect(() => {
     const fetchPosts = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
-        const data: PostData = await getMyPosts(currentPage, 10)
-        const posts = get(data, 'publication.postsViaPage.nodes', []);
-        const pageInfo: OffsetPageInfo | null = get(data, 'publication.postsViaPage.pageInfo', null)
-        setPosts(posts)
-        setPageInfo(pageInfo)
+        const data: PostData = await getMyPosts(currentPage, 10);
+        const posts = get(data, "publication.postsViaPage.nodes", []);
+        const pageInfo: OffsetPageInfo | null = get(
+          data,
+          "publication.postsViaPage.pageInfo",
+          null
+        );
+        setPosts(posts);
+        setPageInfo(pageInfo);
       } catch (error) {
-        console.error('Error fetching posts:', error)
+        console.error("Error fetching posts:", error);
       }
-      setIsLoading(false)
-    }
+      setIsLoading(false);
+    };
 
-    fetchPosts()
-  }, [currentPage])
+    fetchPosts();
+  }, [currentPage]);
 
-  const filteredPosts = posts.filter(post =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.brief.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.tags.some(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  )
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.brief.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.tags.some((tag) =>
+        tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <header className="bg-white dark:bg-gray-800 shadow-lg">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">Blog</h1>
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">
+            Blog
+          </h1>
         </div>
       </header>
       <main className="max-w-7xl mx-auto py-12 sm:px-6 lg:px-8">
@@ -187,14 +207,25 @@ export default function BlogPage() {
             </div>
           ) : (
             <>
-              {searchTerm === "" && posts.length > 0 && <FeaturedPost post={posts[0]} />}
+              {searchTerm === "" && posts.length > 0 && (
+                <FeaturedPost post={posts[0]} />
+              )}
 
               <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {filteredPosts.slice(searchTerm === "" ? 1 : 0).map((post, index) => (
-                  <div key={post.id} ref={index === filteredPosts.length - 1 ? lastPostElementRef : null}>
-                    <BlogPost post={post} index={index} />
-                  </div>
-                ))}
+                {filteredPosts
+                  .slice(searchTerm === "" ? 1 : 0)
+                  .map((post, index) => (
+                    <div
+                      key={post.id}
+                      ref={
+                        index === filteredPosts.length - 1
+                          ? lastPostElementRef
+                          : null
+                      }
+                    >
+                      <BlogPost post={post} index={index} />
+                    </div>
+                  ))}
               </div>
             </>
           )}
@@ -209,5 +240,5 @@ export default function BlogPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
