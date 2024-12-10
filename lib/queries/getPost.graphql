@@ -1,0 +1,25 @@
+query GetPost($slug: String!) {
+    publication(host: "adityakmr.hashnode.dev") {
+        post(slug: $slug) {
+            id
+            title
+            subtitle
+            content {
+                html
+            }
+            coverImage {
+                url
+            }
+            publishedAt
+            updatedAt
+            tags {
+                name
+                slug
+            }
+            brief
+            reactionCount
+            views
+        }
+    }
+}
+

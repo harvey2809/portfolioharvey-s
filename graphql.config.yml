@@ -1,0 +1,9 @@
+schema: schema.graphql
+extensions:
+  endpoints:
+    Default GraphQL Endpoint:
+      url: https://gql.hashnode.com
+      headers:
+        user-agent: JS GraphQL
+        Authorization: process.env.NEXT_AUTH_TOKEN
+      introspect: false

@@ -1,0 +1,7941 @@
+directive @requireAuth(scopes: [Scope!]) on OBJECT | FIELD_DEFINITION
+
+directive @constraint(minLength: Int, maxLength: Int, startsWith: String, endsWith: String, contains: String, notContains: String, pattern: String, format: String, min: Float, max: Float, exclusiveMin: Float, exclusiveMax: Float, multipleOf: Float, minItems: Int, maxItems: Int, uniqueTypeName: String) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION | ARGUMENT_DEFINITION
+
+directive @hidden on OBJECT | FIELD_DEFINITION
+
+directive @private on OBJECT | FIELD_DEFINITION
+
+directive @validate(method: ValidationMethod!, message: String) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
+
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+input AbsoluteTimeRange {
+  """
+  The start date of the views.
+  The time range will include this date (using >=).
+  
+  Defaults to the unix epoch start (1970-01-01).
+  """
+  from: DateTime
+
+  """
+  The end date of the views.
+  The time range will include this date (using <=).
+  
+  Defaults to the current date.
+  """
+  to: DateTime
+}
+
+"""The input for accepting an invitation to join a documentation project."""
+input AcceptInviteToDocumentationProjectInput {
+  """The invitation token to accept."""
+  inviteToken: String!
+}
+
+"""Response to accepting an invitation to join a documentation project."""
+type AcceptInviteToDocumentationProjectPayload {
+  """Signifies the success of the mutation."""
+  success: Boolean!
+
+  """The documentation project that the user has been invited to."""
+  project: DocumentationProject
+}
+
+input AcceptInviteToPublicationInput {
+  """The invitation token to accept."""
+  inviteToken: String!
+}
+
+"""Response to accepting an invitation to join a publication."""
+type AcceptInviteToPublicationPayload {
+  """Signifies if the mutation was successful."""
+  success: Boolean!
+}
+
+"""Input to accept a role based invite."""
+input AcceptRoleBasedInviteInput {
+  """Invite token of the role based invite."""
+  inviteToken: String!
+}
+
+"""Input to toggle role based invite links."""
+type AcceptRoleBasedInvitePayload {
+  """Signifies if the mutation was successful."""
+  success: Boolean!
+}
+
+input AddCommentInput {
+  postId: ID!
+  contentMarkdown: String!
+}
+
+type AddCommentPayload {
+  comment: Comment
+}
+
+input AddCustomMdxComponentInput {
+  projectId: ID!
+  componentId: String!
+  code: String!
+}
+
+type AddCustomMdxComponentPayload {
+  project: DocumentationProject!
+}
+
+input AddDocumentationProjectCustomDomainInput {
+  projectId: ID!
+  domain: String!
+  wwwDomain: Boolean!
+}
+
+type AddDocumentationProjectCustomDomainPayload {
+  project: DocumentationProject
+
+  """
+  Additional DNS entries required to verify the domain.
+  There are cases where additional records in the DNS config are required to successfully verify the domain.
+  """
+  dnsVerificationEntries: [DnsVerificationEntry!]!
+  wwwRedirectDnsVerificationEntries: [DnsVerificationEntry!]!
+}
+
+input AddPostToSeriesInput {
+  """The ID of the post to be added to the series."""
+  postId: ObjectId!
+
+  """The ID of the series to which the post is to be added."""
+  seriesId: ObjectId!
+}
+
+type AddPostToSeriesPayload {
+  """The series to which the post was added."""
+  series: Series
+}
+
+input AddReplyInput {
+  commentId: ID!
+  contentMarkdown: String!
+}
+
+type AddReplyPayload {
+  reply: Reply
+}
+
+"""
+Contains the flag indicating if the audio blog feature is enabled or not.
+User can enable or disable the audio blog feature from the publication settings.
+Shows audio player on blogs if enabled.
+"""
+type AudioBlogFeature implements Feature {
+  """A flag indicating if the audio blog feature is enabled or not."""
+  isEnabled: Boolean!
+
+  """The voice type for the audio blog."""
+  voiceType: AudioBlogVoiceType!
+}
+
+"""The voice type for the audio blog."""
+enum AudioBlogVoiceType {
+  """Enum for the female voice type of the audio blog."""
+  FEMALE
+
+  """Enum for the male voice type of the audio blog."""
+  MALE
+}
+
+"""
+Used when Audioblog feature is enabled. Contains URLs to the audioblog of the post.
+"""
+type AudioUrls {
+  """Male version of audio url of the post."""
+  male: String
+
+  """Female version of audio url of the post."""
+  female: String
+}
+
+"""The status of the backup i.e., success or failure."""
+enum BackupStatus {
+  """The backup was successful."""
+  success
+
+  """The backup failed."""
+  failed
+}
+
+"""A badge that the user has earned."""
+type Badge implements Node {
+  """The ID of the badge."""
+  id: ID!
+
+  """The name of the badge."""
+  name: String!
+
+  """The description of the badge."""
+  description: String
+
+  """The image of the badge."""
+  image: String!
+
+  """The date the badge was earned."""
+  dateAssigned: DateTime
+
+  """Link to badge page on Hashnode."""
+  infoURL: String
+
+  """A flag to determine if the badge is hidden."""
+  suppressed: Boolean
+}
+
+"""
+Contains basic information about the beta feature.
+A beta feature is a feature that is not yet released to all users.
+"""
+type BetaFeature implements Node {
+  """The ID of the beta feature."""
+  id: ID!
+
+  """The key of the beta feature."""
+  key: String!
+
+  """The title of the beta feature."""
+  title: String
+
+  """The description of the beta feature."""
+  description: String
+
+  """The url of the beta feature."""
+  url: String
+
+  """The date the beta feature was created."""
+  enabled: Boolean!
+}
+
+input CancelScheduledDraftInput {
+  """The Draft ID of the scheduled draft."""
+  draftId: ID!
+}
+
+type CancelScheduledDraftPayload {
+  """Payload returned in response of cancel scheduled post mutation."""
+  scheduledPost: ScheduledPost!
+}
+
+"""Input to change the role of a user in a publication."""
+input ChangePublicationMemberRoleInput {
+  """The publication ID the user is a member of."""
+  publicationId: ID!
+
+  """The username of the user to change the role for."""
+  username: String!
+
+  """The role of the user in the publication."""
+  role: UserPublicationRole!
+}
+
+"""Response to changing the role of a user in a publication."""
+type ChangePublicationMemberRolePayload {
+  """The updated publication member."""
+  member: PublicationMember!
+}
+
+"""Input to change the privacy state of a user in a publication."""
+input ChangePublicationMemberVisibilityInput {
+  """The publication ID the user is a member of."""
+  publicationId: ID!
+
+  """The username of the user to change the role for."""
+  username: String!
+
+  """
+  The privacy state of the user in the publication.
+  PRIVATE members are not visible on the members page while PUBLIC members are visible.
+  """
+  privacyState: PublicationMemberPrivacyState!
+}
+
+"""Response to changing the privacy state of a user in a publication."""
+type ChangePublicationMemberVisibilityPayload {
+  """The updated publication member."""
+  member: PublicationMember!
+}
+
+input CheckCustomDomainAvailabilityInput {
+  domain: String!
+  withWWWRedirect: Boolean!
+}
+
+type CheckCustomDomainAvailabilityResult {
+  domainAvailable: Boolean!
+}
+
+type CheckSubdomainAvailabilityResult {
+  subdomainAvailable: Boolean!
+}
+
+"""
+Contains the flag indicating if the collaboration feature is enabled or not.
+"""
+type CollaborationFeature implements Feature {
+  """A flag indicating if the collaboration feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+"""
+Contains basic information about the comment.
+A comment is a response to a post.
+"""
+type Comment implements Node {
+  """The ID of the comment."""
+  id: ID!
+
+  """The content of the comment in markdown and html format."""
+  content: Content!
+
+  """The author of the comment."""
+  author: User!
+
+  """Returns a list of replies to the comment."""
+  replies(
+    """The number of replies to return. Max is 50."""
+    first: Int!
+
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+  ): CommentReplyConnection!
+
+  """The date the comment was created."""
+  dateAdded: DateTime!
+
+  """
+  A unique string identifying the comment. Used as element id in the DOM on hashnode blogs.
+  """
+  stamp: String
+
+  """
+  Total number of reactions on the comment. Reactions are hearts added to any comment.
+  """
+  totalReactions: Int!
+
+  """
+  Total number of reactions on the comment by the authenticated user. User must be authenticated to use this field.
+  """
+  myTotalReactions: Int!
+}
+
+"""
+Connection to get list of top commenters. Contains a list of edges containing nodes.
+Each node is a user who commented recently.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type CommenterUserConnection implements Connection {
+  """A list of edges of commenters."""
+  edges: [UserEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""
+Connection to get list of replies to a comment.
+Returns a list of edges which contains the posts in publication and cursor to the last item of the previous page.
+"""
+type CommentReplyConnection implements Connection {
+  """
+  A list of edges containing nodes in the connection.
+  A node contains a reply to a comment.
+  """
+  edges: [CommentReplyEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""An edge that contains a node of type reply and cursor to the node."""
+type CommentReplyEdge implements Edge {
+  """The node containing a reply to a comment."""
+  node: Reply!
+
+  """A cursor to the last item of the previous page."""
+  cursor: String!
+}
+
+"""
+Connection to get list of items.
+Returns a list of edges which contains the items and cursor to the last item of the previous page.
+This is a common interface for all connections.
+"""
+interface Connection {
+  """A list of edges of items connection."""
+  edges: [Edge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+type Content {
+  """The Markdown version of the content."""
+  markdown: String!
+
+  """The HTML version of the content."""
+  html: String!
+
+  """
+  The text version from sanitized html content. HTML tags are stripped and only text is returned.
+  """
+  text: String!
+}
+
+"""Two letter ISO 3166-1 alpha-2 country code."""
+enum CountryCodeAlpha2 {
+  """Andorra"""
+  AD
+
+  """United Arab Emirates"""
+  AE
+
+  """Afghanistan"""
+  AF
+
+  """Antigua and Barbuda"""
+  AG
+
+  """Anguilla"""
+  AI
+
+  """Albania"""
+  AL
+
+  """Armenia"""
+  AM
+
+  """Angola"""
+  AO
+
+  """Antarctica"""
+  AQ
+
+  """Argentina"""
+  AR
+
+  """American Samoa"""
+  AS
+
+  """Austria"""
+  AT
+
+  """Australia"""
+  AU
+
+  """Aruba"""
+  AW
+
+  """Åland Islands"""
+  AX
+
+  """Azerbaijan"""
+  AZ
+
+  """Bosnia and Herzegovina"""
+  BA
+
+  """Barbados"""
+  BB
+
+  """Bangladesh"""
+  BD
+
+  """Belgium"""
+  BE
+
+  """Burkina Faso"""
+  BF
+
+  """Bulgaria"""
+  BG
+
+  """Bahrain"""
+  BH
+
+  """Burundi"""
+  BI
+
+  """Benin"""
+  BJ
+
+  """Saint Barthélemy"""
+  BL
+
+  """Bermuda"""
+  BM
+
+  """Brunei Darussalam"""
+  BN
+
+  """Bolivia (Plurinational State of)"""
+  BO
+
+  """Bonaire, Sint Eustatius and Saba"""
+  BQ
+
+  """Brazil"""
+  BR
+
+  """Bahamas"""
+  BS
+
+  """Bhutan"""
+  BT
+
+  """Bouvet Island"""
+  BV
+
+  """Botswana"""
+  BW
+
+  """Belarus"""
+  BY
+
+  """Belize"""
+  BZ
+
+  """Canada"""
+  CA
+
+  """Cocos (Keeling) Islands"""
+  CC
+
+  """Congo, Democratic Republic of the"""
+  CD
+
+  """Central African Republic"""
+  CF
+
+  """Congo"""
+  CG
+
+  """Switzerland"""
+  CH
+
+  """Côte d'Ivoire"""
+  CI
+
+  """Cook Islands"""
+  CK
+
+  """Chile"""
+  CL
+
+  """Cameroon"""
+  CM
+
+  """China"""
+  CN
+
+  """Colombia"""
+  CO
+
+  """Costa Rica"""
+  CR
+
+  """Cuba"""
+  CU
+
+  """Cabo Verde"""
+  CV
+
+  """Curaçao"""
+  CW
+
+  """Christmas Island"""
+  CX
+
+  """Cyprus"""
+  CY
+
+  """Czechia"""
+  CZ
+
+  """Germany"""
+  DE
+
+  """Djibouti"""
+  DJ
+
+  """Denmark"""
+  DK
+
+  """Dominica"""
+  DM
+
+  """Dominican Republic"""
+  DO
+
+  """Algeria"""
+  DZ
+
+  """Ecuador"""
+  EC
+
+  """Estonia"""
+  EE
+
+  """Egypt"""
+  EG
+
+  """Western Sahara"""
+  EH
+
+  """Eritrea"""
+  ER
+
+  """Spain"""
+  ES
+
+  """Ethiopia"""
+  ET
+
+  """Finland"""
+  FI
+
+  """Fiji"""
+  FJ
+
+  """Falkland Islands (Malvinas)"""
+  FK
+
+  """Micronesia (Federated States of)"""
+  FM
+
+  """Faroe Islands"""
+  FO
+
+  """France"""
+  FR
+
+  """Gabon"""
+  GA
+
+  """United Kingdom of Great Britain and Northern Ireland"""
+  GB
+
+  """Grenada"""
+  GD
+
+  """Georgia"""
+  GE
+
+  """French Guiana"""
+  GF
+
+  """Guernsey"""
+  GG
+
+  """Ghana"""
+  GH
+
+  """Gibraltar"""
+  GI
+
+  """Greenland"""
+  GL
+
+  """Gambia"""
+  GM
+
+  """Guinea"""
+  GN
+
+  """Guadeloupe"""
+  GP
+
+  """Equatorial Guinea"""
+  GQ
+
+  """Greece"""
+  GR
+
+  """South Georgia and the South Sandwich Islands"""
+  GS
+
+  """Guatemala"""
+  GT
+
+  """Guam"""
+  GU
+
+  """Guinea-Bissau"""
+  GW
+
+  """Guyana"""
+  GY
+
+  """Hong Kong"""
+  HK
+
+  """Heard Island and McDonald Islands"""
+  HM
+
+  """Honduras"""
+  HN
+
+  """Croatia"""
+  HR
+
+  """Haiti"""
+  HT
+
+  """Hungary"""
+  HU
+
+  """Indonesia"""
+  ID
+
+  """Ireland"""
+  IE
+
+  """Israel"""
+  IL
+
+  """Isle of Man"""
+  IM
+
+  """India"""
+  IN
+
+  """British Indian Ocean Territory"""
+  IO
+
+  """Iraq"""
+  IQ
+
+  """Iran (Islamic Republic of)"""
+  IR
+
+  """Iceland"""
+  IS
+
+  """Italy"""
+  IT
+
+  """Jersey"""
+  JE
+
+  """Jamaica"""
+  JM
+
+  """Jordan"""
+  JO
+
+  """Japan"""
+  JP
+
+  """Kenya"""
+  KE
+
+  """Kyrgyzstan"""
+  KG
+
+  """Cambodia"""
+  KH
+
+  """Kiribati"""
+  KI
+
+  """Comoros"""
+  KM
+
+  """Saint Kitts and Nevis"""
+  KN
+
+  """Korea (Democratic People's Republic of)"""
+  KP
+
+  """Korea, Republic of"""
+  KR
+
+  """Kuwait"""
+  KW
+
+  """Cayman Islands"""
+  KY
+
+  """Kazakhstan"""
+  KZ
+
+  """Lao People's Democratic Republic"""
+  LA
+
+  """Lebanon"""
+  LB
+
+  """Saint Lucia"""
+  LC
+
+  """Liechtenstein"""
+  LI
+
+  """Sri Lanka"""
+  LK
+
+  """Liberia"""
+  LR
+
+  """Lesotho"""
+  LS
+
+  """Lithuania"""
+  LT
+
+  """Luxembourg"""
+  LU
+
+  """Latvia"""
+  LV
+
+  """Libya"""
+  LY
+
+  """Morocco"""
+  MA
+
+  """Monaco"""
+  MC
+
+  """Moldova, Republic of"""
+  MD
+
+  """Montenegro"""
+  ME
+
+  """Saint Martin (French part)"""
+  MF
+
+  """Madagascar"""
+  MG
+
+  """Marshall Islands"""
+  MH
+
+  """North Macedonia"""
+  MK
+
+  """Mali"""
+  ML
+
+  """Myanmar"""
+  MM
+
+  """Mongolia"""
+  MN
+
+  """Macao"""
+  MO
+
+  """Northern Mariana Islands"""
+  MP
+
+  """Martinique"""
+  MQ
+
+  """Mauritania"""
+  MR
+
+  """Montserrat"""
+  MS
+
+  """Malta"""
+  MT
+
+  """Mauritius"""
+  MU
+
+  """Maldives"""
+  MV
+
+  """Malawi"""
+  MW
+
+  """Mexico"""
+  MX
+
+  """Malaysia"""
+  MY
+
+  """Mozambique"""
+  MZ
+
+  """Namibia"""
+  NA
+
+  """New Caledonia"""
+  NC
+
+  """Niger"""
+  NE
+
+  """Norfolk Island"""
+  NF
+
+  """Nigeria"""
+  NG
+
+  """Nicaragua"""
+  NI
+
+  """Netherlands"""
+  NL
+
+  """Norway"""
+  NO
+
+  """Nepal"""
+  NP
+
+  """Nauru"""
+  NR
+
+  """Niue"""
+  NU
+
+  """New Zealand"""
+  NZ
+
+  """Oman"""
+  OM
+
+  """Panama"""
+  PA
+
+  """Peru"""
+  PE
+
+  """French Polynesia"""
+  PF
+
+  """Papua New Guinea"""
+  PG
+
+  """Philippines"""
+  PH
+
+  """Pakistan"""
+  PK
+
+  """Poland"""
+  PL
+
+  """Saint Pierre and Miquelon"""
+  PM
+
+  """Pitcairn"""
+  PN
+
+  """Puerto Rico"""
+  PR
+
+  """Palestine, State of"""
+  PS
+
+  """Portugal"""
+  PT
+
+  """Palau"""
+  PW
+
+  """Paraguay"""
+  PY
+
+  """Qatar"""
+  QA
+
+  """Réunion"""
+  RE
+
+  """Romania"""
+  RO
+
+  """Serbia"""
+  RS
+
+  """Russian Federation"""
+  RU
+
+  """Rwanda"""
+  RW
+
+  """Saudi Arabia"""
+  SA
+
+  """Solomon Islands"""
+  SB
+
+  """Seychelles"""
+  SC
+
+  """Sudan"""
+  SD
+
+  """Sweden"""
+  SE
+
+  """Singapore"""
+  SG
+
+  """Saint Helena, Ascension and Tristan da Cunha"""
+  SH
+
+  """Slovenia"""
+  SI
+
+  """Svalbard and Jan Mayen"""
+  SJ
+
+  """Slovakia"""
+  SK
+
+  """Sierra Leone"""
+  SL
+
+  """San Marino"""
+  SM
+
+  """Senegal"""
+  SN
+
+  """Somalia"""
+  SO
+
+  """Suriname"""
+  SR
+
+  """South Sudan"""
+  SS
+
+  """Sao Tome and Principe"""
+  ST
+
+  """El Salvador"""
+  SV
+
+  """Sint Maarten (Dutch part)"""
+  SX
+
+  """Syrian Arab Republic"""
+  SY
+
+  """Eswatini"""
+  SZ
+
+  """Turks and Caicos Islands"""
+  TC
+
+  """Chad"""
+  TD
+
+  """French Southern Territories"""
+  TF
+
+  """Togo"""
+  TG
+
+  """Thailand"""
+  TH
+
+  """Tajikistan"""
+  TJ
+
+  """Tokelau"""
+  TK
+
+  """Timor-Leste"""
+  TL
+
+  """Turkmenistan"""
+  TM
+
+  """Tunisia"""
+  TN
+
+  """Tonga"""
+  TO
+
+  """Turkey"""
+  TR
+
+  """Trinidad and Tobago"""
+  TT
+
+  """Tuvalu"""
+  TV
+
+  """Taiwan, Province of China"""
+  TW
+
+  """Tanzania, United Republic of"""
+  TZ
+
+  """Ukraine"""
+  UA
+
+  """Uganda"""
+  UG
+
+  """United States Minor Outlying Islands"""
+  UM
+
+  """United States of America"""
+  US
+
+  """Uruguay"""
+  UY
+
+  """Uzbekistan"""
+  UZ
+
+  """Holy See"""
+  VA
+
+  """Saint Vincent and the Grenadines"""
+  VC
+
+  """Venezuela (Bolivarian Republic of)"""
+  VE
+
+  """Virgin Islands (British)"""
+  VG
+
+  """Virgin Islands (U.S.)"""
+  VI
+
+  """Viet Nam"""
+  VN
+
+  """Vanuatu"""
+  VU
+
+  """Wallis and Futuna"""
+  WF
+
+  """Samoa"""
+  WS
+
+  """Yemen"""
+  YE
+
+  """Mayotte"""
+  YT
+
+  """South Africa"""
+  ZA
+
+  """Zambia"""
+  ZM
+
+  """Zimbabwe"""
+  ZW
+
+  """Unknown"""
+  ZZ
+}
+
+"""
+Contains information about cover image options of the post. Like URL of the cover image, attribution, etc.
+"""
+input CoverImageOptionsInput {
+  """The URL of the cover image."""
+  coverImageURL: String
+
+  """
+  A flag to indicate if the cover attribution is hidden, used when cover was chosen from unsplash.
+  """
+  isCoverAttributionHidden: Boolean
+
+  """Information about the cover image attribution."""
+  coverImageAttribution: String
+
+  """
+  The name of the cover image photographer, used when cover was chosen from unsplash.
+  """
+  coverImagePhotographer: String
+
+  """A flag to indicate if the cover image is sticked to bottom."""
+  stickCoverToBottom: Boolean
+}
+
+input CreateDocumentationApiReferenceInput {
+  projectId: ID!
+  url: String!
+  name: String
+  slug: String
+}
+
+type CreateDocumentationApiReferencePayload {
+  guide: DocumentationApiReference!
+}
+
+input CreateDocumentationGuideInput {
+  projectId: ID!
+  name: String!
+  slug: String
+}
+
+type CreateDocumentationGuidePayload {
+  guide: DocumentationGuide!
+}
+
+input CreateDocumentationLinkInput {
+  projectId: ID!
+  guideSlug: String!
+
+  """
+  The slug of the version the new link should be created in.
+  
+  Defaults to the default version slug.
+  """
+  versionSlug: String
+  label: String!
+  url: String!
+}
+
+type CreateDocumentationLinkPayload {
+  guide: DocumentationGuide
+  link: DocumentationLink
+}
+
+input CreateDocumentationPageDraftInput {
+  projectId: ID!
+  guideSlug: String!
+
+  """
+  The slug of the version the new page should be created in.
+  
+  Defaults to the default version slug.
+  """
+  versionSlug: String
+  title: String = "Untitled Page"
+  label: String = "Untitled Page"
+  description: String
+  content: String
+  parentId: ID
+
+  """The slug of the path used to generate the path."""
+  slug: String
+
+  """The meta tags for the page."""
+  metaTags: MetaTagsInput
+
+  """The visibility of the page."""
+  visibility: DocumentationSidebarItemVisibility
+}
+
+type CreateDocumentationPageDraftPayload {
+  page: DocumentationPage
+  guide: DocumentationGuide
+}
+
+"""The input for creating a documentation preview page"""
+input CreateDocumentationPreviewPageInput {
+  """The ID of the page to create"""
+  id: ID
+
+  """The title of the page"""
+  title: String = "Untitled Page"
+
+  """The label of the page on the sidebar"""
+  label: String!
+
+  """The description of the page"""
+  description: String
+
+  """The content of the page"""
+  content: String
+
+  """The slug of the page used to create the path"""
+  slug: String
+
+  """The meta tags of the page"""
+  metaTags: MetaTagsInput
+
+  """The visibility of the page"""
+  visibility: DocumentationSidebarItemVisibility
+
+  """The nested pages of the page"""
+  pages: [CreateDocumentationPreviewPageInput!]!
+
+  """The format of the page. Could be MDX or MD."""
+  format: DocumentationPageFormat
+}
+
+input CreateDocumentationProjectInput {
+  name: String!
+  subdomain: String!
+  logoUrl: String
+  favIconUrl: String
+  logoDarkThemeUrl: String
+  description: String
+  settings: DocumentationProjectSettingsInput
+  links: DocumentationProjectLinksInput
+}
+
+type CreateDocumentationProjectPayload {
+  project: DocumentationProject!
+}
+
+input CreateDocumentationSectionInput {
+  projectId: ID!
+  guideSlug: String!
+
+  """
+  The slug of the version the new section should be created in.
+  
+  Defaults to the default version slug.
+  """
+  versionSlug: String
+  label: String = "Untitled Section"
+
+  """The slug of the section used to generate the path."""
+  slug: String
+}
+
+type CreateDocumentationSectionPayload {
+  guide: DocumentationGuide
+  section: DocumentationSection
+}
+
+input CreateDraftInput {
+  """The title of the resulting draft."""
+  title: String
+
+  """The subtitle of the resulting draft."""
+  subtitle: String
+
+  """The ID of publication the draft and resulting post belongs to."""
+  publicationId: ID!
+
+  """Content of the resulting draft in markdown format."""
+  contentMarkdown: String
+
+  """Date when the resulting draft is published."""
+  publishedAt: DateTime
+
+  """Options for the cover image of the resulting draft."""
+  coverImageOptions: CoverImageOptionsInput
+
+  """Slug of the resulting draft."""
+  slug: String
+
+  """
+  The URL of the original article if the draft is imported from an external source.
+  """
+  originalArticleURL: String
+
+  """A list of tags added to the resulting draft."""
+  tags: [CreateDraftTagInput!]
+
+  """
+  A flag to indicate if the comments are disabled for the resulting draft.
+  """
+  disableComments: Boolean
+
+  """
+  Information about the meta tags added to the resulting draft, used for SEO purpose.
+  """
+  metaTags: MetaTagsInput
+
+  """
+  Publish the draft on behalf of another user who is a member of the publication.
+  
+  Only applicable for team publications.
+  """
+  publishAs: ObjectId
+
+  """Providing a seriesId will add the resulting draft to that series."""
+  seriesId: ObjectId
+
+  """
+  Settings for the resulting draft like table of contents and newsletter activation.
+  """
+  settings: CreateDraftSettingsInput
+
+  """Ids of the co-authors of the resulting draft."""
+  coAuthors: [ObjectId!]
+
+  """
+  The id of the user who owns the draft. When this field is supplied, the draft
+  is created directly under that user's account.
+  Only applicable for team publications.
+  """
+  draftOwner: ID
+}
+
+type CreateDraftPayload {
+  """The newly created draft"""
+  draft: Draft
+}
+
+input CreateDraftSettingsInput {
+  """
+  A flag to indicate if the resulting draft'S post should contain a table of content
+  """
+  enableTableOfContent: Boolean
+
+  """Flag to indicate if the slug is overridden by the user."""
+  slugOverridden: Boolean
+
+  """Whether to send a newsletter for the resulting draft's post."""
+  activateNewsletter: Boolean
+
+  """
+  A flag to indicate if the resulting draft should be delisted, used to hide the
+  post created from the draft from public feed.
+  """
+  delist: Boolean
+}
+
+input CreateDraftTagInput {
+  """
+  A tag id that is referencing an existing tag.
+  
+  Either this or name and slug should be provided. If both are provided, the id will be used.
+  """
+  id: ObjectId
+
+  """
+  A slug of a new tag to create.
+  
+  Either this and name or id should be provided. If both are provided, the id will be used.
+  """
+  slug: String
+
+  """
+  A name of a new tag to create.
+  
+  Either this and slug or id should be provided. If both are provided, the id will be used.
+  """
+  name: String
+}
+
+input CreateRedirectionRuleInput {
+  publicationId: ID!
+  source: String!
+  destination: URL!
+  type: HttpRedirectionType!
+}
+
+type CreateRedirectionRulePayload {
+  redirectionRule: RedirectionRule!
+}
+
+"""Input to create a role based invite for a publication."""
+input CreateRoleBasedInviteForPublicationInput {
+  """The publication ID to create the invite for."""
+  publicationId: ID!
+
+  """The role to assign to the user in the publication."""
+  role: UserPublicationInviteRole!
+
+  """Boolean to enable unlimited capacity."""
+  enableUnlimitedCapacity: Boolean
+
+  """The capacity of how many members to be invited by the link."""
+  capacity: Int
+
+  """Invite token set for the invitation"""
+  inviteToken: String
+
+  """The expiry date of the invite."""
+  expiryDate: DateTime
+}
+
+"""Response to creating a role based invite for a publication."""
+type CreateRoleBasedInviteForPublicationPayload {
+  """The created role based invite."""
+  invite: RoleBasedInvite!
+}
+
+input CreateSeriesInput {
+  """The name of the series."""
+  name: String!
+
+  """
+  The slug of the series. Used to access series page.  Example https://johndoe.com/series/series-slug
+  """
+  slug: String!
+
+  """The id of the publication the series belongs to."""
+  publicationId: ID!
+
+  """The description of the series. Accepts markdown."""
+  descriptionMarkdown: String
+
+  """The cover image of the series."""
+  coverImage: String
+
+  """
+  The sort order of the series, determines if the latest posts should appear first or last in series.
+  """
+  sortOrder: SortOrder
+}
+
+type CreateSeriesPayload {
+  """Returns the created series."""
+  series: Series!
+}
+
+input CreateWebhookInput {
+  publicationId: ID!
+  url: String!
+  events: [WebhookEvent!]!
+  secret: String!
+}
+
+type CreateWebhookPayload {
+  webhook: Webhook
+}
+
+type CustomCSS {
+  """Custom CSS that will be applied on the publication homepage."""
+  home: String
+
+  """Custom CSS that will be applied on all posts of the publication."""
+  post: String
+
+  """
+  Custom CSS that will be applied on all static pages of the publication.
+  """
+  static: String
+
+  """The same as `home` but minified."""
+  homeMinified: String
+
+  """The same as `post` but minified."""
+  postMinified: String
+
+  """The same as `static` but minified."""
+  staticMinified: String
+}
+
+type CustomCSSFeature implements Feature {
+  """A flag indicating if the custom CSS feature is enabled or not."""
+  isEnabled: Boolean!
+
+  """CSS that is live."""
+  published: CustomCSS
+
+  """CSS that is not published yet."""
+  draft: CustomCSS
+}
+
+enum CustomDomainStatus {
+  VALID
+  VERIFYING
+  INVALID
+}
+
+"""Contains the publication's dark mode preferences."""
+type DarkModePreferences {
+  """A flag indicating if the dark mode is enabled for the publication."""
+  enabled: Boolean
+
+  """The custom dark mode logo of the publication."""
+  logo: String
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
+`date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
+8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum DefaultDocsTheme {
+  LIGHT
+  DARK
+}
+
+input DeleteCustomMdxComponentInput {
+  projectId: ID!
+  componentId: String!
+}
+
+type DeleteCustomMdxComponentPayload {
+  project: DocumentationProject!
+}
+
+"""Input to delete a role based invite."""
+input DeleteRoleBasedInviteInput {
+  """The ID of the role based invite."""
+  inviteId: ID!
+  publicationId: ID!
+}
+
+"""Response to deleting a role based invite."""
+type DeleteRoleBasedInvitePayload {
+  """Deleted invite."""
+  invite: RoleBasedInvite!
+}
+
+type DeleteWebhookPayload {
+  webhook: Webhook
+}
+
+enum DeviceType {
+  DESKTOP
+  LAPTOP
+  TABLET
+  MOBILE
+}
+
+"""The input for disabling AI search for a documentation project"""
+input DisableDocumentationProjectAISearchInput {
+  """The ID of the documentation project"""
+  projectId: ID!
+}
+
+"""The response to disabling AI search for a documentation project"""
+type DisableDocumentationProjectAISearchPayload {
+  project: DocumentationProject
+}
+
+input DisableDocumentationProjectHeadlessCmsInput {
+  projectId: ID!
+}
+
+type DisableDocumentationProjectHeadlessCmsPayload {
+  project: DocumentationProject
+}
+
+type DnsVerificationEntry {
+  type: DnsVerificationType!
+  name: String!
+  value: String!
+}
+
+enum DnsVerificationType {
+  TXT_RECORD
+  CNAME_RECORD
+  A_RECORD
+}
+
+enum DocsAnalyticsDimension {
+  DOCUMENTATION_GUIDE
+  API_REFERENCE_GUIDE
+  PAGE
+  PATH
+  OPERATING_SYSTEM
+  DEVICE_TYPE
+  BROWSER
+  COUNTRY
+  REFERRER_HOST
+}
+
+"""
+Contains basic information about the docs custom page.
+Docs custom pages are pages that can be written in mdx and can be added to docs.
+It can be used for changelog or other such requirements.
+"""
+type DocsCustomPage implements Node {
+  """The ID of the docs custom page."""
+  id: ID!
+
+  """The title of the docs custom page."""
+  title: String!
+
+  """
+  the slug of the docs custom page. Used to access docs custom page. Example `https://mydocs.com/my-page`.
+  """
+  slug: String!
+
+  """
+  Content of the docs custom page. Contains mdx version of the docs custom page's content.
+  """
+  content: DocumentationPageContent!
+
+  """
+  Information about the docs custom page's Open Graph metadata i.e. image.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """
+  Information about the docs custom page's SEO metadata i.e. title and description
+  """
+  seo: SEO
+
+  """Last modified date of the docs custom page."""
+  lastModified: DateTime!
+
+  """Visibility of the docs custom page."""
+  visibility: DocumentationSidebarItemVisibility!
+}
+
+type DocsCustomPageConnection implements PageConnection {
+  """A list docs custom pages"""
+  nodes: [DocsCustomPage!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """Total number of docs custom pages."""
+  totalDocuments: Int!
+}
+
+enum DocsGitHubActivityDeploymentType {
+  """The deployment is a preview deployment."""
+  PREVIEW
+
+  """The deployment is a production deployment."""
+  PRODUCTION
+}
+
+type DocsProjectInvitedMembers {
+  """
+  Invited Hashnode user, returns null if the user is not a Hashnode user.
+  """
+  user: User
+  email: String!
+  role: DocumentationMemberRole!
+}
+
+interface DocsViews {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+}
+
+interface DocsVisitors {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+}
+
+type DocumentationApiReference implements IGuide {
+  id: ID!
+  slug: String!
+  name: String!
+  status: DocumentationGuideItemStatus!
+
+  """
+  SEO information of the page. Contains title and description used in meta tags.
+  """
+  seo: SEO
+
+  """
+  OG meta-data of the page. Contains image url used in open graph meta tags.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """
+  A guide can be locked if the subscription doesn't cover to having this guide.
+  
+  A locked guide is readonly. It can only be removed or edited after subscribing.
+  """
+  isLocked: Boolean!
+  lastModified: DateTime!
+
+  """The ID of the default version."""
+  versionId: String
+
+  """
+  URL of the OpenAPI definition used by the default version of this guide.
+  """
+  url: String!
+
+  """URL of the published api reference."""
+  publishedUrl: String
+
+  """
+  The base64 encoded gzip compressed string of the parsed OpenAPI Definition of the API Reference.
+  """
+  definition: String!
+
+  """The provider of the guide."""
+  provider: GuideProvider!
+}
+
+type DocumentationGuide implements IGuide {
+  id: ID!
+  slug: String!
+  name: String!
+  status: DocumentationGuideItemStatus!
+
+  """
+  SEO information of the page. Contains title and description used in meta tags.
+  """
+  seo: SEO
+
+  """
+  OG meta-data of the page. Contains image url used in open graph meta tags.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """
+  A guide can be locked if the subscription doesn't cover to having this guide.
+  
+  A locked guide is readonly. It can only be removed or edited after subscribing.
+  """
+  isLocked: Boolean!
+  lastModified: DateTime!
+
+  """The ID of the default version."""
+  versionId: String
+
+  """
+  URL of the published guide.
+  
+  Example: `https://example.com/my-guide-slug`
+  """
+  url: String
+
+  """Sidebar items of the default version of this guide."""
+  sidebarItems: [DocumentationSidebarItem!]!
+
+  """Only published sidebar items of the default version of this guide."""
+  publishedSidebarItems: [DocumentationSidebarItem!]!
+
+  """Page of any version of this guide."""
+  page(id: ID, path: String): DocumentationPage
+
+  """Only published page of any version of this guide."""
+  publishedPage(id: ID, path: String): DocumentationPage
+
+  """
+  Only published page of any version of this guide. The path may include the version slug.
+  
+  Takes redirects into account and may return the page that the requested page redirects to.
+  
+  If the path is only a version slug, it will redirect to the first page of that version.
+  """
+  redirectedPublishedPage(id: ID, path: String): DocumentationPage
+  hasChanges: Boolean!
+  provider: GuideProvider!
+}
+
+union DocumentationGuideItem = DocumentationGuide | DocumentationApiReference
+
+enum DocumentationGuideItemStatus {
+  UNPUBLISHED
+  PUBLISHED
+}
+
+"""Visibility options for documentation guides."""
+enum DocumentationGuideVisibility {
+  """Visible to all users."""
+  PUBLIC
+
+  """
+  Not visible in public listings. Only visible to users with access to the project.
+  """
+  HIDDEN
+}
+
+type DocumentationLink implements IDocumentationSidebarItem {
+  id: ID!
+  label: String!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  status: DocumentationSidebarItemStatus!
+  visibility: DocumentationSidebarItemVisibility!
+}
+
+enum DocumentationMemberRole {
+  OWNER
+  ADMIN
+}
+
+"""A column for the navigation. Used in the footer"""
+type DocumentationNavbarColumn implements Node {
+  """The ID of the column."""
+  id: ID!
+
+  """The label of the column."""
+  label: String!
+
+  """The navigation items in the column."""
+  items: [DocumentationNavbarItem!]!
+
+  """The date the column was created."""
+  createdAt: DateTime!
+
+  """The date the column was last updated."""
+  updatedAt: DateTime
+}
+
+union DocumentationNavbarItem = DocumentationNavbarItemLink | DocumentationNavbarItemGuide | DocumentationNavbarItemPage
+
+"""A navigation item pointing  to a guide."""
+type DocumentationNavbarItemGuide implements Node {
+  """The ID of the item."""
+  id: ID!
+
+  """The label of the item."""
+  label: String!
+
+  """The guide the item points to."""
+  guide: DocumentationGuideItem!
+
+  """The date the item was created."""
+  createdAt: DateTime!
+
+  """The date the item was last updated."""
+  updatedAt: DateTime
+}
+
+"""A navigation item pointing to an external URL."""
+type DocumentationNavbarItemLink implements Node {
+  """The ID of the item."""
+  id: ID!
+
+  """The label of the item."""
+  label: String!
+
+  """The URL the item points to."""
+  url: String!
+
+  """Indicates if the link should open in a new tab."""
+  openInNewTab: Boolean!
+
+  """The date the item was created."""
+  createdAt: DateTime!
+
+  """The date the item was last updated."""
+  updatedAt: DateTime
+}
+
+"""A navigation item pointing to an custom page"""
+type DocumentationNavbarItemPage implements Node {
+  """The ID of the item."""
+  id: ID!
+
+  """The label of the item."""
+  label: String!
+
+  """The page this item points to."""
+  page: DocsCustomPage!
+
+  """Indicates if the page should open in a new tab."""
+  openInNewTab: Boolean!
+
+  """The date the item was created."""
+  createdAt: DateTime!
+
+  """The date the item was last updated."""
+  updatedAt: DateTime
+}
+
+type DocumentationPage {
+  id: ID!
+  path: String!
+  title: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime
+  format: DocumentationPageFormat!
+  content: DocumentationPageContent!
+  status: DocumentationSidebarItemStatus!
+  visibility: DocumentationSidebarItemVisibility!
+  guideSlug: String!
+  draft: DocumentationPageDraft!
+
+  """
+  SEO information of the page. Contains title and description used in meta tags.
+  """
+  seo: SEO
+
+  """
+  OG meta-data of the page. Contains image url used in open graph meta tags.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """
+  URL of the published page.
+  
+  Returns `null` if the page is not published.
+  """
+  url: String
+}
+
+type DocumentationPageContent {
+  mdx: String
+  md: String
+}
+
+type DocumentationPageDraft {
+  title: String!
+  description: String
+  content: DocumentationPageContent!
+}
+
+enum DocumentationPageFormat {
+  MDX
+  MD
+}
+
+type DocumentationProject implements Node {
+  id: ID!
+  domain: DocumentationProjectDomainSettings
+  name: String!
+  description: String
+  settings: DocumentationProjectSettings!
+  links: DocumentationProjectLinks!
+  publishedGuides: [DocumentationGuideItem!]!
+  guides: [DocumentationGuideItem!]!
+  analytics: DocumentationProjectAnalytics!
+  members: [DocumentationProjectMember!]! @deprecated(reason: "Use membersV2")
+  membersV2(
+    """The number of members to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+
+    """Filters to be applied to the member list."""
+    filter: DocumentationProjectMemberConnectionFilter
+  ): DocumentationProjectMemberConnection!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  guide(id: ID, slug: String): DocumentationGuideItem
+  publishedGuide(id: ID, slug: String): DocumentationGuideItem
+  defaultGuide: DocumentationGuideItem
+
+  """Returns a custom page with the given slug."""
+  customPage(
+    """The slug of the docs custom page to retrieve."""
+    slug: String!
+  ): DocsCustomPage
+
+  """Returns a list of custom pages belonging to the project."""
+  customPages(
+    """The number of custom pages to return in a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): DocsCustomPageConnection!
+  appearance: DocumentationProjectAppearance!
+  integrations: DocumentationProjectIntegrations
+
+  """
+  Object containing information about beta features enabled for the documentation project.
+  """
+  features: DocumentationProjectFeatures!
+
+  """URL of the documentation project."""
+  url: String!
+
+  """The navigation configuration for the documentation project."""
+  navigation: DocumentationProjectNavigation!
+
+  """A user search to find users with a specific status"""
+  searchUsers(input: DocumentationProjectSearchUsersInput!): DocumentationProjectSearchUserConnection!
+
+  """
+  Details of publication invites. Returns null if publication is not a team publication.
+  """
+  pendingInvites(
+    """The number of pending invites to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): DocumentationProjectPendingInviteConnection!
+
+  """The Owner of the documentation project."""
+  owner: User!
+  subscription: DocumentationProjectSubscription
+  ai: DocumentationProjectAIPreference
+}
+
+type DocumentationProjectAIPreference {
+  """
+  The prompts for the documentation project. These prompts are shown to the user when AI Search chatbot is opened.
+  """
+  prompts: [DocumentationProjectAIPrompt!]!
+
+  """The settings for the AI feature."""
+  settings: DocumentationProjectAISettings!
+}
+
+type DocumentationProjectAIPrompt {
+  """The ID of the prompt."""
+  id: ID!
+
+  """The prompt text."""
+  prompt: String!
+
+  """The date the prompt was created."""
+  createdAt: DateTime!
+}
+
+type DocumentationProjectAISettings {
+  """A flag to indicate if the AI search feature is enabled."""
+  isSearchEnabled: Boolean!
+}
+
+type DocumentationProjectAnalytics {
+  views(
+    """The number of view nodes to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+    filter: ProjectViewsFilter
+    groupBy: ProjectViewsGroupBy
+    sortBy: ProjectViewsSortBy
+    options: ProjectViewsOptions
+  ): ProjectViewsConnection
+  visitors(
+    """The number of view nodes to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+    filter: ProjectVisitorsFilter
+    groupBy: ProjectVisitorsGroupBy
+    options: ProjectVisitorsOptions
+  ): ProjectVisitorsConnection!
+}
+
+type DocumentationProjectAppearance {
+  logoUrl: String
+  logoDarkThemeUrl: String
+  favIconUrl: String
+  primaryColor: String
+  defaultDocsTheme: DefaultDocsTheme!
+  getStarted: DocumentationProjectGetStarted
+  customScript: String
+}
+
+input DocumentationProjectAppearanceInput {
+  logoUrl: String
+  logoDarkThemeUrl: String
+  favIconUrl: String
+  primaryColor: String
+  defaultDocsTheme: DefaultDocsTheme
+  getStarted: DocumentationProjectGetStartedInput
+  customScript: String
+}
+
+type DocumentationProjectCustomComponent implements Node {
+  """The unique identifier of the custom component"""
+  id: ID!
+
+  """componentId, can be embedded as %%[componentId] in the docs"""
+  componentId: String!
+
+  """The code of the custom component."""
+  code: String!
+
+  """The transpiled code of the custom component."""
+  transpiledCode: String!
+}
+
+type DocumentationProjectCustomDomain {
+  domain: String!
+  status: CustomDomainStatus!
+  verifiedAt: DateTime
+  wwwDomain: DocumentationProjectCustomWwwDomain
+}
+
+type DocumentationProjectCustomWwwDomain {
+  status: CustomDomainStatus!
+  verifiedAt: DateTime
+}
+
+type DocumentationProjectDomainSettings {
+  hashnodeSubDomain: String!
+  customDomain: DocumentationProjectCustomDomain
+}
+
+"""Contains the documentation project's beta features."""
+type DocumentationProjectFeatures {
+  """
+  Collaboration feature for the docs project which enables collaborative editing in the page editor.
+  """
+  collaboration: CollaborationFeature!
+
+  """
+  GitHub sync feature for the docs project which enables syncing the docs project with a GitHub repository.
+  """
+  ghSync: GitHubSyncFeature!
+
+  """
+  Versioning feature for the docs project which enables creating different versions of docs guides.
+  """
+  versioning: VersioningFeature!
+}
+
+type DocumentationProjectGetStarted {
+  label: String!
+  url: URL!
+}
+
+input DocumentationProjectGetStartedInput {
+  label: String
+  url: URL
+}
+
+type DocumentationProjectIntegrations {
+  """FB Pixel ID for integration with Facebook Pixel."""
+  fbPixelID: String
+
+  """Hotjar Site ID for integration with Hotjar."""
+  hotjarSiteID: String
+
+  """Google Analytics Tracking ID for integration with Google Analytics."""
+  gaTrackingID: String
+
+  """Google Tag Manager ID for integration with Google Tag Manager."""
+  gTagManagerID: String
+
+  """Intercom ID for integration with Intercom"""
+  intercomID: String
+
+  """The meta tags associated with the documentation project."""
+  metaTags: String
+
+  """Koala Public Key for integration with Koala."""
+  koalaPublicKey: String
+
+  """MS Clarity ID for integration with Microsoft Clarity."""
+  msClarityID: String
+}
+
+input DocumentationProjectIntegrationsInput {
+  gaTrackingID: String
+  gTagManagerID: String
+  intercomID: String
+  fbPixelID: String
+  hotjarSiteID: String
+  metaTags: String
+  koalaPublicKey: String
+  msClarityID: String
+}
+
+"""Contains the pending invite information."""
+type DocumentationProjectInvite implements Node {
+  """The ID of the pending invite."""
+  id: ID!
+
+  """
+  Invited Hashnode user, returns null if the user is not a Hashnode user.
+  """
+  user: User!
+
+  """The role assigned to the user in the publication."""
+  role: DocumentationMemberRole!
+}
+
+type DocumentationProjectLinks {
+  """Twitter URL of the documentation project."""
+  twitter: String
+
+  """Instagram URL of the documentation project."""
+  instagram: String
+
+  """GitHub URL of the documentation project."""
+  github: String
+
+  """Website URL of the documentation project."""
+  website: String
+
+  """Hashnode profile of author of the documentation project."""
+  hashnode: String
+
+  """YouTube URL of the documentation project."""
+  youtube: String
+
+  """Daily.dev URL of the documentation project."""
+  dailydev: String
+
+  """LinkedIn URL of the documentation project."""
+  linkedin: String
+
+  """Mastodon URL of the documentation project."""
+  mastodon: String
+
+  """The GitHub repository of the documentation project."""
+  githubRepository: String
+
+  """Bluesky URL of the documentation project."""
+  bluesky: String
+}
+
+input DocumentationProjectLinksInput {
+  twitter: String
+  instagram: String
+  github: String
+  website: String
+  hashnode: String
+  youtube: String
+  dailydev: String
+  linkedin: String
+  mastodon: String
+  githubRepository: String
+  bluesky: String
+}
+
+type DocumentationProjectMember {
+  """The user who is a member of the documentation project."""
+  user: User!
+
+  """The role of the member in the documentation project."""
+  role: DocumentationMemberRole!
+}
+
+type DocumentationProjectMemberConnection implements PageConnection {
+  """A list of members."""
+  nodes: [DocumentationProjectMemberV2!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """Total number of nodes available i.e. number of members."""
+  totalDocuments: Int!
+}
+
+"""The filter for the documentation member connection."""
+input DocumentationProjectMemberConnectionFilter {
+  """
+  Search filter can be used to filter members by their username or email.
+  """
+  searchTerm: String
+}
+
+type DocumentationProjectMemberV2 implements Node {
+  """The ID of the member."""
+  id: ID!
+
+  """The user who is a member of the documentation project."""
+  user: User!
+
+  """The role of the member in the documentation project."""
+  role: DocumentationMemberRole!
+}
+
+"""
+Contains the header and footer navigation for the documentation project.
+"""
+type DocumentationProjectNavigation {
+  """The items in the header navigation."""
+  header: [DocumentationNavbarItem!]!
+
+  """The columns in the footer navigation."""
+  footer: [DocumentationNavbarColumn!]!
+}
+
+"""A connection for the user search result."""
+type DocumentationProjectPendingInviteConnection implements PageConnection {
+  """A list of invites"""
+  nodes: [DocumentationProjectInvite!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of invites."""
+  totalDocuments: Int!
+}
+
+enum DocumentationProjectProductName {
+  STARTUP
+  ENTERPRISE
+}
+
+"""A connection for the user search result."""
+type DocumentationProjectSearchUserConnection implements PageConnection {
+  """A list user nodes."""
+  nodes: [User!]!
+
+  """The edges containing the user and the status of the user."""
+  edges: [DocumentationProjectSearchUserEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """Total number of nodes available i.e. number of user search results."""
+  totalDocuments: Int!
+}
+
+type DocumentationProjectSearchUserEdge implements PageEdge {
+  status: UserInviteStatus!
+  node: User!
+}
+
+input DocumentationProjectSearchUsersInput {
+  status: UserInviteStatus!
+  searchTerm: String!
+
+  """The number of users to return on a single page."""
+  pageSize: Int!
+
+  """The page number that should be returned."""
+  page: Int!
+}
+
+type DocumentationProjectSettings {
+  isRobotsAllowed: Boolean!
+  isHashnodeLoginAllowed: Boolean!
+
+  """A flag to indicate if the documentation project is using Headless CMS."""
+  isHeadless: Boolean!
+}
+
+input DocumentationProjectSettingsInput {
+  allowRobots: Boolean
+  allowHashnodeLogin: Boolean
+}
+
+type DocumentationProjectSubscription {
+  status: DocumentationProjectSubscriptionStatus!
+  productName: DocumentationProjectProductName!
+  nextBillingCycle: DateTime
+  maxSeats: Int!
+}
+
+enum DocumentationProjectSubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+}
+
+type DocumentationSection implements IDocumentationSidebarItem & IDocumentationNestableSidebarItem {
+  id: ID!
+  label: String!
+  path: String!
+  pages: [DocumentationSidebarItemPage!]!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  status: DocumentationSidebarItemStatus!
+  visibility: DocumentationSidebarItemVisibility!
+}
+
+union DocumentationSidebarItem = DocumentationSection | DocumentationSidebarItemPage | DocumentationLink
+
+type DocumentationSidebarItemPage implements IDocumentationSidebarItem & IDocumentationNestableSidebarItem {
+  id: ID!
+  path: String!
+  label: String!
+  pages: [DocumentationSidebarItemPage!]!
+  visibility: DocumentationSidebarItemVisibility!
+  status: DocumentationSidebarItemStatus!
+  hasChanges: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime
+
+  """
+  URL of the published page.
+  
+  Returns `null` if the page is not published.
+  """
+  url: String
+}
+
+enum DocumentationSidebarItemStatus {
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum DocumentationSidebarItemVisibility {
+  PUBLIC
+  HIDDEN
+}
+
+"""Contains the publication's domain information."""
+type DomainInfo {
+  """
+  The subdomain of the publication on hashnode.dev.
+  
+  It will redirect to you custom domain if it is present and ready.
+  """
+  hashnodeSubdomain: String
+
+  """The domain of the publication."""
+  domain: DomainStatus
+
+  """
+  The www prefixed domain of the publication. Says if redirect to www domain is configured.
+  """
+  wwwPrefixedDomain: DomainStatus
+}
+
+"""Contains the publication's domain status."""
+type DomainStatus {
+  """The host of the publication domain."""
+  host: String!
+
+  """A flag indicating if the publication domain is ready."""
+  ready: Boolean!
+
+  """A flag indicating the status of a publication domain"""
+  status: CustomDomainStatus!
+
+  """
+  A timestamp indicating when the domain was verified.
+  It is only present if the domain is verified.
+  """
+  verifiedAt: DateTime
+}
+
+"""
+Contains basic information about the draft.
+A draft is a post that is not published yet.
+"""
+type Draft implements Node {
+  """The ID of the draft."""
+  id: ID!
+  slug: String!
+
+  """
+  The title of the draft. It would become the title of the post when published.
+  """
+  title: String
+
+  """
+  The subtitle of the draft. It would become the subtitle of the post when published.
+  """
+  subtitle: String
+
+  """The author of the draft."""
+  author: User!
+
+  """
+  Returns the user details of the co-authors of the post.
+  
+  Only available for team publications.
+  """
+  coAuthors: [User!]
+  publishAs: User
+
+  """
+  Returns list of tags added to the draft. Contains tag id, name, slug, etc.
+  """
+  tags: [Tag!]! @deprecated(reason: "Use tagsV2 instead. Will be removed on 26/02/2024.")
+  tagsV2: [DraftTag!]!
+  canonicalUrl: String
+
+  """The publication the draft belongs to."""
+  publication: Publication
+
+  """
+  The cover image preference of the draft. Contains cover image URL and other details.
+  """
+  coverImage: DraftCoverImage
+  readTimeInMinutes: Int!
+
+  """Information of the series the draft belongs to."""
+  series: Series
+
+  """Content of the draft in HTML and markdown"""
+  content: Content
+
+  """The date the draft was updated."""
+  dateUpdated: DateTime! @deprecated(reason: "Use updatedAt instead. Will be removed on 26/12/2023.")
+  updatedAt: DateTime!
+  settings: DraftSettings!
+
+  """
+  SEO information of the draft. Contains title and description used in meta tags.
+  """
+  seo: SEO
+
+  """
+  OG meta-data of the draft. Contains image url used in open graph meta tags.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """Draft feature-related fields."""
+  features: DraftFeatures!
+
+  """Information about the last backup of the draft."""
+  lastBackup: DraftBackup
+
+  """The date the draft was last successfully backed up."""
+  lastSuccessfulBackupAt: DateTime
+
+  """The date the draft last failed to back up."""
+  lastFailedBackupAt: DateTime
+
+  """The date the draft is scheduled to be published."""
+  scheduledDate: DateTime
+
+  """
+  Whether or not the draft has been submitted for review.
+  
+  Only applicable to drafts in team publications.
+  """
+  isSubmittedForReview: Boolean
+
+  """
+  Returns the published post when the draft is published, returns null otherwise
+  """
+  publishedPost: Post
+}
+
+type DraftBackup {
+  """The status of the backup i.e., success or failure."""
+  status: BackupStatus
+
+  """The date the backup was created."""
+  at: DateTime
+}
+
+"""
+Contains basic information about a Tag within a Draft.
+A tag in a draft is a tag that is not published yet.
+"""
+type DraftBaseTag {
+  """The name of the tag. Shown in tag page."""
+  name: String!
+
+  """
+  The slug of the tag. Used to access tags feed.  Example https://hashnode.com/n/graphql
+  """
+  slug: String!
+}
+
+"""
+Connection to get list of drafts.
+Returns a list of edges which contains the draft and cursor to the last item of the previous page.
+"""
+type DraftConnection implements Connection {
+  """A list of edges of drafts connection."""
+  edges: [DraftEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""Contains information about the cover image of the draft."""
+type DraftCoverImage {
+  """The URL of the cover image."""
+  url: String!
+
+  """Provides attribution information for the cover image, if available."""
+  attribution: String
+
+  """The name of the photographer who captured the cover image."""
+  photographer: String
+
+  """True if the image attribution should be hidden."""
+  isAttributionHidden: Boolean!
+}
+
+"""An edge that contains a node of type draft and cursor to the node."""
+type DraftEdge implements Edge {
+  """A node in the connection containing a draft."""
+  node: Draft!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type DraftFeatures {
+  tableOfContents: TableOfContentsFeature!
+}
+
+type DraftRevision implements Node {
+  """The ID of the draft revision."""
+  id: ID!
+
+  """The content of the draft revision."""
+  content: Content!
+
+  """The time the revision has been created."""
+  createdAt: DateTime!
+
+  """The name of the user who created the revision."""
+  authorName: String!
+}
+
+type DraftRevisionEdge implements Edge {
+  """A node in the connection containing a draft revision."""
+  node: DraftRevision!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type DraftSettings {
+  """A flag to indicate if the comments are disabled for the post."""
+  disableComments: Boolean!
+
+  """
+  A flag to indicate if the cover image is shown below title of the post. Default position of cover is top of title.
+  """
+  stickCoverToBottom: Boolean!
+
+  """Whether or not the post is hidden from the Hashnode community."""
+  isDelisted: Boolean!
+}
+
+union DraftTag = Tag | DraftBaseTag
+
+"""
+An edge that contains a node and cursor to the node.
+This is a common interface for all edges.
+"""
+interface Edge {
+  """A node in the connection."""
+  node: Node!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""The input for the email import acknowledgement mutation."""
+type EmailCurrentImport {
+  """The status of the import"""
+  status: EmailImportStatus!
+
+  """The date the import started"""
+  importStartedAt: DateTime!
+
+  """The number of subscribers that have been successfully imported"""
+  successfullyImported: Int
+
+  """The number of subscribers that have attempted to import"""
+  attemptedToImport: Int
+
+  """The filename of the csv file containing emails"""
+  filename: String
+}
+
+"""Contains information about the email import."""
+type EmailImport {
+  """
+  Contains information about the current import example if it is in progress or has finished, date started, etc
+  """
+  currentImport: EmailCurrentImport
+}
+
+"""The status of the email import."""
+enum EmailImportStatus {
+  """Import has been initialized but is not yet in progress."""
+  INITIALIZED
+
+  """Import is in progress."""
+  IN_PROGRESS
+
+  """Import has to be reviewed by Hashnode. It is not yet reviewed."""
+  IN_REVIEW
+
+  """Import was successful. New emails have been imported."""
+  SUCCESS
+
+  """There was an error during the import."""
+  FAILED
+
+  """The has been rejected. Nothing has been imported."""
+  REJECTED
+
+  """The import has been acknowledged by the user."""
+  FINISHED
+}
+
+"""User's email notification preferences."""
+type EmailNotificationPreferences {
+  """
+  Indicates if the user has opted in to receive the Hashnode Weekly newsletter.
+  """
+  weeklyNewsletterEmails: Boolean!
+
+  """Indicates if the user has opted in to receive activity notifications."""
+  activityNotifications: Boolean!
+
+  """Indicates if the user has opted in to receive general announcements."""
+  generalAnnouncements: Boolean!
+
+  """
+  Indicates if the user has opted in to receive monthly blog performance stats.
+  """
+  monthlyBlogStats: Boolean!
+
+  """Indicates if the user has opted in to receive new followers weekly."""
+  newFollowersWeekly: Boolean!
+}
+
+"""The input for enabling AI search for a documentation project"""
+input EnableDocumentationProjectAISearchInput {
+  """The ID of the documentation project"""
+  projectId: ID!
+}
+
+"""The response to enabling AI search for a documentation project"""
+type EnableDocumentationProjectAISearchPayload {
+  project: DocumentationProject
+}
+
+input EnableDocumentationProjectHeadlessCmsInput {
+  projectId: ID!
+}
+
+type EnableDocumentationProjectHeadlessCmsPayload {
+  project: DocumentationProject
+}
+
+"""Invitations that failed to be sent to the user"""
+type FailedInvite {
+  """The email of the user that failed to invite."""
+  email: String
+
+  """The username of the user that failed to invite."""
+  username: String
+
+  """The reason why the user failed to invite."""
+  errorMessage: String!
+}
+
+"""Common fields that describe a feature."""
+interface Feature {
+  """Whether the feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+input FeedFilter {
+  """The type of feed to be returned."""
+  type: FeedType
+
+  """
+  Adds a filter to return posts with minimum number of minutes required to read the post.
+  """
+  minReadTime: Int
+
+  """
+  Adds a filter to return posts with maximum number of minutes required to read the post.
+  """
+  maxReadTime: Int
+
+  """Adds a filter to return posts with tagged with provided tags only."""
+  tags: [ObjectId!]
+}
+
+"""
+Connection for posts within a feed. Contains a list of edges containing nodes.
+Each node is a post.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type FeedPostConnection implements Connection {
+  """A list of edges containing Post information"""
+  edges: [PostEdge!]!
+
+  """Information for pagination in Post connection."""
+  pageInfo: PageInfo!
+}
+
+"""Contains information about type of feed to be returned."""
+enum FeedType {
+  """
+  Returns only posts of the users you follow or publications you have subscribed to.
+  
+  Note: You have to be authenticated to use this feed type.
+  """
+  FOLLOWING
+
+  """
+  Returns only posts based on users following and interactions.
+  
+  Personalised feed is curated per requesting user basis.
+  """
+  PERSONALIZED
+
+  """Returns posts which were published recently, sorted based on recency."""
+  RECENT
+
+  """Returns posts based on old personalization algorithm."""
+  RELEVANT
+
+  """Returns posts which were featured, sorted based on recency."""
+  FEATURED
+
+  """
+  Returns posts which were bookmarked by the user, sorted based on recency.
+  """
+  BOOKMARKS
+
+  """Returns posts which were viewed by the user, sorted based on recency."""
+  READING_HISTORY
+}
+
+input FollowTagsInput {
+  """List of tag ids to follow."""
+  ids: [ID!]!
+}
+
+type FollowTagsPayload {
+  """List of tags followed by the user."""
+  tags: [Tag!]
+}
+
+"""
+The input for the exchange of token to a JWT to preview token for a documentation project.
+"""
+input GenerateDocumentationProjectPreviewAuthorizationTokenInput {
+  token: String!
+}
+
+"""
+The payload for the exchange of token to a JWT to preview token for a documentation project.
+"""
+type GenerateDocumentationProjectPreviewAuthorizationTokenPayload {
+  """The JWT that can be used to preview the documentation project."""
+  authorizationToken: String
+
+  """
+  The project for which the JWT is generated. With this request, authenticated fields are not accessible.
+  """
+  project: DocumentationProject
+}
+
+"""
+The input for the generation of a exchangeable preview token for a documentation project.
+"""
+input GenerateDocumentationProjectPreviewTokenInput {
+  projectId: ID!
+}
+
+"""
+The payload for the generation of a exchangeable preview token for a documentation project.
+"""
+type GenerateDocumentationProjectPreviewTokenPayload {
+  """
+  The token that can be exchanged for a JWT to preview the documentation project.
+  """
+  token: String
+
+  """The project for which the token is generated."""
+  project: DocumentationProject
+}
+
+type GitHubActivityLog implements Node {
+  """The ID of the log."""
+  id: ID!
+
+  """The date the log was created."""
+  createdAt: DateTime!
+
+  """The branch name that the commit belongs to."""
+  branchName: String!
+
+  """The status of the sync."""
+  status: GitHubSyncStatus!
+
+  """The commit ID."""
+  gitCommitId: String!
+
+  """The commit message."""
+  gitCommitMessage: String!
+
+  """The commit URL."""
+  gitCommitUrl: String!
+
+  """The deployment type related to the log."""
+  deploymentType: DocsGitHubActivityDeploymentType!
+
+  """
+  The deployment URL. For preview activities, the deployment URL is different
+  for every commit. For production deployments, the deploymentUrl points to the
+  main project subdomain.
+  """
+  deploymentUrl: String!
+
+  """The errors occurred during the sync."""
+  errors: [GitHubSyncError!]!
+}
+
+type GitHubSyncError {
+  """The error code denoting the reason of failure for GitHub sync."""
+  code: GitHubSyncErrorCode!
+
+  """List of error messages"""
+  messages: [String!]!
+}
+
+enum GitHubSyncErrorCode {
+  """Indicates that the project has configuration errors."""
+  CONFIGURATION_ERROR
+
+  """Indicates that the project has duplicate slugs."""
+  DUPLICATE_SLUGS
+
+  """Indicates that the project has duplicate paths."""
+  DUPLICATE_PATHS
+
+  """Indicates that the project has missing files."""
+  MISSING_FILES
+
+  """Indicates that the project has invalid content."""
+  CONTENT_ERROR
+}
+
+"""
+Contains the flag indicating if the GitHub sync feature is enabled or not.
+"""
+type GitHubSyncFeature implements Feature {
+  """A flag indicating if the GitHub sync feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+enum GitHubSyncStatus {
+  """The sync is complete"""
+  READY
+
+  """The sync is in progress"""
+  BUILDING
+
+  """The sync failed"""
+  FAILED
+}
+
+type GPTBotCrawlingFeature implements Feature {
+  """A flag indicating if the GPT Bot Crawler feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+"""Views implementation that will be returned if grouping by browser."""
+type GroupedByBrowserViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The browser that these views belong to."""
+  browser: String!
+}
+
+"""Visitors implementation that will be returned if grouping by browser."""
+type GroupedByBrowserVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The browser that these views belong to."""
+  browser: String!
+}
+
+"""Views implementation that will be returned if grouping by country."""
+type GroupedByCountryViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The country that these views belong to."""
+  country: CountryCodeAlpha2!
+}
+
+"""Visitors implementation that will be returned if grouping by country."""
+type GroupedByCountryVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The country that these views belong to."""
+  country: CountryCodeAlpha2!
+}
+
+"""Views implementation that will be returned if grouping by device type."""
+type GroupedByDeviceTypeViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The type of device that these views belong to."""
+  deviceType: DeviceType!
+}
+
+"""
+Visitors implementation that will be returned if grouping by device type.
+"""
+type GroupedByDeviceTypeVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The type of device that these views belong to."""
+  deviceType: DeviceType!
+}
+
+"""Views implementation that will be returned if grouping by browser."""
+type GroupedByDocsBrowserViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The browser that these views belong to."""
+  browser: String!
+}
+
+"""Visitors implementation that will be returned if grouping by browser."""
+type GroupedByDocsBrowserVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The browser that these views belong to."""
+  browser: String!
+}
+
+"""Views implementation that will be returned if grouping by country."""
+type GroupedByDocsCountryViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The country that these views belong to."""
+  country: CountryCodeAlpha2!
+}
+
+"""Visitors implementation that will be returned if grouping by country."""
+type GroupedByDocsCountryVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The country that these views belong to."""
+  country: CountryCodeAlpha2!
+}
+
+"""Views implementation that will be returned if grouping by device type."""
+type GroupedByDocsDeviceTypeViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The type of device that these views belong to."""
+  deviceType: DeviceType!
+}
+
+"""
+Visitors implementation that will be returned if grouping by device type.
+"""
+type GroupedByDocsDeviceTypeVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The type of device that these views belong to."""
+  deviceType: DeviceType!
+}
+
+"""Grouped views by documentation guide or API reference guide."""
+type GroupedByDocsGuideViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """
+  The documentation Guide or the API reference guide that these views belong to.
+  """
+  guide: DocumentationGuideItem
+}
+
+"""Grouped visitors by documentation guide or API reference guide."""
+type GroupedByDocsGuideVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """
+  The documentation Guide or the API reference guide that these views belong to.
+  """
+  guide: DocumentationGuideItem
+}
+
+"""
+Views implementation that will be returned if grouping by operating system.
+"""
+type GroupedByDocsOperatingSystemViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The operating system that these views belong to."""
+  operatingSystem: String!
+}
+
+"""
+Visitors implementation that will be returned if grouping by operating system.
+"""
+type GroupedByDocsOperatingSystemVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The operating system that these views belong to."""
+  operatingSystem: String!
+}
+
+type GroupedByDocsPageViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The page that these views belong to."""
+  page: DocumentationPage
+}
+
+"""
+Visitors implementation that will be returned if grouping by docs page.
+"""
+type GroupedByDocsPageVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The page that these views belong to."""
+  page: DocumentationPage
+}
+
+"""Views implementation that will be returned if grouping by path."""
+type GroupedByDocsPathViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The path that these views belong to."""
+  path: String!
+}
+
+"""Visitors implementation that will be returned if grouping by path."""
+type GroupedByDocsPathVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The path that these views belong to."""
+  path: String!
+}
+
+"""
+Views implementation that will be returned if grouping by `REFERRER_HOST` dimension.
+"""
+type GroupedByDocsReferrerHostViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The referrer host that these views belong to."""
+  referrerHost: String!
+}
+
+"""
+Visitors implementation that will be returned if grouping by `REFERRER_HOST` dimension.
+"""
+type GroupedByDocsReferrerHostVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The referrer host that these views belong to."""
+  referrerHost: String!
+}
+
+type GroupedByDocsTimeViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The start of the time range that these views belong to."""
+  from: DateTime!
+
+  """The end of the time range that these views belong to."""
+  to: DateTime!
+}
+
+"""
+Visitors implementation that will be returned if a grouping by time is provided.
+"""
+type GroupedByDocsTimeVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The start of the time range that these visitors visited the page."""
+  from: DateTime!
+
+  """The end of the time range that these visitors visited the page."""
+  to: DateTime!
+}
+
+"""
+Views implementation that will be returned if grouping by operating system.
+"""
+type GroupedByOperatingSystemViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The operating system that these views belong to."""
+  operatingSystem: String!
+}
+
+"""
+Visitors implementation that will be returned if grouping by operating system.
+"""
+type GroupedByOperatingSystemVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The operating system that these views belong to."""
+  operatingSystem: String!
+}
+
+"""Views implementation that will be returned if grouping by page."""
+type GroupedByPageViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The page that these views belong to."""
+  page: StaticPage!
+}
+
+"""Visitors implementation that will be returned if grouping by page."""
+type GroupedByPageVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The page that these views belong to."""
+  page: StaticPage!
+}
+
+"""Views implementation that will be returned if grouping by path."""
+type GroupedByPathViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The path that these views belong to."""
+  path: String!
+}
+
+"""Visitors implementation that will be returned if grouping by path."""
+type GroupedByPathVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The path that these views belong to."""
+  path: String!
+}
+
+"""Views implementation that will be returned if grouping by post."""
+type GroupedByPostViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The post that these views belong to."""
+  post: Post!
+}
+
+"""Visitors implementation that will be returned if grouping by post."""
+type GroupedByPostVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The post that these views belong to."""
+  post: Post!
+}
+
+"""
+Views implementation that will be returned if grouping by `REFERRER_HOST` dimension.
+"""
+type GroupedByReferrerHostViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The referrer host that these views belong to."""
+  referrerHost: String!
+}
+
+"""
+Visitors implementation that will be returned if grouping by `REFERRER_HOST` dimension.
+"""
+type GroupedByReferrerHostVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The referrer host that these views belong to."""
+  referrerHost: String!
+}
+
+type GroupedByTimeViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+
+  """The start of the time range that these views belong to."""
+  from: DateTime!
+
+  """The end of the time range that these views belong to."""
+  to: DateTime!
+}
+
+"""
+Visitors implementation that will be returned if a grouping by time is provided.
+"""
+type GroupedByTimeVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+
+  """The start of the time range that these visitors visited the page."""
+  from: DateTime!
+
+  """The end of the time range that these visitors visited the page."""
+  to: DateTime!
+}
+
+enum GuideProvider {
+  HASHNODE
+  GITHUB
+}
+
+enum GuideVersionStatus {
+  STABLE
+  UNSTABLE
+  DEPRECATED
+}
+
+type HeadlessCMSFeature implements Feature {
+  """A flag indicating if the Headless CMS feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+enum HttpRedirectionType {
+  """A temporary redirect that corresponds to the 301 HTTP status code."""
+  TEMPORARY
+
+  """A permanent redirect that corresponds to the 302 HTTP status code."""
+  PERMANENT
+}
+
+interface IDocumentationNestableSidebarItem {
+  pages: [DocumentationSidebarItemPage!]!
+}
+
+interface IDocumentationSidebarItem {
+  id: ID!
+  label: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  visibility: DocumentationSidebarItemVisibility!
+}
+
+interface IGuide {
+  id: ID!
+  slug: String!
+  name: String!
+  status: DocumentationGuideItemStatus!
+
+  """
+  SEO information of the page. Contains title and description used in meta tags.
+  """
+  seo: SEO
+
+  """
+  OG meta-data of the page. Contains image url used in open graph meta tags.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """
+  A guide can be locked if the subscription doesn't cover to having this guide.
+  
+  A locked guide is readonly. It can only be removed or edited after subscribing.
+  """
+  isLocked: Boolean!
+  lastModified: DateTime!
+
+  """The ID of the default version."""
+  versionId: String
+  provider: GuideProvider!
+}
+
+interface IGuideVersion {
+  """Unique identifier for the guide version."""
+  id: ID!
+
+  """URL-friendly identifier for the version."""
+  slug: String!
+
+  """Display name of the version."""
+  name: String!
+
+  """Internal code name for the version."""
+  codeName: String
+
+  """
+  Indicates if this is the default version.
+  
+  There is always exactly one default version at a given time.
+  """
+  isDefault: Boolean!
+
+  """Visibility of the guide version."""
+  visibility: DocumentationGuideVisibility!
+
+  """Status of the guide version."""
+  status: GuideVersionStatus!
+
+  """The version that this version was forked from."""
+  forkedFrom: IGuideVersion
+
+  """Timestamp of when the version was created."""
+  createdAt: DateTime!
+
+  """Timestamp of the last update to the version."""
+  updatedAt: DateTime
+}
+
+input InviteDocumentationProjectAdminInput {
+  projectId: ID!
+  invites: [InviteDocumentationProjectAdminInputEmail!]!
+}
+
+input InviteDocumentationProjectAdminInputEmail {
+  userId: ID!
+}
+
+type InviteDocumentationProjectAdminPayload {
+  project: DocumentationProject
+  invitedMembers: [DocsProjectInvitedMembers!]
+}
+
+"""Input to invite users to a publication."""
+input InviteUsersToPublicationInput {
+  """The publication ID to invite users to."""
+  publicationId: ID!
+
+  """The list of users  to invite to the publication."""
+  users: [UserInviteInput!]!
+}
+
+"""Response to inviting users to a publication."""
+type InviteUsersToPublicationPayload {
+  """Signifies if the mutation was successful for all users."""
+  success: Boolean!
+
+  """The number of successful invites."""
+  successfulInviteCount: Int!
+
+  """Invites that failed due to an error."""
+  failedInvites: [FailedInvite!]!
+}
+
+"""
+Contains basic information about the tag.
+A tag is a label that categorizes posts with similar topics.
+"""
+interface ITag {
+  """The ID of the tag."""
+  id: ID!
+
+  """The name of the tag. Shown in tag page."""
+  name: String!
+
+  """
+  The slug of the tag. Used to access tags feed.  Example https://hashnode.com/n/graphql
+  """
+  slug: String!
+
+  """The logo of the tag. Shown in tag page."""
+  logo: String
+
+  """The tagline of the tag."""
+  tagline: String
+
+  """
+  Information about the tag. Contains markdown html and text version of the tag's info.
+  """
+  info: Content
+
+  """Total number of users following this tag."""
+  followersCount: Int!
+
+  """Alltime usage count of this tag in posts."""
+  postsCount: Int!
+}
+
+"""Basic information about a user on Hashnode."""
+interface IUser {
+  """The ID of the user. It can be used to identify the user."""
+  id: ID!
+
+  """
+  The username of the user. It is unique and tied with user's profile URL. Example - https://hashnode.com/@username
+  """
+  username: String!
+
+  """The name of the user."""
+  name: String!
+
+  """
+  The bio of the user. Visible in about me section of the user's profile.
+  """
+  bio: Content
+
+  """The URL to the profile picture of the user."""
+  profilePicture: String
+
+  """The social media links of the user. Shown on the user's profile."""
+  socialMediaLinks: SocialMediaLinks
+
+  """
+  Returns a list of badges that the user has earned. Shown on blogs /badges page. Example - https://iamshadmirza.com/badges
+  """
+  badges: [Badge!]!
+
+  """
+  Publications associated with the user. Includes personal and team publications.
+  """
+  publications(
+    """The maximum number of publications to return in a batch."""
+    first: Int!
+
+    """The cursor to start the query from."""
+    after: String
+
+    """The sort direction for the publication."""
+    sortBy: UserPublicationsSort = DATE_CREATED_DESC
+
+    """Filter to apply to the publications."""
+    filter: UserPublicationsConnectionFilter
+  ): UserPublicationsConnection!
+
+  """Returns the list of posts the user has published."""
+  posts(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+
+    """The sort direction for the posts."""
+    sortBy: UserPostsSort = DATE_PUBLISHED_DESC
+
+    """The filters to be applied to the post list."""
+    filter: UserPostConnectionFilter
+  ): UserPostConnection!
+
+  """
+  The number of users that follow the requested user. Visible in the user's profile.
+  """
+  followersCount: Int!
+
+  """
+  The number of users that this user is following. Visible in the user's profile.
+  """
+  followingsCount: Int!
+
+  """The tagline of the user. Shown on the user's profile below the name."""
+  tagline: String
+
+  """The date the user joined Hashnode."""
+  dateJoined: DateTime
+
+  """The location of the user."""
+  location: String
+
+  """
+  The availability of the user based on tech stack and interests. Shown on the
+  "I am available for" section in user's profile.
+  """
+  availableFor: String
+
+  """Returns a list of tags that the user follows."""
+  tagsFollowing: [Tag!]!
+
+  """Whether or not the user is an ambassador."""
+  ambassador: Boolean!
+
+  """Whether or not the user is deactivated."""
+  deactivated: Boolean!
+
+  """The users who are following this user"""
+  followers(
+    """The number of users to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserConnection!
+
+  """The users which this user is following"""
+  follows(
+    """The number of users to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserConnection!
+
+  """
+  Returns list of tags from user's expertise. Shown on the user's profile.
+  """
+  techStack(
+    """The number of tags to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserTagsConnection!
+}
+
+input LikeCommentInput {
+  commentId: ID!
+  likesCount: Int = 1
+}
+
+type LikeCommentPayload {
+  comment: Comment
+}
+
+input LikePostInput {
+  postId: ID!
+  likesCount: Int = 1
+}
+
+type LikePostPayload {
+  post: Post
+}
+
+input LikeReplyInput {
+  commentId: ID!
+  replyId: ID!
+  likesCount: Int = 1
+}
+
+type LikeReplyPayload {
+  reply: Reply
+}
+
+input MapDocumentationProjectCustomDomainWwwRedirectInput {
+  projectId: ID!
+}
+
+type MapDocumentationProjectCustomDomainWwwRedirectPayload {
+  project: DocumentationProject
+
+  """
+  Additional DNS entries required to verify the www redirect domain.
+  There are cases where additional records in the DNS config are required to successfully verify the domain.
+  """
+  dnsVerificationEntries: [DnsVerificationEntry!]!
+}
+
+"""Contains information about meta tags. Used for SEO purpose."""
+input MetaTagsInput {
+  """The title of the post used in og:title for SEO."""
+  title: String
+
+  """The description of the post used in og:description for SEO."""
+  description: String
+
+  """The image URL of the post used in og:image for SEO."""
+  image: String
+}
+
+input MoveDocumentationSidebarItemInput {
+  projectId: ID!
+  guideSlug: String!
+  itemId: ID!
+  parentId: ID
+  position: Int
+}
+
+type MoveDocumentationSidebarItemPayload {
+  guide: DocumentationGuide
+}
+
+type Mutation {
+  """
+  Update the follow state for the user that is provided via id or username.
+  If the authenticated user does not follow the user, the mutation will follow the user.
+  If the authenticated user already follows the user, the mutation will un-follow the user.
+  Only available to the authenticated user.
+  """
+  toggleFollowUser(id: ID, username: String): ToggleFollowUserPayload!
+  followTags(input: FollowTagsInput!): FollowTagsPayload!
+  unfollowTags(input: UnfollowTagsInput!): UnfollowTagsPayload!
+  recommendPublications(input: RecommendPublicationsInput!): RecommendPublicationsPayload!
+  removeRecommendation(input: RemoveRecommendationInput!): RemoveRecommendationPayload!
+
+  """
+  Toggle allowContributorEdits flag to allow or restrict external contributors to further edit published articles.
+  """
+  toggleAllowContributorEdits(input: ToggleAllowContributorEditsInput!): ToggleAllowContributorEditsPayload!
+
+  """Toggle text selection sharer feature."""
+  toggleTextSelectionSharer(input: ToggleTextSelectionSharerInput!): ToggleTextSelectionSharerPayload!
+
+  """Toggle GPT bot crawling feature."""
+  toggleGPTBotCrawling(input: ToggleGPTBotCrawlingInput!): ToggleGPTBotCrawlingPayload!
+
+  """Creates a new post."""
+  publishPost(
+    """Information about the post to be published."""
+    input: PublishPostInput!
+  ): PublishPostPayload!
+
+  """Adds a post to a series."""
+  addPostToSeries(input: AddPostToSeriesInput!): AddPostToSeriesPayload!
+  updatePost(input: UpdatePostInput!): UpdatePostPayload!
+
+  """Removes a post."""
+  removePost(input: RemovePostInput!): RemovePostPayload!
+
+  """Likes a post."""
+  likePost(input: LikePostInput!): LikePostPayload!
+
+  """Restores a deleted post."""
+  restorePost(input: RestorePostInput!): RestorePostPayload!
+
+  """Likes a comment."""
+  likeComment(input: LikeCommentInput!): LikeCommentPayload!
+
+  """Likes a reply."""
+  likeReply(input: LikeReplyInput!): LikeReplyPayload!
+
+  """Adds a comment to a post."""
+  addComment(input: AddCommentInput!): AddCommentPayload!
+
+  """Updates a comment on a post."""
+  updateComment(input: UpdateCommentInput!): UpdateCommentPayload!
+
+  """Removes a comment from a post."""
+  removeComment(input: RemoveCommentInput!): RemoveCommentPayload!
+
+  """Adds a reply to a comment."""
+  addReply(input: AddReplyInput!): AddReplyPayload!
+
+  """Updates a reply"""
+  updateReply(input: UpdateReplyInput!): UpdateReplyPayload!
+
+  """Removes a reply from a comment."""
+  removeReply(input: RemoveReplyInput!): RemoveReplyPayload!
+
+  """Creates a new series."""
+  createSeries(input: CreateSeriesInput!): CreateSeriesPayload!
+
+  """Updates a series."""
+  updateSeries(input: UpdateSeriesInput!): UpdateSeriesPayload!
+
+  """Removes a series."""
+  removeSeries(input: RemoveSeriesInput!): RemoveSeriesPayload!
+
+  """Publishes an existing draft as a post."""
+  publishDraft(
+    """Information about the draft to be published."""
+    input: PublishDraftInput!
+  ): PublishDraftPayload!
+
+  """Creates a new draft for a post."""
+  createDraft(
+    """Information about the draft to be created."""
+    input: CreateDraftInput!
+  ): CreateDraftPayload!
+
+  """Reschedule a draft."""
+  rescheduleDraft(input: RescheduleDraftInput!): RescheduleDraftPayload!
+  scheduleDraft(
+    """Information about the draft to be published."""
+    input: ScheduleDraftInput!
+  ): ScheduleDraftPayload!
+  cancelScheduledDraft(input: CancelScheduledDraftInput!): CancelScheduledDraftPayload!
+  createWebhook(input: CreateWebhookInput!): CreateWebhookPayload!
+  updateWebhook(input: UpdateWebhookInput!): UpdateWebhookPayload!
+  deleteWebhook(id: ID!): DeleteWebhookPayload!
+  triggerWebhookTest(input: TriggerWebhookTestInput!): TriggerWebhookTestPayload!
+  resendWebhookRequest(input: ResendWebhookRequestInput!): ResendWebhookRequestPayload!
+  moveDocumentationSidebarItem(input: MoveDocumentationSidebarItemInput!): MoveDocumentationSidebarItemPayload!
+  setDocumentationSidebarItemVisibility(input: SetDocumentationSidebarItemVisibilityInput!): SetDocumentationSidebarItemVisibilityPayload!
+  renameDocumentationSidebarItem(input: RenameDocumentationSidebarItemInput!): RenameDocumentationSidebarItemPayload!
+  removeDocumentationSidebarItem(input: RemoveDocumentationSidebarItemInput!): RemoveDocumentationSidebarItemPayload!
+  createDocumentationSection(input: CreateDocumentationSectionInput!): CreateDocumentationSectionPayload!
+
+  """Mutation to update a section in a guide"""
+  updateDocumentationSection(input: UpdateDocumentationSectionInput!): UpdateDocumentationSectionPayload!
+  createDocumentationPageDraft(input: CreateDocumentationPageDraftInput!): CreateDocumentationPageDraftPayload!
+  updateDocumentationPageSettings(input: UpdateDocumentationPageSettingsInput!): UpdateDocumentationPageSettingsPayload!
+  saveDocumentationPageDraftContent(input: SaveDocumentationPageDraftContentInput!): SaveDocumentationPageDraftContentPayload!
+  publishDocumentationPageDraft(input: PublishDocumentationPageDraftInput!): PublishDocumentationPageDraftPayload!
+  createDocumentationLink(input: CreateDocumentationLinkInput!): CreateDocumentationLinkPayload!
+  updateDocumentationLink(input: UpdateDocumentationLinkInput!): UpdateDocumentationLinkPayload!
+  createDocumentationProject(input: CreateDocumentationProjectInput!): CreateDocumentationProjectPayload!
+  addCustomMdxComponent(input: AddCustomMdxComponentInput!): AddCustomMdxComponentPayload!
+  updateCustomMdxComponent(input: UpdateCustomMdxComponentInput!): UpdateCustomMdxComponentPayload!
+  deleteCustomMdxComponent(input: DeleteCustomMdxComponentInput!): DeleteCustomMdxComponentPayload!
+  updateDocumentationGeneralSettings(input: UpdateDocumentationGeneralSettingsInput!): UpdateDocumentationGeneralSettingsPayload!
+  updateDocumentationIntegrations(input: UpdateDocumentationIntegrationsInput!): UpdateDocumentationIntegrationsPayload!
+  updateDocumentationAppearance(input: UpdateDocumentationAppearanceInput!): UpdateDocumentationAppearancePayload!
+  updateDocumentationProjectSubdomain(input: UpdateDocumentationProjectSubdomainInput!): UpdateDocumentationProjectSubdomainPayload!
+
+  """
+  Mutation to remove a documentation project.
+  This will free the custom domain and subdomain and removes all guides and pages.
+  """
+  removeDocumentationProject(input: RemoveDocumentationProjectInput!): RemoveDocumentationProjectPayload!
+  addDocumentationProjectCustomDomain(input: AddDocumentationProjectCustomDomainInput!): AddDocumentationProjectCustomDomainPayload!
+  mapDocumentationProjectCustomDomainWwwRedirect(input: MapDocumentationProjectCustomDomainWwwRedirectInput!): MapDocumentationProjectCustomDomainWwwRedirectPayload!
+  verifyDocumentationProjectCustomDomain(input: VerifyDocumentationProjectCustomDomainInput!): VerifyDocumentationProjectCustomDomainPayload!
+  retryDocumentationProjectCustomDomainVerification(input: RetryDocumentationProjectCustomDomainVerificationInput!): RetryDocumentationProjectCustomDomainVerificationPayload!
+  removeDocumentationProjectCustomDomain(input: RemoveDocumentationProjectCustomDomainInput!): RemoveDocumentationProjectCustomDomainPayload!
+  enableDocumentationProjectHeadlessCms(input: EnableDocumentationProjectHeadlessCmsInput!): EnableDocumentationProjectHeadlessCmsPayload!
+  disableDocumentationProjectHeadlessCms(input: DisableDocumentationProjectHeadlessCmsInput!): DisableDocumentationProjectHeadlessCmsPayload!
+
+  """
+  Will generate a token that can be exchanged as a JWT to preview a docs project.
+  Only the owner or editors of the project can generate the token.
+  """
+  generateDocumentationProjectPreviewToken(input: GenerateDocumentationProjectPreviewTokenInput!): GenerateDocumentationProjectPreviewTokenPayload!
+
+  """
+  Will generate a authorization JWT to preview a docs project.
+  A token is required to generate the JWT.
+  """
+  generateDocumentationProjectPreviewAuthorizationToken(input: GenerateDocumentationProjectPreviewAuthorizationTokenInput!): GenerateDocumentationProjectPreviewAuthorizationTokenPayload!
+
+  """Mutation to invite an user to a documentation project"""
+  inviteDocumentationProjectAdmin(input: InviteDocumentationProjectAdminInput!): InviteDocumentationProjectAdminPayload!
+
+  """Mutation to accept an invite to a documentation project"""
+  acceptInviteToDocumentationProject(input: AcceptInviteToDocumentationProjectInput!): AcceptInviteToDocumentationProjectPayload!
+
+  """Mutation to revoke documentation project invite"""
+  revokeInviteToDocumentationProject(input: RevokeInviteToDocumentationProjectInput!): RevokeInviteToDocumentationProjectPayload!
+
+  """Mutation to remove a Member from a Documentation Project"""
+  removeDocumentationProjectMember(input: RemoveDocumentationProjectMemberInput!): RemoveDocumentationProjectMemberPayload!
+
+  """Mutation to enable AI search for a documentation project"""
+  enableDocumentationProjectAISearch(input: EnableDocumentationProjectAISearchInput!): EnableDocumentationProjectAISearchPayload!
+
+  """Mutation to disable AI search for a documentation project"""
+  disableDocumentationProjectAISearch(input: DisableDocumentationProjectAISearchInput!): DisableDocumentationProjectAISearchPayload!
+
+  """Mutation to update the AI search prompts"""
+  updateDocumentationProjectAIPrompt(input: UpdateDocumentationProjectAIPromptInput!): UpdateDocumentationProjectAIPromptPayload!
+
+  """Mutation to remove a prompt from the AI search"""
+  removeDocumentationProjectAIPrompt(input: RemoveDocumentationProjectAIPromptInput!): RemoveDocumentationProjectAIPromptPayload!
+  removeDocumentationGuide(input: RemoveDocumentationGuideInput!): RemoveDocumentationGuidePayload!
+  createDocumentationGuide(input: CreateDocumentationGuideInput!): CreateDocumentationGuidePayload!
+
+  """Publishes the default version of the guide."""
+  publishDocumentationGuide(input: PublishDocumentationGuideInput!): PublishDocumentationGuidePayload! @deprecated(reason: "Use `publishDocumentationGuideVersion` instead")
+  updateDocumentationGuide(input: UpdateDocumentationGuideInput!): UpdateDocumentationGuidePayload!
+  renameDocumentationGuide(input: RenameDocumentationGuideItemInput!): RenameDocumentationGuideItemPayload!
+  createDocumentationApiReference(input: CreateDocumentationApiReferenceInput!): CreateDocumentationApiReferencePayload!
+  publishDocumentationApiReference(input: PublishDocumentationApiReferenceInput!): PublishDocumentationApiReferencePayload!
+
+  """Mutation to sync documentation API reference definition"""
+  syncDocumentationProjectApiDefinition(input: SyncDocumentationProjectApiDefinitionInput!): SyncDocumentationProjectApiDefinitionPayload!
+  createRedirectionRule(input: CreateRedirectionRuleInput!): CreateRedirectionRulePayload!
+  updateRedirectionRule(input: UpdateRedirectionRuleInput!): UpdateRedirectionRulePayload!
+  removeRedirectionRule(input: RemoveRedirectionRuleInput!): RemoveRedirectionRulePayload!
+  subscribeToNewsletter(input: SubscribeToNewsletterInput!): SubscribeToNewsletterPayload!
+  unsubscribeFromNewsletter(input: UnsubscribeFromNewsletterInput!): UnsubscribeFromNewsletterPayload!
+
+  """Invites users to a publication. Either by username or email."""
+  inviteUsersToPublication(input: InviteUsersToPublicationInput!): InviteUsersToPublicationPayload!
+
+  """
+  Resends an invitation to a user to join a publication. The user must have been
+  previously invited. Sends an email to the user.
+  """
+  reinviteUserToPublication(input: ReinviteUserToPublicationInput!): ReinviteUserToPublicationPayload!
+
+  """Revokes a user invitation that was sent to join a publication."""
+  revokeUserInviteToPublication(input: RevokeUserInviteToPublicationInput!): RevokeUserInviteToPublicationPayload!
+
+  """
+  Accepts an invitation to join a publication. The user is added as a member of the publication.
+  """
+  acceptInviteToPublication(input: AcceptInviteToPublicationInput!): AcceptInviteToPublicationPayload!
+
+  """Changes the role of a user in a publication."""
+  changePublicationMemberRole(input: ChangePublicationMemberRoleInput!): ChangePublicationMemberRolePayload!
+
+  """Removes a user from a teams publication."""
+  removePublicationMember(input: RemovePublicationMemberInput!): RemovePublicationMemberPayload!
+
+  """
+  Creates a role based invite for a publication and returns a link to invite users to a publication.
+  """
+  createRoleBasedInviteForPublication(input: CreateRoleBasedInviteForPublicationInput!): CreateRoleBasedInviteForPublicationPayload!
+
+  """Updates a role based invite for a publication."""
+  updateRoleBasedInvite(input: UpdateRoleBasedInviteInput!): UpdateRoleBasedInvitePayload!
+
+  """
+  Accepts a role based invite and adds the user as a member of the publication.
+  The user is assigned the role specified in the invite.
+  """
+  acceptRoleBasedInvite(input: AcceptRoleBasedInviteInput!): AcceptRoleBasedInvitePayload!
+
+  """Deletes a role based invite."""
+  deleteRoleBasedInvite(input: DeleteRoleBasedInviteInput!): DeleteRoleBasedInvitePayload!
+
+  """
+  Changes the privacy state of a user in a publication.
+  PRIVATE members are not visible on the members page while PUBLIC members are visible.
+  """
+  changePublicationMemberVisibility(input: ChangePublicationMemberVisibilityInput!): ChangePublicationMemberVisibilityPayload!
+
+  """
+  Toggles role based invite links' active status. Users can join the publication by the invite link only if it is active.
+  """
+  toggleRoleBasedInviteLinks(publicationId: ID!): ToggleRoleBasedInviteLinksPayload!
+}
+
+"""
+Basic information about the authenticated user.
+User must be authenticated to use this type.
+"""
+type MyUser implements IUser & Node {
+  """The ID of the user. It can be used to identify the user."""
+  id: ID!
+
+  """
+  The username of the user. It is unique and tied with user's profile URL. Example - https://hashnode.com/@username
+  """
+  username: String!
+
+  """The name of the user."""
+  name: String!
+
+  """
+  The bio of the user. Visible in about me section of the user's profile.
+  """
+  bio: Content
+
+  """The URL to the profile picture of the user."""
+  profilePicture: String
+
+  """The social media links of the user. Shown on the user's profile."""
+  socialMediaLinks: SocialMediaLinks
+
+  """The email notification preferences of the user."""
+  emailNotificationPreferences: EmailNotificationPreferences!
+
+  """
+  Returns a list of badges that the user has earned. Shown on blogs /badges page. Example - https://iamshadmirza.com/badges
+  """
+  badges: [Badge!]!
+
+  """
+  Publications associated with the user. Includes personal and team publications.
+  """
+  publications(
+    """The maximum number of publications to return in a batch."""
+    first: Int!
+
+    """The cursor to start the query from."""
+    after: String
+
+    """The sort direction for the publication."""
+    sortBy: UserPublicationsSort = DATE_CREATED_DESC
+
+    """Filter to apply to the publications."""
+    filter: UserPublicationsConnectionFilter
+  ): UserPublicationsConnection!
+
+  """Returns the list of posts the user has published."""
+  posts(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+
+    """The sort direction for the posts based on the publish dates."""
+    sortBy: UserPostsSort = DATE_PUBLISHED_DESC
+
+    """The filters to be applied to the post list."""
+    filter: UserPostConnectionFilter
+  ): UserPostConnection!
+
+  """
+  The number of users that follow the requested user. Visible in the user's profile.
+  """
+  followersCount: Int!
+
+  """
+  The number of users that this user is following. Visible in the user's profile.
+  """
+  followingsCount: Int!
+
+  """The tagline of the user. Shown on the user's profile below the name."""
+  tagline: String
+
+  """The date the user joined Hashnode."""
+  dateJoined: DateTime
+
+  """The location of the user."""
+  location: String
+
+  """
+  The availability of the user based on tech stack and interests. Shown on the
+  "I am available for" section in user's profile.
+  """
+  availableFor: String
+
+  """Returns a list of tags that the user follows."""
+  tagsFollowing: [Tag!]!
+
+  """Whether or not the user is an ambassador."""
+  ambassador: Boolean! @deprecated(reason: "Ambassadors program no longer active. Will be removed after 02/01/2024")
+  provider: String
+
+  """Whether or not the user is deactivated."""
+  deactivated: Boolean!
+
+  """
+  A list of beta features that the user has access to. Only available to the authenticated user.
+  """
+  betaFeatures: [BetaFeature!]! @deprecated(reason: "Beta features are no longer supported. Will be removed after 15/12/2024")
+
+  """Email address of the user. Only available to the authenticated user."""
+  email: String!
+
+  """
+  Unverified email address of the user. Only available to the authenticated user.
+  This is set when the user has tried updating their email address but it is not verified yet.
+  """
+  unverifiedEmail: String
+
+  """The users who are following this user"""
+  followers(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserConnection!
+
+  """The users which this user is following"""
+  follows(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserConnection!
+  drafts(
+    """The number of posts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+  ): UserDraftConnection!
+
+  """Returns the user's role if any."""
+  role: UserRole!
+
+  """
+  Returns list of tags from user's expertise. Shown on the user's profile.
+  """
+  techStack(
+    """The number of tags to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserTagsConnection!
+}
+
+"""
+Contains the flag indicating if the newsletter feature is enabled or not.
+User can enable or disable the newsletter feature from the publication settings.
+Shows a newsletter prompt on blog if enabled.
+"""
+type NewsletterFeature implements Feature {
+  """A flag indicating if the newsletter feature is enabled or not."""
+  isEnabled: Boolean!
+  frequency: NewsletterFrequency
+}
+
+enum NewsletterFrequency {
+  asap
+  weekly
+}
+
+type NewsletterRecord implements Node {
+  """Delivery ID of the sent newsletter"""
+  id: ID!
+
+  """The date the newsletter was sent."""
+  sentAt: DateTime!
+
+  """The number of subscribers the newsletter was sent to."""
+  sentCount: Int!
+
+  """The number of subscribers the newsletter was opened by."""
+  openCount: Int!
+
+  """The number of subscribers the newsletter was clicked by."""
+  clickCount: Int!
+
+  """Associated post it was sent with"""
+  post: Post
+}
+
+type NewsletterSubscriber implements Node {
+  id: ID!
+
+  """The email of the subscriber."""
+  email: String!
+
+  """The date the subscriber was added."""
+  createdAt: DateTime! @deprecated(reason: "Use `subscribedAt` instead. Will be removed after 12/4/2024")
+  subscribedAt: DateTime!
+
+  """The status of the subscriber."""
+  status: NewsletterSubscribeStatus!
+}
+
+enum NewsletterSubscribeStatus {
+  PENDING
+  CONFIRMED
+}
+
+enum NewsletterUnsubscribeStatus {
+  UNSUBSCRIBED
+}
+
+"""
+Node is a common interface for all types example User, Post, Comment, etc.
+"""
+interface Node {
+  """The ID of the node."""
+  id: ID!
+}
+
+"""
+A field whose value conforms with the standard mongodb object Id as described
+here: https://docs.mongodb.com/manual/reference/method/ObjectId/#ObjectId.
+Example: 5e5677d71bdc2ae76344968c
+"""
+scalar ObjectId
+
+"""Contains information to help in pagination for page based pagination."""
+type OffsetPageInfo {
+  """Indicates if there are more pages."""
+  hasNextPage: Boolean
+
+  """Indicates if there are previous pages"""
+  hasPreviousPage: Boolean
+
+  """
+  The page before the current page.
+  Use it to build page navigation
+  """
+  previousPage: Int
+
+  """
+  The page after the current page.
+  Use it to build page navigation
+  """
+  nextPage: Int
+}
+
+"""Information to help in open graph related meta tags."""
+type OpenGraphMetaData {
+  """The image used in og:image tag for SEO purposes."""
+  image: String
+}
+
+"""
+A Connection for page based pagination to get a list of items.
+Returns a list of nodes which contains the items.
+This is a common interface for all page connections.
+"""
+interface PageConnection {
+  """A list of edges of items connection."""
+  nodes: [Node!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+}
+
+"""
+An edge that contains a node and is used in page based pagination.
+This is a common interface for all edges in page based pagination.
+"""
+interface PageEdge {
+  """A node in the connection."""
+  node: Node!
+}
+
+"""Contains information to help in pagination."""
+type PageInfo {
+  """Indicates if there are more pages."""
+  hasNextPage: Boolean
+
+  """
+  The cursor of the last item in the current page.
+  Use it as the after input to query the next page.
+  """
+  endCursor: String
+}
+
+"""
+Contains the preferences publication's autogenerated pages.
+Used to enable or disable pages like badge, newsletter and members.
+"""
+type PagesPreferences {
+  """A flag indicating if the publication's badge page is enabled."""
+  badges: Boolean
+
+  """A flag indicating if the publication's newsletter page is enabled."""
+  newsletter: Boolean
+
+  """A flag indicating if the publication's member page is enabled."""
+  members: Boolean
+}
+
+"""Contains the pending invite information."""
+type PendingInvite implements Node {
+  """The ID of the pending invite."""
+  id: ID!
+
+  """The email of the user that was invited."""
+  email: String
+
+  """
+  Invited Hashnode user, returns null if the user is not a Hashnode user.
+  """
+  user: User
+
+  """The role assigned to the user in the publication."""
+  role: UserPublicationRole!
+}
+
+type PendingInviteConnection implements PageConnection {
+  """A list of invites"""
+  nodes: [PendingInvite!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of invites."""
+  totalDocuments: Int!
+}
+
+"""
+Contains basic information about the tag returned by popularTags query.
+"""
+type PopularTag implements ITag & Node {
+  """The ID of the tag."""
+  id: ID!
+
+  """The name of the tag. Shown in tag page."""
+  name: String!
+
+  """
+  The slug of the tag. Used to access tags feed.  Example https://hashnode.com/n/graphql
+  """
+  slug: String!
+
+  """The logo of the tag. Shown in tag page."""
+  logo: String
+
+  """The tagline of the tag."""
+  tagline: String
+
+  """
+  Information about the tag. Contains markdown html and text version of the tag's info.
+  """
+  info: Content
+
+  """Total number of users following this tag."""
+  followersCount: Int!
+
+  """Alltime usage count of this tag in posts."""
+  postsCount: Int!
+
+  """The number of posts published in the given period that use this tag."""
+  postsCountInPeriod: Int!
+}
+
+"""Contains a tag and a cursor for pagination."""
+type PopularTagEdge implements Edge {
+  """The node holding the Tag information"""
+  node: PopularTag!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""
+Contains basic information about the post.
+A post is a published article on Hashnode.
+"""
+type Post implements Node {
+  """The ID of the post. Used to uniquely identify the post."""
+  id: ID!
+
+  """
+  The slug of the post. Used as address of the post on blog. Example - https://johndoe.com/my-post-slug
+  """
+  slug: String!
+
+  """
+  The previous slugs of the post. Only present if the slug has been changed.
+  
+  This could be used to create redirects for all posts from all previous slugs to the current slug.
+  
+  The latest slug is always the first element in the array.
+  """
+  previousSlugs: [String!]!
+
+  """The title of the post."""
+  title: String!
+
+  """
+  The subtitle of the post. Subtitle is a short description of the post which is
+  also used in SEO if meta tags are not provided.
+  """
+  subtitle: String
+
+  """Returns the user details of the author of the post."""
+  author: User!
+
+  """
+  Returns the user details of the co-authors of the post.
+  Hashnode users can add up to 4 co-authors as collaborators to their posts.
+  This functionality is limited to teams publication.
+  """
+  coAuthors: [User!]
+
+  """
+  Returns list of tags added to the post. Contains tag id, name, slug, etc.
+  """
+  tags: [Tag!]
+
+  """
+  Complete URL of the post including the domain name. Example - https://johndoe.com/my-post-slug
+  """
+  url: String!
+
+  """Canonical URL set by author in case of republished posts."""
+  canonicalUrl: String
+
+  """The publication the post belongs to."""
+  publication: Publication
+
+  """Unique ID to identify post, used internally by hashnode."""
+  cuid: String
+
+  """
+  The cover image preference of the post. Contains cover image URL and other details.
+  """
+  coverImage: PostCoverImage
+
+  """
+  Brief is a short description of the post extracted from the content of the
+  post. It's 250 characters long sanitized string.
+  """
+  brief: String!
+
+  """The estimated time to read the post in minutes."""
+  readTimeInMinutes: Int!
+
+  """
+  The number of views on the post. Can be used to show the popularity of the post.
+  """
+  views: Int!
+
+  """Information of the series the post belongs to."""
+  series: Series
+
+  """The number of hearts on the post. Shows how many users liked the post."""
+  reactionCount: Int!
+
+  """The number of replies on the post."""
+  replyCount: Int!
+
+  """The number of comments on the post."""
+  responseCount: Int!
+
+  """Flag to indicate if the post is featured on Hashnode feed."""
+  featured: Boolean!
+
+  """
+  A list of contributors of the post. Contributors are users who have commented or replied to the post.
+  """
+  contributors: [User!]! @deprecated(reason: "Will be removed on 10th Oct 2023. Use `commenters` instead.")
+
+  """List of users who have commented on the post."""
+  commenters(
+    """The number of users to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+
+    """
+    The sorting option for commenters. Used to sort commenters by popularity or recency.
+    """
+    sortBy: PostCommenterSortBy
+  ): PostCommenterConnection!
+
+  """A list of comments on the post."""
+  comments(
+    """The number of comments to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+
+    """
+    The sorting option for comments. Used to sort comments by top or recent.
+    """
+    sortBy: PostCommentSortBy
+  ): PostCommentConnection!
+
+  """
+  Flag to indicate if the post is bookmarked by the requesting user.
+  
+  Returns `false` if the user is not authenticated.
+  """
+  bookmarked: Boolean!
+
+  """
+  Content of the post. Contains HTML and Markdown version of the post content.
+  """
+  content: Content!
+
+  """A list of users who liked the post."""
+  likedBy(
+    """The number of users to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+    filter: PostLikerFilter
+  ): PostLikerConnection!
+
+  """
+  The date and time the post was featured. Used along with featured flag to determine if the post is featured.
+  """
+  featuredAt: DateTime
+
+  """The date and time the post was published."""
+  publishedAt: DateTime!
+
+  """The date and time the post was last updated."""
+  updatedAt: DateTime
+
+  """
+  Preference settings for the post. Contains information about if the post is pinned to blog, comments are disabled, etc.
+  """
+  preferences: PostPreferences!
+
+  """
+  Returns male and female audio url of the post. Available in case the Audioblog is enabled.
+  """
+  audioUrls: AudioUrls @deprecated(reason: "Audio Blogs are not supported anymore. This field will be removed 18/04/23")
+
+  """
+  SEO information of the post. Contains title and description used in meta tags.
+  """
+  seo: SEO
+
+  """
+  OG meta-data of the post. Contains image url used in open graph meta tags.
+  """
+  ogMetaData: OpenGraphMetaData
+
+  """
+  A flag to indicate if the post contains LaTeX. Latex is used to write mathematical equations.
+  """
+  hasLatexInPost: Boolean!
+
+  """
+  Whether or not the authenticated user is following this post.
+  
+  Returns `null` if the user is not authenticated.
+  """
+  isFollowed: Boolean
+
+  """Whether or not the post has automatically been published via RSS feed."""
+  isAutoPublishedFromRSS: Boolean!
+
+  """Post feature-related fields."""
+  features: PostFeatures!
+
+  """
+  Boolean flag to identify whether or not the post is sourced from GitHub.
+  """
+  sourcedFromGithub: Boolean!
+}
+
+"""The author type of a post from a user's perspective"""
+enum PostAuthorType {
+  """The user has authored the post."""
+  AUTHOR
+
+  """The user is a co-author of post."""
+  CO_AUTHOR
+}
+
+type PostBadge implements Node {
+  """Unique identifier."""
+  id: ID!
+
+  """The type of the badge."""
+  type: PostBadgeType!
+}
+
+type PostBadgesFeature implements Feature {
+  """Whether or not the user has chosen to show badges on the post."""
+  isEnabled: Boolean!
+  items: [PostBadge!]!
+}
+
+enum PostBadgeType {
+  FEATURED_HASHNODE
+  FEATURED_DAILY_DOT_DEV
+}
+
+"""
+Connection for comments. Contains a list of edges containing nodes.
+Each node holds a comment.
+Page info contains information about pagination like hasNextPage and endCursor.
+Total documents contains the total number of comments.
+"""
+type PostCommentConnection implements Connection {
+  """A list of edges containing comments as nodes."""
+  edges: [PostCommentEdge!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: PageInfo!
+
+  """Total number of nodes available i.e. number of comments."""
+  totalDocuments: Int!
+}
+
+"""
+A comment on the post. Contains information about the content of the comment, user who commented, etc.
+"""
+type PostCommentEdge implements Edge {
+  """The comment on the post."""
+  node: Comment!
+
+  """The cursor for this node used for pagination."""
+  cursor: String!
+}
+
+"""
+Connection for commenters (users). Contains a list of edges containing nodes.
+Each node holds commenter.
+Page info contains information about pagination like hasNextPage and endCursor.
+Total documents contains the total number of commenters.
+"""
+type PostCommenterConnection implements Connection {
+  """A list of edges containing commenters as nodes."""
+  edges: [PostCommenterEdge!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: PageInfo!
+
+  """Total number of nodes available i.e. number of commenters."""
+  totalDocuments: Int!
+}
+
+"""
+A commenter on the post. Contains information about the user who commented.
+"""
+type PostCommenterEdge implements Edge {
+  """The commenter on the post."""
+  node: User!
+
+  """The cursor for this node used for pagination."""
+  cursor: String!
+}
+
+"""
+Sorting options for commenters. Used to sort commenters by popularity or recency.
+"""
+enum PostCommenterSortBy {
+  """Sorts commenters by popularity."""
+  POPULAR
+
+  """Sorts commenters by recency."""
+  RECENT
+}
+
+"""Sorting options for comments. Used to sort comments by top or recent."""
+enum PostCommentSortBy {
+  """Sorts comments by popularity."""
+  TOP
+
+  """Sorts comments by recency."""
+  RECENT
+}
+
+"""Contains information about the cover image of the post."""
+type PostCoverImage {
+  """The URL of the cover image."""
+  url: String!
+
+  """Indicates whether the cover image is in portrait orientation."""
+  isPortrait: Boolean!
+
+  """Provides attribution information for the cover image, if available."""
+  attribution: String
+
+  """The name of the photographer who captured the cover image."""
+  photographer: String
+
+  """True if the image attribution should be hidden."""
+  isAttributionHidden: Boolean!
+}
+
+"""Contains a post and a cursor for pagination."""
+type PostEdge implements Edge {
+  """The node holding the Post information"""
+  node: Post!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type PostFeatures {
+  tableOfContents: TableOfContentsFeature!
+  badges: PostBadgesFeature!
+}
+
+"""
+Connection for users who liked the post. Contains a list of edges containing nodes.
+Each node is a user who liked the post.
+Page info contains information about pagination like hasNextPage and endCursor.
+Total documents contains the total number of users who liked the post.
+"""
+type PostLikerConnection implements Connection {
+  """A list of edges containing users as nodes"""
+  edges: [PostLikerEdge!]!
+
+  """Information about pagination in a connection."""
+  pageInfo: PageInfo!
+
+  """
+  Total number of nodes available i.e. number of users who liked the post.
+  """
+  totalDocuments: Int!
+}
+
+"""
+A user who liked the post. Contains information about the user and number of reactions added by the user.
+"""
+type PostLikerEdge implements Edge {
+  """The user who liked the post."""
+  node: User!
+
+  """The cursor for this node used for pagination."""
+  cursor: String!
+
+  """The number of reaction added by the user."""
+  reactionCount: Int!
+}
+
+input PostLikerFilter {
+  """Only return likes from users with the given user IDs."""
+  userIds: [ID!]
+}
+
+"""
+Contains Post preferences. Used to determine if the post is pinned to blog,
+comments are disabled, or cover image is sticked to bottom.
+"""
+type PostPreferences {
+  """
+  A flag to indicate if the post is pinned to blog. Pinned post is shown on top of the blog.
+  """
+  pinnedToBlog: Boolean!
+
+  """A flag to indicate if the comments are disabled for the post."""
+  disableComments: Boolean!
+
+  """
+  A flag to indicate if the cover image is shown below title of the post. Default position of cover is top of title.
+  """
+  stickCoverToBottom: Boolean!
+
+  """Whether or not the post is hidden from the Hashnode community."""
+  isDelisted: Boolean!
+}
+
+"""
+Contains the publication's preferences for layout, theme and other personalisations.
+"""
+type Preferences {
+  """The publication's logo url."""
+  logo: String
+
+  """
+  The publication's darkmode preferences. Can be used to load blog in dark mode by default and add a custom dark mode logo.
+  """
+  darkMode: DarkModePreferences
+
+  """An object containing pages enabled for the publication."""
+  enabledPages: PagesPreferences
+
+  """The items in the publication's navigation bar."""
+  navbarItems: [PublicationNavbarItem!]!
+
+  """The selected publication's layout, can be stacked, grid or magazine."""
+  layout: PublicationLayout
+
+  """
+  A flag indicating if the hashnode's footer branding is disabled for the publication.
+  """
+  disableFooterBranding: Boolean
+
+  """
+  A flag indicating if subscription popup needs to be shown to be shown for the publication
+  """
+  isSubscriptionModalDisabled: Boolean
+}
+
+type ProjectViewEdge implements Edge {
+  node: DocsViews!
+  cursor: String!
+}
+
+type ProjectViewsConnection implements Connection {
+  edges: [ProjectViewEdge!]!
+  pageInfo: PageInfo!
+}
+
+"""
+Filter for project views.
+
+Individual filters are combined with an AND condition whereas multiple values
+for the same filter are combined with an OR condition.
+
+Example: `documentationGuideIds: ["1", "2"], operatingSystems: ["Mac OS"]` will
+return views for posts with ID 1 or 2 AND operating system Mac OS.
+"""
+input ProjectViewsFilter {
+  """Filter based on time range."""
+  time: TimeFilter
+
+  """
+  Filter by one or multiple documentation guide IDs.
+  
+  If multiple IDs are provided, the filter will be applied as an OR condition.
+  """
+  documentationGuideIds: [ID!]
+
+  """
+  Filter by one or multiple api reference guide IDs.
+  
+  If multiple IDs are provided, the filter will be applied as an OR condition.
+  """
+  apiReferenceGuideIds: [ID!]
+
+  """
+  Filter by one or multiple page IDs.
+  
+  If multiple IDs are provided, the filter will be applied as an OR condition.
+  """
+  pageIds: [ID!]
+
+  """
+  Filter by one or multiple paths.
+  
+  If multiple paths are provided, the filter will be applied as an OR condition.
+  """
+  paths: [String!]
+
+  """
+  Filter by one or multiple operating systems.
+  
+  If multiple operating systems are provided, the filter will be applied as an OR condition.
+  """
+  operatingSystems: [String!]
+
+  """
+  Filter by one or multiple device types.
+  
+  If multiple device types are provided, the filter will be applied as an OR condition.
+  """
+  deviceTypes: [DeviceType!]
+
+  """
+  Filter by one or multiple browsers.
+  
+  If multiple browsers are provided, the filter will be applied as an OR condition.
+  """
+  browsers: [String!]
+
+  """
+  Filter by one or multiple countries.
+  
+  If multiple countries are provided, the filter will be applied as an OR condition.
+  """
+  countries: [String!]
+
+  """
+  Filter by one or multiple referrer hosts.
+  
+  If multiple referrer hosts are provided, the filter will be applied as an OR condition.
+  """
+  referrerHosts: [String!]
+}
+
+input ProjectViewsGroupBy {
+  """
+  Group by one analytics dimensions.
+  
+  Can not be used together with `granularity`.
+  """
+  dimension: DocsAnalyticsDimension
+
+  """
+  Group by time. Without this, all views over time will be aggregated.
+  
+  Can not be used together with `dimension`.
+  """
+  granularity: TimeGranularity
+}
+
+input ProjectViewsOptions {
+  """
+  The timezone that is used for grouping the views by time.
+  E.g. if you group by day, the timezone will be used to determine the start of the day as indicated by `to` and `from`.
+  
+  It has no effect outside of time grouping.
+  
+  Default is `UTC`.
+  """
+  groupingTimezone: TimeZone
+}
+
+input ProjectViewsSortBy {
+  """
+  Sort the views by the total number of views. Can only be used when grouped by `dimension`.
+  """
+  viewCount: SortOrder!
+}
+
+type ProjectVisitorsConnection implements Connection {
+  edges: [ProjectVisitorsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectVisitorsEdge implements Edge {
+  node: DocsVisitors!
+  cursor: String!
+}
+
+"""
+Filter for project visitors.
+
+Individual filters are combined with an AND condition whereas multiple values
+for the same filter are combined with an OR condition.
+
+Example: `documentationGuideIds: ["1", "2"], operatingSystems: ["Mac OS"]` will
+return visitors for posts with ID 1 or 2 AND operating system Mac OS.
+"""
+input ProjectVisitorsFilter {
+  """Filter based on time range."""
+  time: TimeFilter
+
+  """
+  Filter by one or multiple documentation guide IDs.
+  
+  If multiple IDs are provided, the filter will be applied as an OR condition.
+  """
+  documentationGuideIds: [ID!]
+
+  """
+  Filter by one or multiple api reference guide IDs.
+  
+  If multiple IDs are provided, the filter will be applied as an OR condition.
+  """
+  apiReferenceGuideIds: [ID!]
+
+  """
+  Filter by one or multiple page IDs.
+  
+  If multiple IDs are provided, the filter will be applied as an OR condition.
+  """
+  pageIds: [ID!]
+
+  """
+  Filter by one or multiple paths.
+  
+  If multiple paths are provided, the filter will be applied as an OR condition.
+  """
+  paths: [String!]
+
+  """
+  Filter by one or multiple operating systems.
+  
+  If multiple operating systems are provided, the filter will be applied as an OR condition.
+  """
+  operatingSystems: [String!]
+
+  """
+  Filter by one or multiple device types.
+  
+  If multiple device types are provided, the filter will be applied as an OR condition.
+  """
+  deviceTypes: [DeviceType!]
+
+  """
+  Filter by one or multiple browsers.
+  
+  If multiple browsers are provided, the filter will be applied as an OR condition.
+  """
+  browsers: [String!]
+
+  """
+  Filter by one or multiple countries.
+  
+  If multiple countries are provided, the filter will be applied as an OR condition.
+  """
+  countries: [CountryCodeAlpha2!]
+
+  """
+  Filter by one or multiple referrer hosts.
+  
+  If multiple referrer hosts are provided, the filter will be applied as an OR condition.
+  """
+  referrerHosts: [String!]
+}
+
+input ProjectVisitorsGroupBy {
+  """
+  Group by one analytics dimensions.
+  
+  Can not be used together with `granularity`.
+  """
+  dimension: DocsAnalyticsDimension
+
+  """
+  Group by time. Without this, all views over time will be aggregated.
+  
+  Can not be used together with `dimension`.
+  """
+  granularity: TimeGranularity
+}
+
+input ProjectVisitorsOptions {
+  """
+  The timezone that is used for grouping the views by time.
+  E.g. if you group by day, the timezone will be used to determine the start of the day as indicated by `to` and `from`.
+  
+  It has no effect outside of time grouping.
+  
+  Default is `UTC`.
+  """
+  groupingTimezone: TimeZone
+}
+
+type ProTeamFeature implements Feature {
+  """A flag indicating if the Pro team feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+"""
+Contains basic information about the publication.
+A publication is a blog that can be created for a user or a team.
+"""
+type Publication implements Node {
+  """The ID of the publication."""
+  id: ID!
+
+  """
+  The title of the publication.
+  Title is used as logo if logo is not provided.
+  """
+  title: String!
+
+  """The title of the publication. Shown in blog home page."""
+  displayTitle: String
+
+  """
+  The description of the publication, used in og:description meta tag. Fall
+  backs to Publication.about.text if no SEO description is provided.
+  """
+  descriptionSEO: String
+
+  """The about section of the publication."""
+  about: Content
+
+  """
+  The domain of the publication. Used to access publication. Example https://johndoe.com
+  """
+  url: String!
+
+  """The canonical URL of the publication."""
+  canonicalURL: String!
+
+  """The author who owns the publication."""
+  author: User!
+
+  """The favicon of the publication. Used in browser tab."""
+  favicon: String
+
+  """
+  Color code of the header color of the publication. Used to style header of blog.
+  """
+  headerColor: String
+
+  """The meta tags associated with the publication."""
+  metaTags: String
+
+  """The integrations connected to the publication."""
+  integrations: PublicationIntegrations
+
+  """
+  Details of publication invites. Returns null if publication is not a team publication.
+  """
+  invites: PublicationInvite
+
+  """
+  The publication preferences around layout, theme and other personalisations.
+  """
+  preferences: Preferences!
+
+  """Total number of followers of the publication."""
+  followersCount: Int
+
+  """
+  Summary of the contact information and information related to copyrights, usually used in German-speaking countries.
+  """
+  imprint: String @deprecated(reason: "Use `imprintV2` instead. Will be removed after 16/12/2023.")
+
+  """
+  Summary of the contact information and information related to copyrights, usually used in German-speaking countries.
+  """
+  imprintV2: Content
+
+  """True if the publication is a team publication and false otherwise."""
+  isTeam: Boolean!
+
+  """Links to the publication's social media profiles."""
+  links: PublicationLinks
+
+  """Domain information of the publication."""
+  domainInfo: DomainInfo!
+
+  """
+  A flag to indicate if the publication is using Headless CMS. This can be used
+  to check if the post redirect needs authentication.
+  """
+  isHeadless: Boolean!
+
+  """Returns series by slug in the publication."""
+  series(slug: String!): Series
+
+  """Returns the list of series in the publication."""
+  seriesList(
+    """The number of series to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+  ): SeriesConnection!
+
+  """Returns the list of posts in the publication."""
+  posts(
+    """The number of posts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+
+    """The filters to be applied to the post list."""
+    filter: PublicationPostConnectionFilter
+  ): PublicationPostConnection!
+  postsViaPage(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+
+    """The filters to be applied to the post list."""
+    filter: PublicationPostsViaPageFilter
+  ): PublicationPostPageConnection!
+
+  """Returns the pinned post of the publication."""
+  pinnedPost: Post
+
+  """Returns the post with the given slug."""
+  post(slug: String!): Post
+
+  """
+  Returns a post by a previous slug. It does not resolve a post by its current slug.
+  
+  If a slug has been changed, we'll create a redirect from the old slug to the new one.
+  With `redirectedPost` you can resolve a post by the old slug.
+  
+  This can be used to redirect a user to the new post slug (via `redirectedPost.slug`).
+  """
+  redirectedPost(slug: String!): Post
+
+  """Information about the publication's Open Graph metadata i.e. image."""
+  ogMetaData: OpenGraphMetaData!
+
+  """
+  Object containing information about beta features enabled for the publication.
+  """
+  features: PublicationFeatures!
+
+  """
+  Returns the list of drafts of the authenticated user in the publication.
+  """
+  drafts(
+    """The number of drafts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+
+    """The filters to be applied to the draft list."""
+    filter: PublicationDraftConnectionFilter
+  ): DraftConnection!
+
+  """Returns the list of drafts in the publication"""
+  allDrafts(
+    """The number of drafts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+
+    """The filters to be applied to the draft list."""
+    filter: PublicationSearchableDraftConnectionFilter
+  ): DraftConnection!
+
+  """
+  Returns the scheduled drafts of the publication by the authenticated user.
+  """
+  scheduledDrafts(
+    """The number of scheduled drafts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+
+    """The filters to be applied to the draft list."""
+    filter: PublicationDraftConnectionFilter
+  ): DraftConnection!
+
+  """Returns all the scheduled drafts of the publication."""
+  allScheduledDrafts(
+    """The number of scheduled drafts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+
+    """The filters to be applied to the scheduled draft list."""
+    filter: PublicationSearchableDraftConnectionFilter
+  ): DraftConnection!
+
+  """Returns the static page with the given slug."""
+  staticPage(
+    """The slug of the static page to retrieve."""
+    slug: String!
+  ): StaticPage
+
+  """Returns a list of static pages in the publication."""
+  staticPages(
+    """The number of static pages to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+  ): StaticPageConnection!
+
+  """Returns the list of submitted drafts in the publication."""
+  submittedDrafts(
+    """The number of submitted drafts to return."""
+    first: Int!
+
+    """A cursor to the last item in the previous page."""
+    after: String
+
+    """The filters to be applied to the draft list."""
+    filter: PublicationDraftConnectionFilter
+  ): DraftConnection!
+
+  """
+  Returns true if GitHub backup is configured and active and false otherwise.
+  """
+  isGitHubBackupEnabled: Boolean!
+
+  """Returns whether the publication's GitHub source repo is connected."""
+  isGithubAsSourceConnected: Boolean!
+
+  """Determines the structure of the post URLs."""
+  urlPattern: UrlPattern!
+
+  """Returns the publication's email imports, used with newsletter feature."""
+  emailImport: EmailImport
+
+  """Configured redirection rules for the publication."""
+  redirectionRules: [RedirectionRule!]!
+
+  """Whether the publication has earned any badges or not."""
+  hasBadges: Boolean!
+
+  """Contains the publication's sponsorships information."""
+  sponsorship: PublicationSponsorship
+
+  """Publications that are recommended by this publication."""
+  recommendedPublications: [UserRecommendedPublicationEdge!]!
+
+  """The total amount of recommended publications by this publication."""
+  totalRecommendedPublications: Int!
+
+  """Publications that are recommending this publication."""
+  recommendingPublications(
+    """Size of the page."""
+    pageSize: Int!
+
+    """Page number."""
+    page: Int!
+  ): PublicationUserRecommendingPublicationConnection!
+
+  """
+  Boolean flag indicating if the publication allows edits by contributors
+  """
+  allowContributorEdits: Boolean!
+  members(
+    """The number of members to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+
+    """Filters to be applied to the member list."""
+    filter: PublicationMemberConnectionFilter
+  ): PublicationMemberConnection!
+
+  """Returns a paginated list of public members of the publication."""
+  publicMembers(
+    """The number of members to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): PublicationMemberConnection!
+}
+
+"""
+Connection to get list of drafts in publications.
+Returns a list of edges which contains the drafts in publication and cursor to the last item of the previous page.
+"""
+input PublicationDraftConnectionFilter {
+  """Search filter will be applied to the title of a draft"""
+  search: String
+}
+
+"""Contains the publication's beta features."""
+type PublicationFeatures {
+  """
+  Newsletter feature for the publication which adds a `/newsletter` route for
+  collecting subscribers and allows sending out newsletters.
+  """
+  newsletter: NewsletterFeature!
+
+  """Show the view count for blog posts."""
+  viewCount: ViewCountFeature!
+
+  """Show the read time for blog posts."""
+  readTime: ReadTimeFeature!
+
+  """Audio player for blog posts."""
+  audioBlog: AudioBlogFeature! @deprecated(reason: "Audio Blogs are not supported anymore. This field will be removed 18/04/23")
+
+  """
+  Widget that shows up if a text on a blog post is selected. Allows for easy sharing or copying of the selected text.
+  """
+  textSelectionSharer: TextSelectionSharerFeature!
+
+  """Individual styling for the publication."""
+  customCSS: CustomCSSFeature!
+
+  """Headless CMS for the publication."""
+  headlessCMS: HeadlessCMSFeature!
+
+  """Flag to denote if publication is a pro team's publication."""
+  proTeam: ProTeamFeature!
+
+  """GPT Bot crawler to index the publication."""
+  gptBotCrawling: GPTBotCrawlingFeature!
+}
+
+"""
+Contains the publication's integrations.
+Used to connect the publication with third party services like Google Analytics, Facebook Pixel, etc.
+"""
+type PublicationIntegrations {
+  """FB Pixel ID for integration with Facebook Pixel."""
+  fbPixelID: String
+
+  """Fathom Analytics Site ID for integration with Fathom Analytics."""
+  fathomSiteID: String
+
+  """
+  A flag indicating if the custom domain is enabled for integration with Fathom Analytics.
+  """
+  fathomCustomDomainEnabled: Boolean
+
+  """Custom domain for integration with Fathom Analytics."""
+  fathomCustomDomain: String
+
+  """Hotjar Site ID for integration with Hotjar."""
+  hotjarSiteID: String
+
+  """Matomo Site ID for integration with Matomo Analytics."""
+  matomoSiteID: String
+
+  """Matomo URL for integration with Matomo Analytics."""
+  matomoURL: String
+
+  """Google Analytics Tracking ID for integration with Google Analytics."""
+  gaTrackingID: String
+
+  """
+  A flag indicating if the custom domain is enabled for integration with Plausible Analytics.
+  """
+  plausibleAnalyticsEnabled: Boolean
+
+  """
+  Web Monetization Payment Pointer for integration with Web Monetization.
+  """
+  wmPaymentPointer: String
+
+  """The ID for the Hashnode-provided Umami analytics instance."""
+  umamiWebsiteUUID: String
+
+  """The share ID for the Hashnode-provided Umami analytics instance."""
+  umamiShareId: String
+
+  """Google Tag Manager ID for integration with Google Tag Manager."""
+  gTagManagerID: String
+
+  """Koala Public Key for integration with Koala."""
+  koalaPublicKey: String
+
+  """MS Clarity ID for integration with Microsoft Clarity."""
+  msClarityID: String
+}
+
+"""Contains the publication invite information."""
+type PublicationInvite {
+  pendingInvites(
+    """The number of pending invites to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): PendingInviteConnection!
+
+  """The paginated list of role based invites."""
+  roleBasedInvites(
+    """The number of role based invites to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): RoleBasedInviteConnection!
+
+  """
+  Signifies if invite links in role-based invites are active.
+  Users trying to join by role-based invite can only join if this is enabled.
+  """
+  areRoleBasedInviteLinksActive: Boolean!
+}
+
+"""Contains publication's layout choices."""
+enum PublicationLayout {
+  """Changes the layout of blog into stacked list of posts."""
+  stacked
+
+  """Changes the layout of blog into grid 3 post cards per row."""
+  grid
+
+  """
+  Changes the layout of blog into magazine style.
+  This is the newest layout.
+  """
+  magazine
+}
+
+"""Contains the publication's social media links."""
+type PublicationLinks {
+  """Twitter URL of the publication."""
+  twitter: String
+
+  """Instagram URL of the publication."""
+  instagram: String
+
+  """GitHub URL of the publication."""
+  github: String
+
+  """Website URL of the publication."""
+  website: String
+
+  """Hashnode profile of author of the publication."""
+  hashnode: String
+
+  """YouTube URL of the publication."""
+  youtube: String
+
+  """Daily.dev URL of the publication."""
+  dailydev: String
+
+  """LinkedIn URL of the publication."""
+  linkedin: String
+
+  """Mastodon URL of the publication."""
+  mastodon: String
+
+  """Facebook URL of the publication."""
+  facebook: String
+
+  """Bluesky URL of the publication."""
+  bluesky: String
+}
+
+"""Contains the publication member information."""
+type PublicationMember implements Node {
+  """The ID of the publication member."""
+  id: ID!
+
+  """The user who is a member of the publication."""
+  user: User
+
+  """The role of the user in the publication."""
+  role: UserPublicationRole!
+
+  """
+  Denotes if the member is public or private
+  A private member is not visible on members page
+  """
+  privacyState: PublicationMemberPrivacyState
+}
+
+type PublicationMemberConnection implements PageConnection {
+  """A list of members"""
+  nodes: [PublicationMember!]!
+
+  """Information for page based pagination in Member connection."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""The filter for the publication member connection."""
+input PublicationMemberConnectionFilter {
+  """
+  Search filter can be used to filter members by their username or email.
+  """
+  search: String
+}
+
+"""Publication member privacy state on members page"""
+enum PublicationMemberPrivacyState {
+  """The member is private and not visible on the members page."""
+  PRIVATE
+
+  """The member is public and visible on the members page."""
+  PUBLIC
+}
+
+"""Contains the publication's navbar items."""
+type PublicationNavbarItem {
+  """The unique identifier of the navbar item."""
+  id: ID!
+
+  """The label of the navbar item."""
+  label: String
+
+  """The URL of the navbar item."""
+  url: String
+
+  """The order of the navbar item."""
+  priority: Int @deprecated(reason: "Navbar items are already returned in the correct order. Priority value is not needed and might be 0 in most cases.")
+
+  """The type of the navbar item, can be series, link or page."""
+  type: PublicationNavigationType!
+
+  """The series added to the navbar item."""
+  series: Series
+
+  """The static page added to the navbar item."""
+  page: StaticPage
+}
+
+"""The type of the navbar item, can be series, link or page."""
+enum PublicationNavigationType {
+  """The navbar item is a series."""
+  series
+
+  """The navbar item is a link."""
+  link
+
+  """The navbar item is a static page."""
+  page
+}
+
+"""
+Connection for posts within a publication. Contains a list of edges containing nodes.
+Each node is a post.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type PublicationPostConnection implements Connection {
+  """A list of edges containing Post information"""
+  edges: [PostEdge!]!
+
+  """Information for pagination in Post connection."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""
+Connection to get list of posts in publications.
+Returns a list of edges which contains the posts in publication and cursor to the last item of the previous page.
+"""
+input PublicationPostConnectionFilter {
+  """
+  Filtering by tag slugs and tag IDs will return posts that match either of the filters.
+  
+  It is an "OR" filter and not an "AND" filter.
+  """
+  tags: [ObjectId!]
+
+  """
+  Filtering by tag slugs and tag IDs will return posts that match either of the filters.
+  
+  It is an "OR" filter and not an "AND" filter.
+  """
+  tagSlugs: [String!]
+
+  """Remove pinned post from the result set."""
+  excludePinnedPost: Boolean
+
+  """
+  Only return posts that are deleted. Query returns active posts by default, set this to true to return deleted posts.
+  """
+  deletedOnly: Boolean
+}
+
+type PublicationPostPageConnection implements PageConnection {
+  """The posts belonging to the publication."""
+  nodes: [Post!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of posts."""
+  totalDocuments: Int!
+}
+
+input PublicationPostsViaPageFilter {
+  """
+  Filtering by tag slugs and tag IDs will return posts that match either of the filters.
+  
+  It is an "OR" filter and not an "AND" filter.
+  """
+  tags: [ID!]
+
+  """
+  Filtering by tag slugs and tag IDs will return posts that match either of the filters.
+  
+  It is an "OR" filter and not an "AND" filter.
+  """
+  tagSlugs: [String!]
+
+  """Remove pinned post from the result set."""
+  excludePinnedPosts: Boolean
+}
+
+"""
+ConnectionFilter to get list of drafts in publications.
+The filters are combined with an "AND" operation.
+"""
+input PublicationSearchableDraftConnectionFilter {
+  """Search filter will be applied to the title of a draft"""
+  search: String
+
+  """An array of author Ids to filter the drafts."""
+  authorIds: [ID!]
+
+  """An array of tag Ids to filter the drafts."""
+  tagIds: [ID!]
+
+  """Filter based on time range."""
+  time: TimeFilter
+}
+
+"""
+Contains the publication's Sponsorship information.
+User can sponsor their favorite publications and pay them directly using Stripe.
+"""
+type PublicationSponsorship {
+  """
+  The content shared by author of the publication to their sponsors.
+  This is used as note to inform that author is open for sponsorship.
+  """
+  content: Content
+
+  """The Stripe configuration of the publication's Sponsorship."""
+  stripe: StripeConfiguration
+}
+
+type PublicationUserRecommendingPublicationConnection implements PageConnection {
+  """A list of edges containing Post information"""
+  edges: [UserRecommendingPublicationEdge!]!
+
+  """Publications recommending this publication."""
+  nodes: [Publication!]!
+
+  """Information for page based pagination in Post connection."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+type PublicationViewEdge implements Edge {
+  node: Views!
+  cursor: String!
+}
+
+type PublicationVisitorsEdge implements Edge {
+  node: Visitors!
+  cursor: String!
+}
+
+input PublishDocumentationApiReferenceInput {
+  projectId: ID!
+  guideSlug: String!
+}
+
+type PublishDocumentationApiReferencePayload {
+  guide: DocumentationApiReference
+}
+
+input PublishDocumentationGuideInput {
+  projectId: ID!
+  guideSlug: String!
+}
+
+type PublishDocumentationGuidePayload {
+  guide: DocumentationGuide
+}
+
+input PublishDocumentationPageDraftInput {
+  projectId: ID!
+  guideSlug: String!
+  pageId: ID!
+}
+
+type PublishDocumentationPageDraftPayload {
+  page: DocumentationPage
+  guide: DocumentationGuide
+}
+
+input PublishDraftInput {
+  """The id of the draft that should be published"""
+  draftId: ObjectId!
+}
+
+type PublishDraftPayload {
+  """The newly created post based on the draft"""
+  post: Post
+}
+
+"""Contains information about the post to be published."""
+input PublishPostInput {
+  """The title of the post."""
+  title: String!
+
+  """The subtitle of the post."""
+  subtitle: String
+
+  """The ID of publication the post belongs to."""
+  publicationId: ObjectId!
+
+  """Content of the post in markdown format."""
+  contentMarkdown: String!
+
+  """Date when the post is published."""
+  publishedAt: DateTime
+
+  """Options for the cover image of the post."""
+  coverImageOptions: CoverImageOptionsInput
+
+  """Slug of the post."""
+  slug: String
+
+  """
+  The URL of the original article if the post is imported from an external source.
+  """
+  originalArticleURL: String
+
+  """
+  A list of tags to add to the post. You can get a list of popular tags available on Hashnode here.
+  https://github.com/Hashnode/support/blob/main/misc/tags.json
+  """
+  tags: [PublishPostTagInput!]
+
+  """A flag to indicate if the comments are disabled for the post."""
+  disableComments: Boolean
+
+  """
+  Information about the meta tags added to the post, used for SEO purpose.
+  """
+  metaTags: MetaTagsInput
+
+  """
+  Publish the post on behalf of another user who is a member of the publication.
+  
+  Only applicable for team publications.
+  """
+  publishAs: ObjectId
+
+  """Providing a seriesId will add the post to that series."""
+  seriesId: ObjectId
+
+  """
+  Settings for the post like table of contents and newsletter activation.
+  """
+  settings: PublishPostSettingsInput
+
+  """Ids of the co-authors of the post."""
+  coAuthors: [ObjectId!]
+}
+
+type PublishPostPayload {
+  post: Post
+}
+
+input PublishPostSettingsInput {
+  """A flag to indicate if the post is scheduled."""
+  scheduled: Boolean
+
+  """A flag to indicate if the post contains table of content"""
+  enableTableOfContent: Boolean
+
+  """Flag to indicate if the slug is overridden by the user."""
+  slugOverridden: Boolean
+
+  """Whether to send a newsletter for this post."""
+  isNewsletterActivated: Boolean
+
+  """
+  A flag to indicate if the post is delisted, used to hide the post from public feed.
+  """
+  delisted: Boolean
+}
+
+input PublishPostTagInput {
+  """
+  A tag id that is referencing an existing tag.
+  
+  Either this or name and slug should be provided. If both are provided, the id will be used.
+  """
+  id: ObjectId
+
+  """
+  A slug of a new tag to create.
+  
+  Either this and name or id should be provided. If both are provided, the id will be used.
+  """
+  slug: String
+
+  """
+  A name of a new tag to create.
+  
+  Either this and slug or id should be provided. If both are provided, the id will be used.
+  """
+  name: String
+}
+
+type Query {
+  """Returns the user with the username."""
+  user(
+    """The username of the user to retrieve."""
+    username: String!
+  ): User
+
+  """
+  Returns users who have most actively participated in discussions by commenting in the last 7 days.
+  """
+  topCommenters(
+    """The maximum number of users to return."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+  ): CommenterUserConnection!
+
+  """
+  Returns the current authenticated user. Only available to the authenticated user.
+  """
+  me: MyUser!
+
+  """Returns tag details by its slug."""
+  tag(
+    """The slug of the tag to retrieve."""
+    slug: String!
+  ): Tag
+
+  """
+  Returns the publication with the given ID or host.
+  User can pass anyone of them.
+  """
+  publication(
+    """The ID of the publication."""
+    id: ObjectId
+
+    """The host of the publication."""
+    host: String
+  ): Publication
+
+  """
+  Returns a paginated list of posts based on the provided filter.
+  Used in Hashnode home feed.
+  """
+  feed(
+    """The number of items to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+
+    """Filters to be applied to the feed."""
+    filter: FeedFilter
+  ): FeedPostConnection!
+
+  """Returns post by ID. Can be used to render post page on blog."""
+  post(
+    """The ID of the post to be returned."""
+    id: ID!
+  ): Post
+
+  """
+  Returns a paginated list of posts based on search query for a particular publication id.
+  """
+  searchPostsOfPublication(
+    """The number of items to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+
+    """The filter to be applied to the search."""
+    filter: SearchPostsOfPublicationFilter!
+  ): SearchPostConnection!
+
+  """
+  Returns a draft by ID.
+  Draft is a post that is not published yet.
+  """
+  draft(
+    """The ID of the draft to retrieve."""
+    id: ObjectId!
+  ): Draft
+
+  """Get a scheduled post by ID."""
+  scheduledPost(
+    """The ID of the scheduled post to get."""
+    id: ObjectId
+  ): ScheduledPost
+  documentationProject(id: ID, host: String): DocumentationProject
+  checkCustomDomainAvailability(input: CheckCustomDomainAvailabilityInput!): CheckCustomDomainAvailabilityResult!
+  checkSubdomainAvailability(subdomain: String!): CheckSubdomainAvailabilityResult!
+}
+
+"""
+Contains the flag indicating if the read time feature is enabled or not.
+User can enable or disable the read time feature from the publication settings.
+Shows read time on blogs if enabled.
+"""
+type ReadTimeFeature implements Feature {
+  """A flag indicating if the read time feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+"""Contains a publication and a cursor for pagination."""
+type RecommendedPublicationEdge implements Edge {
+  """The node holding the Publication information"""
+  node: Publication!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+input RecommendPublicationsInput {
+  recommendingPublicationId: ID!
+  recommendedPublicationIds: [ID!]!
+}
+
+type RecommendPublicationsPayload {
+  recommendedPublications: [UserRecommendedPublicationEdge!]
+}
+
+type RedirectionRule implements Node {
+  id: ID!
+
+  """The type of the redirection rule."""
+  type: HttpRedirectionType!
+
+  """The source URL of the redirection rule."""
+  source: String!
+
+  """The destination URL of the redirection rule."""
+  destination: URL!
+}
+
+"""Input to reinvite a user to a publication."""
+input ReinviteUserToPublicationInput {
+  """The ID of the invitation to resend."""
+  inviteId: ID!
+
+  """The publication ID to resend the invitation from."""
+  publicationId: ID!
+}
+
+"""Response to reinviting a user to a publication."""
+type ReinviteUserToPublicationPayload {
+  """Signifies if the mutation was successful."""
+  success: Boolean!
+}
+
+input RelativeTimeRange {
+  """The type of time range to be used."""
+  relative: TimePeriod!
+
+  """The number of time periods to go back in time."""
+  n: Int!
+}
+
+input RemoveCommentInput {
+  id: ID!
+}
+
+type RemoveCommentPayload {
+  comment: Comment
+}
+
+input RemoveDocumentationGuideInput {
+  projectId: ID!
+  guideSlug: String!
+}
+
+type RemoveDocumentationGuidePayload {
+  guide: DocumentationGuideItem
+}
+
+"""The input for removing a prompt from the AI search"""
+input RemoveDocumentationProjectAIPromptInput {
+  projectId: ID!
+  promptId: ID!
+}
+
+"""Response to removing a prompt from the AI search"""
+type RemoveDocumentationProjectAIPromptPayload {
+  project: DocumentationProject!
+}
+
+input RemoveDocumentationProjectCustomDomainInput {
+  projectId: ID!
+}
+
+type RemoveDocumentationProjectCustomDomainPayload {
+  project: DocumentationProject
+}
+
+"""The input for removing a documentation project."""
+input RemoveDocumentationProjectInput {
+  """The ID of the documentation project that should be removed."""
+  projectId: ID!
+}
+
+"""The input for the removal of a member from a documentation"""
+input RemoveDocumentationProjectMemberInput {
+  projectId: ID!
+  userId: ID!
+}
+
+type RemoveDocumentationProjectMemberPayload {
+  project: DocumentationProject
+  removedMember: DocumentationProjectMember
+}
+
+"""The payload for removing a documentation project."""
+type RemoveDocumentationProjectPayload {
+  """The documentation project that was removed."""
+  project: DocumentationProject
+}
+
+input RemoveDocumentationSidebarItemInput {
+  projectId: ID!
+  guideSlug: String!
+  itemId: ID!
+}
+
+type RemoveDocumentationSidebarItemPayload {
+  guide: DocumentationGuide
+}
+
+input RemovePostInput {
+  """The ID of the post to remove."""
+  id: ID!
+}
+
+type RemovePostPayload {
+  """The deleted post."""
+  post: Post
+}
+
+"""Input to remove a user from a publication."""
+input RemovePublicationMemberInput {
+  """The username of the user to remove from the publication."""
+  username: String!
+
+  """The publication ID the user is a member of."""
+  publicationId: ID!
+}
+
+"""Response to removing a user from a publication."""
+type RemovePublicationMemberPayload {
+  """Returns the removed publication member."""
+  member: PublicationMember!
+}
+
+input RemoveRecommendationInput {
+  recommendingPublicationId: ID!
+  recommendedPublicationId: ID!
+}
+
+type RemoveRecommendationPayload {
+  recommendedPublication: Publication!
+}
+
+input RemoveRedirectionRuleInput {
+  id: ID!
+  publicationId: ID!
+}
+
+type RemoveRedirectionRulePayload {
+  redirectionRule: RedirectionRule!
+}
+
+input RemoveReplyInput {
+  commentId: ID!
+  replyId: ID!
+}
+
+type RemoveReplyPayload {
+  reply: Reply
+}
+
+input RemoveSeriesInput {
+  """The id of the series to remove."""
+  id: ID!
+}
+
+type RemoveSeriesPayload {
+  """Returns the updated series."""
+  series: Series!
+}
+
+input RenameDocumentationGuideItemInput {
+  projectId: ID!
+  guideSlug: String!
+  name: String!
+}
+
+type RenameDocumentationGuideItemPayload {
+  guide: DocumentationGuideItem
+}
+
+input RenameDocumentationSidebarItemInput {
+  projectId: ID!
+  guideSlug: String!
+  itemId: ID!
+  label: String!
+}
+
+type RenameDocumentationSidebarItemPayload {
+  item: DocumentationSidebarItem
+  guide: DocumentationGuide
+}
+
+"""
+Contains basic information about the reply.
+A reply is a response to a comment.
+"""
+type Reply implements Node {
+  """The ID of the reply."""
+  id: ID!
+
+  """The content of the reply in markdown and html format."""
+  content: Content!
+
+  """The author of the reply."""
+  author: User!
+
+  """The date the reply was created."""
+  dateAdded: DateTime!
+
+  """
+  A unique string identifying the reply. Used as element id in the DOM on hashnode blogs.
+  It can be used to scroll to the reply in browser.
+  """
+  stamp: String
+
+  """
+  Total number of reactions on the reply. Reactions are hearts added to any reply.
+  """
+  totalReactions: Int!
+
+  """
+  Total number of reactions on the reply by the authenticated user. User must be authenticated to use this field.
+  """
+  myTotalReactions: Int!
+}
+
+input RescheduleDraftInput {
+  """The Draft ID of the scheduled draft."""
+  draftId: ID!
+
+  """New scheduled date for the draft to be rescheduled."""
+  publishAt: DateTime!
+}
+
+type RescheduleDraftPayload {
+  """Payload returned in response of reschedulePost mutation."""
+  scheduledPost: ScheduledPost!
+}
+
+input ResendWebhookRequestInput {
+  webhookId: ID!
+  webhookMessageId: ID!
+}
+
+type ResendWebhookRequestPayload {
+  webhookMessage: WebhookMessage
+}
+
+input RestorePostInput {
+  id: ID!
+}
+
+type RestorePostPayload {
+  post: Post
+}
+
+input RetryDocumentationProjectCustomDomainVerificationInput {
+  projectId: ID!
+}
+
+type RetryDocumentationProjectCustomDomainVerificationPayload {
+  project: DocumentationProject
+}
+
+"""Input to revoke a user invitation to join a documentation project."""
+input RevokeInviteToDocumentationProjectInput {
+  """The ID of the documentation project."""
+  projectId: ID!
+
+  """The ID of the invite to revoke."""
+  inviteId: ID!
+}
+
+"""Response to revoking an invitation to join a documentation project."""
+type RevokeInviteToDocumentationProjectPayload {
+  """Signifies the success of the mutation."""
+  success: Boolean!
+
+  """The documentation project that was associated with the invite."""
+  project: DocumentationProject
+}
+
+"""Input to revoke a user invitation to a publication."""
+input RevokeUserInviteToPublicationInput {
+  """The publication ID to revoke the invite from."""
+  publicationId: ID!
+
+  """The invite ID to revoke."""
+  inviteId: ID!
+}
+
+"""Response to revoking a user invitation to a publication."""
+type RevokeUserInviteToPublicationPayload {
+  """Signifies if the mutation was successful."""
+  success: Boolean!
+}
+
+"""Contains the role based invite information."""
+type RoleBasedInvite implements Node {
+  """The ID of the role based invite."""
+  id: ID!
+
+  """The role assigned to the user in the publication."""
+  role: UserPublicationRole!
+
+  """Boolean that signifies if the invite has unlimited capacity."""
+  isUnlimitedCapacity: Boolean
+
+  """
+  The number of members that have already used the link to join the team.
+  """
+  usedCapacity: Int
+
+  """The capacity of how many members to be invited by the link."""
+  capacity: Int
+
+  """Invite link of the role based invite."""
+  inviteLink: String
+
+  """The date the invite was created."""
+  createdAt: DateTime
+
+  """The expiry date of the invite."""
+  expiryDate: DateTime
+}
+
+type RoleBasedInviteConnection implements PageConnection {
+  """A list of invites"""
+  nodes: [RoleBasedInvite!]!
+
+  """Information to aid in pagination."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of invites."""
+  totalDocuments: Int!
+}
+
+type RSSImport implements Node {
+  id: ID!
+
+  """The URL pointing to the RSS feed."""
+  rssURL: String!
+
+  """Indicates whether the posts should be scraped or not"""
+  scrapePosts: Boolean!
+
+  """Indicates whether posts should be imported as drafts or not"""
+  importAsDrafts: Boolean!
+
+  """
+  RSS Tag name to be considered as the post content for automatic import.
+  """
+  rssTagName: String
+}
+
+input SaveDocumentationPageDraftContentInput {
+  pageId: ID!
+  content: String
+  description: String
+  title: String
+  projectId: ID!
+  guideSlug: String
+  guideId: ID
+}
+
+type SaveDocumentationPageDraftContentPayload {
+  page: DocumentationPage
+}
+
+"""
+Contains basic information about the scheduled post.
+A scheduled post is a post that is scheduled to be published in the future.
+"""
+type ScheduledPost implements Node {
+  """The ID of the scheduled post."""
+  id: ID!
+
+  """The date the scheduled post was created."""
+  author: User!
+
+  """Returns the draft associated with the scheduled post."""
+  draft: Draft
+
+  """
+  The scheduled date for the post to be published. This is the date the post will be published.
+  """
+  scheduledDate: DateTime!
+
+  """
+  Returns user who scheduled the post. This is usually the author of the post.
+  """
+  scheduledBy: User
+
+  """Returns the publication the post is scheduled for."""
+  publication: Publication!
+}
+
+input ScheduleDraftInput {
+  """The id of the draft that should be published"""
+  draftId: ID!
+
+  """The Author ID of the draft that should be published"""
+  authorId: ID!
+
+  """The date the draft should be published"""
+  publishAt: DateTime!
+}
+
+type ScheduleDraftPayload {
+  """Payload returned in response of reschedulePost mutation."""
+  scheduledPost: ScheduledPost!
+}
+
+"""
+Enum of all the scopes that can be used with the @requireAuth directive.
+"""
+enum Scope {
+  write_post
+  write_series
+  active_pro_user
+  signup
+  import_subscribers_to_publication
+  acknowledge_email_import
+  recommend_publications
+  team_hashnode
+  publication_author
+  publication_admin
+  publication_member
+  webhook_admin
+  update_post
+  publish_draft
+  publish_post
+  publish_comment
+  update_comment
+  remove_comment
+  publish_reply
+  update_reply
+  remove_reply
+  write_draft
+  update_draft
+  move_draft
+  delete_draft
+  submit_draft
+  reject_draft_submission
+  write_draft_revision
+  write_static_page
+  restore_post
+  write_widget
+  docs_admin_or_owner
+  docs_owner
+  invited_team_user
+  invited_docs_admin
+  write_ai_search_prompt
+}
+
+"""
+Connection for posts within a publication search. Contains a list of edges containing nodes.
+Each node is a post.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type SearchPostConnection implements Connection {
+  """A list of edges containing Post information"""
+  edges: [PostEdge!]!
+
+  """Information for pagination in Post connection."""
+  pageInfo: PageInfo!
+}
+
+input SearchPostsOfPublicationFilter {
+  """The query to be searched in post."""
+  query: String
+
+  """The ID of publications to search from."""
+  publicationId: ObjectId!
+
+  """
+  Only return posts that are deleted. Query returns active posts by default, set this to true to return deleted posts.
+  """
+  deletedOnly: Boolean
+
+  """An array of author Ids to filter the posts."""
+  authorIds: [ID!]
+
+  """An array of tag Ids to filter the posts."""
+  tagIds: [ID!]
+
+  """Filter based on time range."""
+  time: TimeFilter
+}
+
+type SearchUser implements Node {
+  """ID of the user."""
+  id: ID!
+
+  """User node containing the user information."""
+  user: User!
+
+  """
+  Signifies if the user has a pending invite to the publication. Returned when
+  the filter has pendingInviteStatus set to true.
+  """
+  pendingInviteStatus: Boolean
+}
+
+"""Information to help in seo related meta tags."""
+type SEO {
+  """The title used in og:title tag for SEO purposes."""
+  title: String
+
+  """The description used in og:description tag for SEO purposes."""
+  description: String
+}
+
+"""
+Contains basic information about the series.
+A series is a collection of posts that are related to each other.
+"""
+type Series implements Node {
+  """The ID of the series."""
+  id: ID!
+
+  """The name of the series. Shown in series page."""
+  name: String!
+
+  """The date and time the series was created."""
+  createdAt: DateTime!
+
+  """
+  The description of the series. Contains markdown and html version of the series's description.
+  """
+  description: Content
+
+  """The cover image of the series."""
+  coverImage: String
+
+  """Returns the user who is author of the series."""
+  author: User!
+
+  """Unique identifier for the series."""
+  cuid: ID
+
+  """
+  The slug of the series. Used to access series page.  Example https://johndoe.com/series/series-slug
+  """
+  slug: String!
+
+  """
+  The sort order of the series, determines if the latest posts should appear first or last in series.
+  """
+  sortOrder: SortOrder!
+
+  """Returns a list of posts in the series."""
+  posts(
+    """The number of posts to return."""
+    first: Int!
+
+    """The cursor after which the posts are to be returned."""
+    after: String
+  ): SeriesPostConnection!
+}
+
+"""
+Connection for Series. Contains a list of edges containing nodes.
+Each node is a Series.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type SeriesConnection implements Connection {
+  """A list of edges containing Series information"""
+  edges: [SeriesEdge!]!
+
+  """Information for pagination in SeriesList connection."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""Contains a Series and a cursor for pagination."""
+type SeriesEdge implements Edge {
+  """The node holding the Series information"""
+  node: Series!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""
+Connection for posts within a series. Contains a list of edges containing nodes.
+Each node is a post.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type SeriesPostConnection implements Connection {
+  """A list of edges containing Post information"""
+  edges: [PostEdge!]!
+
+  """Information for pagination in Post connection."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+input SetDocumentationSidebarItemVisibilityInput {
+  projectId: ID!
+  guideSlug: String!
+  itemId: ID!
+  visibility: DocumentationSidebarItemVisibility!
+}
+
+type SetDocumentationSidebarItemVisibilityPayload {
+  item: DocumentationSidebarItem
+  guide: DocumentationGuide
+}
+
+"""Available social media links."""
+type SocialMediaLinks {
+  """The user's website."""
+  website: String
+
+  """The user's GitHub profile."""
+  github: String
+
+  """The user's Twitter profile."""
+  twitter: String
+
+  """The user's Instagram profile."""
+  instagram: String
+
+  """The user's Facebook profile."""
+  facebook: String
+
+  """The user's StackOverflow profile."""
+  stackoverflow: String
+
+  """The user's LinkedIn profile."""
+  linkedin: String
+
+  """The user's YouTube profile."""
+  youtube: String
+
+  """The user's Bluesky profile."""
+  bluesky: String
+}
+
+"""SortOrder is a common enum for all types that can be sorted."""
+enum SortOrder {
+  asc
+  dsc
+}
+
+"""
+Contains basic information about the static page.
+Static pages are pages that are written in markdown and can be added to blog.
+"""
+type StaticPage implements Node {
+  """The ID of the static page."""
+  id: ID!
+
+  """The title of the static page. Shown in nav bar."""
+  title: String!
+
+  """
+  The slug of the static page. Used to access static page. Example `https://johndoe.com/my-page`.
+  """
+  slug: String!
+
+  """
+  Content of the static page. Contains markdown and html version of the static page's content.
+  """
+  content: Content!
+
+  """
+  A flag to determine if the static page is hidden from public or not, this is used to hide the page instead of deleting it.
+  """
+  hidden: Boolean!
+
+  """Information about the static page's Open Graph metadata i.e. image."""
+  ogMetaData: OpenGraphMetaData
+
+  """
+  Information about the static page's SEO metadata i.e. title and description.
+  """
+  seo: SEO
+}
+
+"""
+Connection to get list of static pages.
+Returns a list of edges which contains the static page and cursor to the last item of the previous page.
+"""
+type StaticPageConnection implements Connection {
+  """A list of edges containing nodes in the connection."""
+  edges: [StaticPageEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""
+An edge that contains a node of type static page and cursor to the node.
+"""
+type StaticPageEdge implements Edge {
+  """The node containing a static page."""
+  node: StaticPage!
+
+  """A cursor to the last item of the previous page."""
+  cursor: String!
+}
+
+"""Contains the publication's Stripe configuration."""
+type StripeConfiguration {
+  """A flag indicating if the publication is connected to Stripe."""
+  connected: Boolean!
+
+  """The Stripe account ID of the publication."""
+  accountId: String
+
+  """The country of origin of the publication."""
+  country: String
+}
+
+input SubscribeToNewsletterInput {
+  """The ID of the publication to subscribe to."""
+  publicationId: ObjectId!
+
+  """The email of the subscriber."""
+  email: String!
+}
+
+type SubscribeToNewsletterPayload {
+  status: NewsletterSubscribeStatus
+}
+
+"""The input for syncing API reference definitions"""
+input SyncDocumentationProjectApiDefinitionInput {
+  """The ID of the documentation project"""
+  projectId: ID!
+
+  """The ID of the docs API reference"""
+  apiReferenceId: ID!
+
+  """The ID of the reference version"""
+  versionId: ID!
+}
+
+"""The response to syncing documentation project API Reference definition"""
+type SyncDocumentationProjectApiDefinitionPayload {
+  """Signifies if the mutation was successful."""
+  success: Boolean!
+}
+
+type TableOfContentsFeature implements Feature {
+  """
+  Whether or not the user has chosen to show a table of contents on the post.
+  """
+  isEnabled: Boolean!
+
+  """The content of the table of contents."""
+  items: [TableOfContentsItem!]!
+}
+
+type TableOfContentsItem implements Node {
+  """Unique identifier."""
+  id: ID!
+
+  """The level of nesting. Refers to the heading level in the post."""
+  level: Int!
+
+  """The slug of the referenced headline."""
+  slug: String!
+
+  """The title of the referenced headline."""
+  title: String!
+
+  """
+  ID of the `TableOfContentsItem` that is one level higher in the hierarchy. `null` if this is a top level item.
+  """
+  parentId: ID
+}
+
+type Tag implements ITag & Node {
+  """The ID of the tag."""
+  id: ID!
+
+  """The name of the tag. Shown in tag page."""
+  name: String!
+
+  """
+  The slug of the tag. Used to access tags feed.  Example https://hashnode.com/n/graphql
+  """
+  slug: String!
+
+  """The logo of the tag. Shown in tag page."""
+  logo: String
+
+  """The tagline of the tag."""
+  tagline: String
+
+  """
+  Information about the tag. Contains markdown html and text version of the tag's info.
+  """
+  info: Content
+
+  """Total number of users following this tag."""
+  followersCount: Int!
+
+  """Alltime usage count of this tag in posts."""
+  postsCount: Int!
+
+  """Paginated list of posts published under this tag"""
+  posts(
+    """The number of posts in particular tag to return per page."""
+    first: Int!
+
+    """The cursor after which the posts are to be returned."""
+    after: String
+
+    """The cursor before which the posts are to be returned."""
+    filter: TagPostConnectionFilter!
+  ): FeedPostConnection!
+}
+
+"""Contains a tag and a cursor for pagination."""
+type TagEdge implements Edge {
+  """The node holding the Tag information"""
+  node: Tag!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+input TagPostConnectionFilter {
+  """Sort tag feed by recents, popular, or trending. Defaults to recents."""
+  sortBy: TagPostsSort
+}
+
+"""The field by which to sort the tag feed."""
+enum TagPostsSort {
+  """
+  Determinate how to sort the results. Defaults to recents, used in New tag feed.
+  """
+  recent
+
+  """Sorts by popularity, used in Hot tag feed."""
+  popular
+
+  """
+  Trending is particular used to fetch top posts trending within a week time under a tag
+  """
+  trending
+}
+
+"""
+Contains the flag indicating if the text selection sharer feature is enabled or not.
+User can enable or disable the text selection sharer feature from the publication settings.
+Shows a widget if a text on a blog post is selected. Allows for easy sharing or copying of the selected text.
+"""
+type TextSelectionSharerFeature implements Feature {
+  """
+  A flag indicating if the text selection sharer feature is enabled or not.
+  """
+  isEnabled: Boolean!
+}
+
+input TimeFilter {
+  """
+  Narrow the time range to a specific period.
+  
+  Can't be used with `relative`.
+  """
+  absolute: AbsoluteTimeRange
+
+  """
+  Narrow the time range to a specific period.
+  
+  Can't be used with `absolute`.
+  """
+  relative: RelativeTimeRange
+}
+
+enum TimeGranularity {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum TimePeriod {
+  LAST_N_HOURS
+  LAST_N_DAYS
+  LAST_N_WEEKS
+  LAST_N_MONTHS
+  LAST_N_YEARS
+}
+
+"""
+A field whose value exists in the standard IANA Time Zone Database: https://www.iana.org/time-zones
+"""
+scalar TimeZone
+
+input ToggleAllowContributorEditsInput {
+  publicationId: ID!
+}
+
+type ToggleAllowContributorEditsPayload {
+  publication: Publication
+}
+
+"""Payload for the toggleFollowingUser mutation."""
+type ToggleFollowUserPayload {
+  """The user that was followed/unfollowed."""
+  user: User
+}
+
+input ToggleGPTBotCrawlingInput {
+  publicationId: ID!
+}
+
+type ToggleGPTBotCrawlingPayload {
+  publication: Publication
+}
+
+"""Response to toggling role based invite links."""
+type ToggleRoleBasedInviteLinksPayload {
+  """Signifies the status of invite links after toggling."""
+  areRoleBasedInviteLinksActive: Boolean!
+}
+
+input ToggleTextSelectionSharerInput {
+  publicationId: ID!
+}
+
+type ToggleTextSelectionSharerPayload {
+  publication: Publication
+}
+
+input TriggerWebhookTestInput {
+  webhookId: ID!
+}
+
+type TriggerWebhookTestPayload {
+  webhook: Webhook
+}
+
+input UnfollowTagsInput {
+  """List of tag ids to unfollow."""
+  ids: [ID!]!
+}
+
+type UnfollowTagsPayload {
+  """List of tags unfollowed by the user."""
+  tags: [Tag!]
+}
+
+"""Views implementation that will be returned if no grouping is applied."""
+type UngroupedDocsViews implements DocsViews & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+}
+
+"""
+Visitors implementation that will be returned if no grouping is applied.
+"""
+type UngroupedDocsVisitors implements DocsVisitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+}
+
+"""Views implementation that will be returned if no grouping is applied."""
+type UngroupedViews implements Views & Node {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+}
+
+"""
+Visitors implementation that will be returned if no grouping is applied.
+"""
+type UngroupedVisitors implements Visitors & Node {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+}
+
+input UnsubscribeFromNewsletterInput {
+  """The ID of the publication to unsubscribe from."""
+  publicationId: ObjectId!
+
+  """The email that is currently subscribed."""
+  email: String!
+}
+
+type UnsubscribeFromNewsletterPayload {
+  status: NewsletterUnsubscribeStatus
+}
+
+input UpdateCommentInput {
+  id: ID!
+  contentMarkdown: String!
+}
+
+type UpdateCommentPayload {
+  comment: Comment
+}
+
+input UpdateCustomMdxComponentInput {
+  projectId: ID!
+  componentId: String!
+  code: String!
+}
+
+type UpdateCustomMdxComponentPayload {
+  project: DocumentationProject!
+}
+
+input UpdateDocumentationAppearanceInput {
+  projectId: ID!
+  appearance: DocumentationProjectAppearanceInput!
+}
+
+type UpdateDocumentationAppearancePayload {
+  project: DocumentationProject
+}
+
+input UpdateDocumentationGeneralSettingsInput {
+  projectId: ID!
+  settings: DocumentationProjectSettingsInput
+  links: DocumentationProjectLinksInput
+  name: String
+  description: String
+}
+
+type UpdateDocumentationGeneralSettingsPayload {
+  project: DocumentationProject
+}
+
+input UpdateDocumentationGuideInput {
+  projectId: ID!
+  guideId: ID!
+  slug: String
+  name: String
+  metaTags: MetaTagsInput
+}
+
+type UpdateDocumentationGuidePayload {
+  guide: DocumentationGuide
+}
+
+input UpdateDocumentationIntegrationsInput {
+  projectId: ID!
+  integrations: DocumentationProjectIntegrationsInput!
+}
+
+type UpdateDocumentationIntegrationsPayload {
+  project: DocumentationProject
+}
+
+input UpdateDocumentationLinkInput {
+  projectId: ID!
+  guideSlug: String!
+  linkId: ID!
+  label: String!
+  url: String
+}
+
+type UpdateDocumentationLinkPayload {
+  link: DocumentationLink
+  guide: DocumentationGuide
+}
+
+input UpdateDocumentationPageSettingsInput {
+  projectId: ID!
+  guideSlug: String!
+  pageId: ID!
+  metaTags: MetaTagsInput
+  slug: String
+  label: String
+  visibility: DocumentationSidebarItemVisibility
+}
+
+type UpdateDocumentationPageSettingsPayload {
+  page: DocumentationPage
+  sidebarItem: DocumentationSidebarItemPage
+  guide: DocumentationGuide
+}
+
+"""The input for updating the AI search prompts"""
+input UpdateDocumentationProjectAIPromptInput {
+  """The ID of the documentation project"""
+  projectId: ID!
+
+  """The ID of the prompt to update"""
+  promptId: ID!
+
+  """The prompt text"""
+  prompt: String!
+}
+
+"""Response to updating the AI search prompts"""
+type UpdateDocumentationProjectAIPromptPayload {
+  project: DocumentationProject
+}
+
+input UpdateDocumentationProjectSubdomainInput {
+  projectId: ID!
+  subdomain: String!
+}
+
+type UpdateDocumentationProjectSubdomainPayload {
+  project: DocumentationProject
+}
+
+input UpdateDocumentationSectionInput {
+  projectId: ID!
+  guideSlug: String!
+  sectionId: ID!
+  slug: String
+  label: String
+  visibility: DocumentationSidebarItemVisibility
+}
+
+type UpdateDocumentationSectionPayload {
+  section: DocumentationSection
+  guide: DocumentationGuide
+}
+
+input UpdatePostInput {
+  """The id of the post to update."""
+  id: ID!
+
+  """The new title of the post"""
+  title: String
+
+  """The subtitle of the post"""
+  subtitle: String
+
+  """The publication the post is published to."""
+  contentMarkdown: String
+
+  """Backdated publish date."""
+  publishedAt: DateTime
+
+  """Options for the cover image of the post."""
+  coverImageOptions: CoverImageOptionsInput
+
+  """
+  Slug of the post. Only if you want to override the slug that will be generated based on the title.
+  """
+  slug: String
+
+  """Canonical URL of the original article."""
+  originalArticleURL: String
+
+  """
+  Tags to add to the post. New tags will be created if they don't exist. It overrides the existing tags.
+  """
+  tags: [PublishPostTagInput!]
+
+  """
+  Information about the meta tags added to the post, used for SEO purpose.
+  """
+  metaTags: MetaTagsInput
+
+  """
+  Set a different author for the post than the requesting user.
+  Must be a member of the publication.
+  """
+  publishAs: ObjectId
+
+  """
+  Update co-authors of the post.
+  Must be a member of the publication.
+  """
+  coAuthors: [ObjectId!]
+
+  """
+  Providing a seriesId will add the post to that series.
+  Must be a series of the publication.
+  """
+  seriesId: ObjectId
+
+  """Whether or not to enable the table of content."""
+  settings: UpdatePostSettingsInput
+
+  """If the publication should be changed this is the new Publication ID"""
+  publicationId: ObjectId
+}
+
+type UpdatePostPayload {
+  post: Post
+}
+
+input UpdatePostSettingsInput {
+  """A flag to indicate if the post contains table of content"""
+  isTableOfContentEnabled: Boolean
+
+  """
+  A flag to indicate if the post is delisted, used to hide the post from public feed.
+  """
+  delisted: Boolean
+
+  """Whether or not comments should be disabled."""
+  disableComments: Boolean
+
+  """Pin the post to the blog homepage."""
+  pinToBlog: Boolean
+}
+
+input UpdateRedirectionRuleInput {
+  id: ID!
+  publicationId: ID!
+  source: String
+  destination: URL
+  type: HttpRedirectionType
+}
+
+type UpdateRedirectionRulePayload {
+  redirectionRule: RedirectionRule!
+}
+
+input UpdateReplyInput {
+  commentId: ID!
+  replyId: ID!
+  contentMarkdown: String!
+}
+
+type UpdateReplyPayload {
+  reply: Reply
+}
+
+"""Input to update a role based invite."""
+input UpdateRoleBasedInviteInput {
+  """The ID of the role based invite."""
+  inviteId: ID!
+  publicationId: ID!
+
+  """The role to assign to the user in the publication."""
+  role: UserPublicationInviteRole
+
+  """Boolean to enable unlimited capacity."""
+  enableUnlimitedCapacity: Boolean
+
+  """The capacity of how many members to be invited by the link."""
+  capacity: Int
+
+  """The expiry date of the invite."""
+  expiryDate: DateTime
+}
+
+"""Response to updating a role based invite for a publication."""
+type UpdateRoleBasedInvitePayload {
+  """The updated role based invite."""
+  invite: RoleBasedInvite!
+}
+
+input UpdateSeriesInput {
+  """The id of the series to update."""
+  id: ID!
+
+  """The name of the series."""
+  name: String
+
+  """
+  The slug of the series. Used to access series page.  Example https://johndoe.com/series/series-slug
+  """
+  slug: String
+
+  """The description of the series. Accepts markdown."""
+  descriptionMarkdown: String
+
+  """The cover image of the series."""
+  coverImage: String
+
+  """
+  The sort order of the series, determines if the latest posts should appear first or last in series.
+  """
+  sortOrder: SortOrder
+}
+
+type UpdateSeriesPayload {
+  """Returns the updated series."""
+  series: Series!
+}
+
+input UpdateWebhookInput {
+  id: ID!
+  url: String
+  events: [WebhookEvent!]
+  secret: String
+}
+
+type UpdateWebhookPayload {
+  webhook: Webhook
+}
+
+scalar URL
+
+enum UrlPattern {
+  """
+  Post URLs contain the slug (for example `my slug`) and a random id (like `1234`) , e.g. "/my-slug-1234".
+  """
+  DEFAULT
+
+  """Post URLs only contain the slug, e.g. "/my-slug"."""
+  SIMPLE
+}
+
+"""Basic information about a user on Hashnode."""
+type User implements IUser & Node {
+  """The ID of the user. It can be used to identify the user."""
+  id: ID!
+
+  """
+  The username of the user. It is unique and tied with user's profile URL. Example - https://hashnode.com/@username
+  """
+  username: String!
+
+  """The name of the user."""
+  name: String!
+
+  """
+  The bio of the user. Visible in about me section of the user's profile.
+  """
+  bio: Content
+
+  """
+  The bio of the user. Visible in about me section of the user's profile.
+  """
+  bioV2: Content @deprecated(reason: "Will be removed on 26/10/2023. Use bio instead of bioV2")
+
+  """The URL to the profile picture of the user."""
+  profilePicture: String
+
+  """The social media links of the user. Shown on the user's profile."""
+  socialMediaLinks: SocialMediaLinks
+
+  """
+  Returns a list of badges that the user has earned. Shown on blogs /badges page. Example - https://iamshadmirza.com/badges
+  """
+  badges: [Badge!]!
+
+  """
+  Publications associated with the user. Includes personal and team publications.
+  """
+  publications(
+    """The maximum number of publications to return in a batch."""
+    first: Int!
+
+    """The cursor to start the query from."""
+    after: String
+
+    """The sort direction for the publication."""
+    sortBy: UserPublicationsSort = DATE_CREATED_DESC
+
+    """Filter to apply to the publications."""
+    filter: UserPublicationsConnectionFilter
+  ): UserPublicationsConnection!
+
+  """Returns the list of posts the user has published."""
+  posts(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+
+    """The sort direction for the posts based on the publish dates."""
+    sortBy: UserPostsSort = DATE_PUBLISHED_DESC
+
+    """The filters to be applied to the post list."""
+    filter: UserPostConnectionFilter
+  ): UserPostConnection!
+
+  """
+  The number of users that follow the requested user. Visible in the user's profile.
+  """
+  followersCount: Int!
+
+  """
+  The number of users that this user is following. Visible in the user's profile.
+  """
+  followingsCount: Int!
+
+  """The tagline of the user. Shown on the user's profile below the name."""
+  tagline: String
+
+  """The date the user joined Hashnode."""
+  dateJoined: DateTime
+
+  """The location of the user."""
+  location: String
+
+  """
+  The availability of the user based on tech stack and interests. Shown on the
+  "I am available for" section in user's profile.
+  """
+  availableFor: String
+
+  """Returns a list of tags that the user follows."""
+  tagsFollowing: [Tag!]!
+
+  """Whether or not the user is an ambassador."""
+  ambassador: Boolean! @deprecated(reason: "Ambassadors program no longer active. Will be removed after 02/01/2024")
+
+  """Whether or not the user is deactivated."""
+  deactivated: Boolean!
+
+  """
+  Whether or not the authenticated user follows this user.
+  Returns false if the authenticated user this user.
+  """
+  following: Boolean!
+
+  """
+  Whether or not this user follows the authenticated user.
+  Returns false if the authenticated user this user.
+  """
+  followsBack: Boolean!
+
+  """The users who are following this user"""
+  followers(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserConnection!
+
+  """The users which this user is following"""
+  follows(
+    """The number of posts to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserConnection!
+
+  """
+  Returns list of tags from user's expertise. Shown on the user's profile.
+  """
+  techStack(
+    """The number of tags to return on a single page."""
+    pageSize: Int!
+
+    """The page number that should be returned."""
+    page: Int!
+  ): UserTagsConnection!
+}
+
+"""
+Connection for users to another user. Contains a list of nodes.
+Each node is a user.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type UserConnection implements PageConnection {
+  """A list of users"""
+  nodes: [User!]!
+
+  """Information for page based pagination in users connection."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""Drafts that belong to a user."""
+type UserDraftConnection implements Connection {
+  """A list of edges."""
+  edges: [UserDraftEdge!]!
+
+  """Generic information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""A generic type which holds a draft during pagination."""
+type UserDraftEdge implements Edge {
+  """The item at the end of UserDraftEdge."""
+  node: Draft!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+"""Contains a node of type user and cursor for pagination."""
+type UserEdge implements Edge {
+  """The node containing User information"""
+  node: User!
+
+  """The cursor for use in pagination."""
+  cursor: String!
+}
+
+input UserInviteInput {
+  """Username of the user to invite to the publication."""
+  username: String
+
+  """The email of the user to invite to the publication."""
+  email: String
+
+  """The role to assign to the user in the publication."""
+  role: UserPublicationInviteRole!
+}
+
+enum UserInviteStatus {
+  INVITED
+  NOT_INVITED
+}
+
+"""
+Connection for posts written by a single user. Contains a list of edges containing nodes.
+Each node is a post.
+Page info contains information about pagination like hasNextPage and endCursor.
+"""
+type UserPostConnection implements PageConnection {
+  """A list of edges containing Post information"""
+  edges: [UserPostEdge!]!
+
+  """A list of posts"""
+  nodes: [Post!]!
+
+  """Information for page based pagination in Post connection."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+"""Filter for the posts of a user."""
+input UserPostConnectionFilter {
+  """
+  Only include posts that reference the provided tag IDs.
+  
+  
+  Filtering by `tags` and `tagSlugs` will filter posts that match either of those two filters.
+  """
+  tags: [ID!]
+
+  """
+  Only include posts that reference the provided tag slugs.
+  
+  Filtering by `tags` and `tagSlugs` will filter posts that match either of those two filters.
+  """
+  tagSlugs: [String!]
+
+  """
+  Filtering by publication IDs will return posts from the author within the publication.
+  """
+  publications: [ID!]
+
+  """
+  Filtering by author status. Either all posts the user has authored or co-authored are returned or the authored posts only.
+  """
+  authorType: UserPostsAuthorTypeFilter
+}
+
+"""Contains a post and the author status."""
+type UserPostEdge {
+  """The node holding the Post information."""
+  node: Post!
+
+  """Indicates weather the user is the author or co-author of the post."""
+  authorType: PostAuthorType!
+}
+
+"""Filter for the posts of a user."""
+enum UserPostsAuthorTypeFilter {
+  """Only posts that are authored by the user."""
+  AUTHOR_ONLY
+
+  """Only posts that are co-authored by the user."""
+  CO_AUTHOR_ONLY
+}
+
+"""Sorting for the posts of a user."""
+enum UserPostsSort {
+  """Newest posts first."""
+  DATE_PUBLISHED_DESC
+
+  """Oldest posts first."""
+  DATE_PUBLISHED_ASC
+}
+
+"""The invited role of the user in the publication."""
+enum UserPublicationInviteRole {
+  """
+  The editor has access to the publication dashboard to customize the blog and approve/reject posts.
+  They also have access to the member panel to add/modify/remove members.
+  Editors cannot remove other editors or update their roles.
+  """
+  EDITOR
+
+  """
+  Contributors can join the publication and contribute an article. They cannot directly publish a new article.
+  """
+  CONTRIBUTOR
+}
+
+"""The role of the user in the publication."""
+enum UserPublicationRole {
+  """
+  The owner is the creator of the publication and can do all things, including delete publication.
+  """
+  OWNER
+
+  """
+  The editor has access to the publication dashboard to customize the blog and approve/reject posts.
+  They also have access to the member panel to add/modify/remove members.
+  Editors cannot remove other editors or update their roles.
+  """
+  EDITOR
+
+  """
+  Contributors can join the publication and contribute an article. They cannot directly publish a new article.
+  """
+  CONTRIBUTOR
+}
+
+"""
+Connection to get list of publications.
+Returns a list of edges which contains the publications and cursor to the last item of the previous page.
+"""
+type UserPublicationsConnection implements Connection {
+  """A list of edges of publications connection."""
+  edges: [UserPublicationsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The total amount of publications taking into account the filter."""
+  totalDocuments: Int!
+}
+
+"""Filter to apply to the publications."""
+input UserPublicationsConnectionFilter {
+  """
+  Only include publication in which the user has one of the provided roles.
+  """
+  roles: [UserPublicationRole!]
+}
+
+"""
+An edge that contains a node of type publication and cursor to the node.
+"""
+type UserPublicationsEdge implements Edge {
+  """Node containing the publication."""
+  node: Publication!
+
+  """The cursor to the node."""
+  cursor: String!
+
+  """The role of the user in the publication."""
+  role: UserPublicationRole!
+}
+
+"""Sorting for the publications of a user."""
+enum UserPublicationsSort {
+  """Newest publication first."""
+  DATE_CREATED_DESC
+
+  """Oldest publication first."""
+  DATE_CREATED_ASC
+
+  """Recently updated publication first."""
+  DATE_UPDATED_DESC
+
+  """Recently updated publication last."""
+  DATE_UPDATED_ASC
+}
+
+type UserRecommendedPublicationEdge {
+  """
+  The publication that is recommended by the publication this connection originates from.
+  """
+  node: Publication!
+
+  """
+  The amount of followers the publication referenced in `node` has gained by recommendations from the publication.
+  """
+  totalFollowersGained: Int!
+}
+
+type UserRecommendingPublicationEdge {
+  """
+  The publication that is recommending the publication this connection originates from.
+  """
+  node: Publication!
+
+  """
+  The amount of followers the publication has gained by recommendations from the publication referenced in `node`.
+  """
+  totalFollowersGained: Int!
+}
+
+"""Role of the user within Hashnode"""
+enum UserRole {
+  SUPERUSER
+  MODERATOR
+  USER
+}
+
+type UserTagsConnection implements PageConnection {
+  """A list of tags"""
+  nodes: [Tag!]!
+
+  """Information for page based pagination in users connection."""
+  pageInfo: OffsetPageInfo!
+
+  """The total number of documents in the connection."""
+  totalDocuments: Int!
+}
+
+enum ValidationMethod {
+  ID
+}
+
+input VerifyDocumentationProjectCustomDomainInput {
+  projectId: ID!
+}
+
+type VerifyDocumentationProjectCustomDomainPayload {
+  """
+  The documentation project where the custom domain should be verified.
+  Note, that the verification can also fail.
+  """
+  project: DocumentationProject
+
+  """
+  Additional DNS entries required to verify the domain.
+  There are cases where additional records in the DNS config are required to successfully verify the domain.
+  """
+  dnsVerificationEntries: [DnsVerificationEntry!]!
+}
+
+"""
+Contains the flag indicating if the Versioning feature is enabled or not.
+"""
+type VersioningFeature implements Feature {
+  """A flag indicating if the Versioning feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+"""
+Contains the flag indicating if the view count feature is enabled or not.
+User can enable or disable the view count feature from the publication settings.
+Shows total views on blogs if enabled.
+"""
+type ViewCountFeature implements Feature {
+  """A flag indicating if the view count feature is enabled or not."""
+  isEnabled: Boolean!
+}
+
+interface Views {
+  id: ID!
+
+  """The aggregated views."""
+  total: Int!
+}
+
+interface Visitors {
+  id: ID!
+
+  """The aggregated number of visitors."""
+  total: Int!
+}
+
+type Webhook implements Node {
+  """The ID of the post. Used to uniquely identify the post."""
+  id: ID!
+  publication: Publication!
+  url: String!
+  events: [WebhookEvent!]!
+  secret: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+
+  """
+  Messages that has been sent via this webhook.
+  Messages include the request and eventual response.
+  """
+  messages(
+    """The number of items to be returned per page."""
+    first: Int!
+
+    """A cursor to the last item of the previous page."""
+    after: String
+  ): WebhookMessageConnection!
+}
+
+enum WebhookEvent {
+  POST_PUBLISHED
+  POST_UPDATED
+  POST_DELETED
+  STATIC_PAGE_PUBLISHED
+  STATIC_PAGE_EDITED
+  STATIC_PAGE_DELETED
+}
+
+type WebhookMessage implements Node {
+  id: ID!
+  url: String!
+  event: WebhookEvent!
+
+  """
+  True if either the request failed or the response status code was not 2xx.
+  """
+  isError: Boolean!
+
+  """True if the message was sent as a test."""
+  isTest: Boolean!
+
+  """True if the message was resent."""
+  isResent: Boolean!
+  request: WebhookMessageRequest!
+  response: WebhookMessageResponse
+  createdAt: DateTime!
+}
+
+type WebhookMessageConnection implements Connection {
+  edges: [WebhookMessageEdge!]!
+  pageInfo: PageInfo!
+}
+
+type WebhookMessageEdge implements Edge {
+  node: WebhookMessage!
+  cursor: String!
+}
+
+type WebhookMessageRequest {
+  """Unique identifier of the request. Can be used to deduplicate requests."""
+  uuid: String!
+  headers: String!
+  body: String!
+  error: WebhookMessageRequestError
+}
+
+type WebhookMessageRequestError {
+  code: String!
+  message: String!
+}
+
+type WebhookMessageResponse {
+  httpStatus: Int!
+  headers: String
+  body: String
+
+  """
+  The time it took from the moment the request has been send until the first byte of the response has been received.
+  """
+  timeToFirstByteMilliseconds: Int
+}
+
+type Widget implements Node {
+  """The unique identifier of the widget"""
+  id: ID!
+
+  """WidgetId, can be embedded as %%[widgetId] in the article"""
+  widgetId: String!
+
+  """The date and time the widget was created."""
+  createdAt: DateTime!
+
+  """Content of the widget, can be a simple string or HTML"""
+  content: String!
+  pinSettings: WidgetPinSettings
+}
+
+enum WidgetPinLocation {
+  TOP
+  BOTTOM
+}
+
+type WidgetPinSettings {
+  """
+  Signifies if pinning of widget on all the articles of publication is enabled or not
+  """
+  isPinned: Boolean!
+
+  """
+  Describes the location of the widget on the article, can be TOP or BOTTOM
+  """
+  location: WidgetPinLocation!
+}
+

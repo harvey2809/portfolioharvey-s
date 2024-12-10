@@ -1,0 +1,33 @@
+query GetPosts($page: Int!) {
+    publication(host: "adityakmr.hashnode.dev") {
+        postsViaPage(pageSize:20,page:$page) {
+            pageInfo{
+                nextPage,
+                previousPage,
+                hasNextPage,
+                hasPreviousPage,
+
+            }
+            nodes {
+                id,
+                title,
+                subtitle,
+                slug,
+
+                publishedAt,
+                coverImage{
+                    url
+                },
+                brief,
+                updatedAt,
+
+                tags{
+                    slug,
+                    name,
+                }
+
+            }
+        }
+    }
+}
+
