@@ -1,6 +1,6 @@
 export const SITE_TITLE = "Aditya Kumar - Full Stack Developer";
 export const SITE_DESCRIPTION =
-  "Portfolio of a Full Stack Developer with 7 years of experience";
+  "Portfolio of a Full Stack Developer with 5 years of experience";
 
 export const CATEGORIES = [
   "All",
@@ -120,32 +120,41 @@ export const SKILLS = [
 
 export const WORK_EXPERIENCE = [
   {
-    title: "Senior Full Stack Developer",
-    company: "TechCorp",
-    period: "2020-Present",
+    title: "Software Development Engineer 2",
+    company: "Fisdom",
+    period: "Oct 2024-Present",
     description:
-      "Lead developer for enterprise-level web applications, focusing on scalability and performance optimization.",
+      "Led development of critical app modules, implemented real-time data handling with WebSockets, and optimized performance through code splitting and lazy loading, resulting in 25% fewer support tickets, 40% faster data processing, and 35% reduced load times.",
   },
   {
-    title: "Frontend Developer",
-    company: "WebSolutions Inc.",
-    period: "2017-2020",
+    title: "Associate Software Developer",
+    company: "Bluespacelabs",
+    period: "March 2021- May 2022",
     description:
-      "Specialized in creating responsive and accessible user interfaces for various client projects.",
+      "Led development of 'Aquila' e-commerce app (4.5-star rating, 100,000+ downloads) and 'Bluwyare' SASS messaging platform using React Native/ReactJS, while implementing CI/CD pipelines that reduced deployment time by 40%.",
+
   },
   {
-    title: "Junior Web Developer",
-    company: "StartupX",
-    period: "2015-2017",
+    title: "Web Developer",
+    company: "IIH Global",
+    period: "July 2020 - Feb 2021",
     description:
-      "Contributed to the development of innovative web applications, gaining hands-on experience with modern web technologies.",
+      "Spearheaded end-to-end development of a ReactJS pharmacy management application with inventory tracking and prescription features, while refactoring legacy code with Redux-Saga and Material UI for 50% improved maintainability.",
+  },
+  {
+    title: "Freelance Web Developer",
+    company: "G Media Solution",
+    period: "March 2019 - April 2020",
+    description:
+        "Enhanced an e-commerce platform using ESLint and Prettier standards for code quality, while developing a 30+ screen React Native matrimony app with Firebase integration and Redux for efficient state management.",
+
   },
 ];
 
 export const CONTACT_INFO = {
-  email: "your.email@example.com",
-  phone: "+1 (123) 456-7890",
-  location: "San Francisco, CA",
+  email: "adityakmr088@gmail.com",
+  phone: "-",
+  location: "Bangalore, India",
 };
 
 export const NAV_LINKS = [

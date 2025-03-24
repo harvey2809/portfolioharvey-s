@@ -1,10 +1,29 @@
-import { ProjectCard } from "@/components/project-card";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { CATEGORIES, PROJECTS } from "@/lib/constants";
+"use client"
+import {ProjectCard} from "@/components/project-card";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent} from "@/components/ui/card";
+import {Badge} from "@/components/ui/badge";
+import {CATEGORIES, PROJECTS} from "@/lib/constants";
+import {USER_INFO_CONSTANT} from "@/constants/config/info";
 
 export default function Home() {
+  const handleDownloadCV   = () => {
+    const url = `https://drive.google.com/file/d/1j5l6uVGV-GFab9W02QE1gVwEUo7l7UxT/view?usp=sharing`;
+// Create a direct download link by modifying the Google Drive URL
+    // This transforms the view URL to an export URL that forces download
+    const downloadUrl = url.replace('/view?usp=sharing', '?download=1&format=pdf');
+
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', 'Aditya_Kumar_CV.pdf');
+    link.setAttribute('target', '_blank');
+
+    // Append to the document, trigger click, and remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   return (
     <div className="p-6 space-y-8">
       <section className="space-y-6">
@@ -13,11 +32,7 @@ export default function Home() {
           <CardContent className="p-6 space-y-4">
             <h3 className="text-2xl font-semibold">About Me</h3>
             <p className="text-lg">
-              Hi, I'm Aditya Kumar, a passionate Full Stack Developer with 5
-              years of experience in crafting robust and scalable web
-              applications. My journey in the tech world has been driven by a
-              love for solving complex problems and creating user-centric
-              solutions.
+              {USER_INFO_CONSTANT.USER_INFO.description}
             </p>
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">4 Years Frontend</Badge>
@@ -25,7 +40,7 @@ export default function Home() {
               <Badge variant="secondary">React Expert</Badge>
               <Badge variant="secondary">Node.js Enthusiast</Badge>
             </div>
-            <Button className="mt-4">Download CV</Button>
+            <Button onClick={handleDownloadCV} className="mt-4">Download CV</Button>
           </CardContent>
         </Card>
       </section>

@@ -1,7 +1,10 @@
 const USER_INFO = {
     name:'Aditya Kumar',
     designation:'Frontend Developer',
-    description: "With over 4 years of experience, I craft exceptional digital experiences that combine cutting-edge technology with intuitive design."
+    description: "Hi, I am Aditya Kumar.Innovative Software Engineer with 4.5+ years of specialized experience in the development of React\n" +
+        "              Native and ReactJS. Demonstrated expertise in the building of high-performance mobile and web\n" +
+        "              applications with a focus on user experience. Strong collaborator with excellent problem-solving skills\n" +
+        "              seeking to leverage technical expertise in a challenging role to drive impactful solutions"
 }
 
 
@@ -33,20 +36,20 @@ const CONTACT_US = {
 
 
 const PROJECTS = [
-    { 
-      title: "E-commerce Platform", 
+    {
+      title: "E-commerce Platform",
       description: "A full-featured online store built with Next.js, GraphQL, and Stripe integration.",
       image: "/placeholder.svg?height=400&width=600",
       tags: ["Next.js", "GraphQL", "Stripe", "Tailwind CSS"]
     },
-    { 
-      title: "Social Media Dashboard", 
+    {
+      title: "Social Media Dashboard",
       description: "Real-time analytics dashboard for social media platforms using React and D3.js.",
       image: "/placeholder.svg?height=400&width=600",
       tags: ["React", "D3.js", "WebSocket", "Material-UI"]
     },
-    { 
-      title: "AI-powered Chatbot", 
+    {
+      title: "AI-powered Chatbot",
       description: "An intelligent chatbot built with React and integrated with OpenAI's GPT-3.",
       image: "/placeholder.svg?height=400&width=600",
       tags: ["React", "Node.js", "OpenAI API", "Socket.io"]

@@ -1,6 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { SKILLS, WORK_EXPERIENCE } from "@/lib/constants"
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
+import {Badge} from "@/components/ui/badge"
+import {SKILLS, WORK_EXPERIENCE} from "@/lib/constants"
+import {USER_INFO_CONSTANT} from "@/constants/config/info";
 
 export default function AboutPage() {
   return (
@@ -13,7 +14,7 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent>
             <p className="text-lg">
-              With 7 years of experience in web development, I've had the privilege of working on a wide range of projects, from small business websites to large-scale enterprise applications. My passion for clean, efficient code and user-centric design has driven me to continuously expand my skills and stay at the forefront of web technologies.
+              {USER_INFO_CONSTANT.USER_INFO.description}
             </p>
           </CardContent>
         </Card>
@@ -39,6 +40,7 @@ export default function AboutPage() {
                 <li key={index}>
                   <strong>{job.title}</strong> at {job.company} ({job.period})
                   <p>{job.description}</p>
+
                 </li>
               ))}
             </ul>
