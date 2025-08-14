@@ -34,14 +34,6 @@ export const PROJECTS = [
     darkBackgroundColor: "dark:bg-green-900",
   },
   {
-    title: "API Gateway",
-    description: "Scalable API gateway with rate limiting and caching",
-    category: "Backend",
-    technologies: ["Node.js", "Redis", "Docker"],
-    backgroundColor: "bg-yellow-50",
-    darkBackgroundColor: "dark:bg-yellow-900",
-  },
-  {
     title: "More projects Posting Soon",
     description: " ",
     category: "All",
