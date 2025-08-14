@@ -4,7 +4,7 @@ export default function AppBar() {
   return (
     <header className="px-4 lg:px-6 h-16 flex items-center backdrop-blur-md bg-white/30 dark:bg-gray-800/30 sticky top-0 z-50">
       <Link className="flex items-center justify-center" href="/">
-        <span className="sr-only">Aditya Kumar's Portfolio</span>
+        <span className="sr-only">Harvey's Portfolio</span>
         <span className="font-bold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
           AK
         </span>
