@@ -1,10 +1,10 @@
 const USER_INFO = {
-    name:'Aditya Kumar',
-    designation:'Frontend Developer',
-    description: "Hi, I am Aditya Kumar.Innovative Software Engineer with 4.5+ years of specialized experience in the development of React\n" +
-        "              Native and ReactJS. Demonstrated expertise in the building of high-performance mobile and web\n" +
-        "              applications with a focus on user experience. Strong collaborator with excellent problem-solving skills\n" +
-        "              seeking to leverage technical expertise in a challenging role to drive impactful solutions"
+    name:'Hardeep Bhatti (Harvey)',
+    designation:'Environmental and Land use planner',
+    description: "Hi, I am Hardeep Bhatti (Harvey). Environmnet and Land use planner with of specialization in Policy understanding and Interpretation,rural and Environmental planning and spatial data analysis.\n" +
+        "              Demonstrated Expertise in policy writing, legislative research, understanding of Federal, Provincial and Municipal Laws and Spatial Imagery and Mapping using ArcGis and ArcGIS online.\n" +  
+        "              Strong collaborator with excellent problem-solving skills, Critical thinking and Public Speaking\n" +
+        "              seeking to apply technical expertise and analytical skills to deliver sustainable, impactful planning solutions."
 }
 
 
