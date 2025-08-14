@@ -10,7 +10,7 @@ export const PROJECTS = [
   {
     title: "Natural Neritage Evaluation",
     description:
-      "A Detailed Natural Heritage Evaluation Report on a Development Area in ORCM area ",
+      "A Detailed Natural Heritage Evaluation Report on a Development Area in ORM area ",
     category: "All",
     technologies: ["Evaluation report", "Policy complience", "Biodiversity Research", " Report writing"],
     backgroundColor: "bg-emerald-50",
