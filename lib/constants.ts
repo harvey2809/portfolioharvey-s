@@ -1,4 +1,4 @@
-export const SITE_TITLE = "Aditya Kumar - Full Stack Developer";
+export const SITE_TITLE = "Hardeep Bhatti - Environmental and Land Use planner";
 export const SITE_DESCRIPTION =
   "Portfolio of a Full Stack Developer with 5 years of experience";
 
