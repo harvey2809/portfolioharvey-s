@@ -29,18 +29,18 @@ const SKILLS = [
 
 
 const CONTACT_US = {
-    email: 'adityakmr9672@gmail.com',
-    linkedIn:'https://www.linkedin.com/in/adityakmr7',
-    github:'https://www.github.com/adityakmr7'
+    email: 'Hardeepbhatti2809@gmail.com',
+    Phone: '+1 437(881)-2809 '
 }
 
 
 const PROJECTS = [
     {
-      title: "E-commerce Platform",
-      description: "A full-featured online store built with Next.js, GraphQL, and Stripe integration.",
+      title: "Natural Neritage Evaluation",
+      description: "A Detailed Natural Heritage Evaluation Report on a Development Area in ORM area.",
       image: "/placeholder.svg?height=400&width=600",
-      tags: ["Next.js", "GraphQL", "Stripe", "Tailwind CSS"]
+      tags: ["Environmnetal Planning", "EIS", "Policy complience", "Report writing"]
+      pdf: /Municipality of Port Hope- compensation plan (draft).pdf 
     },
     {
       title: "Social Media Dashboard",
