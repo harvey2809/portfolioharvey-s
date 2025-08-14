@@ -1,6 +1,6 @@
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
 import {Badge} from "@/components/ui/badge"
-import {SKILLS, WORK_EXPERIENCE} from "@/lib/constants"
+import {SKILLS} from "@/lib/constants"
 import {USER_INFO_CONSTANT} from "@/constants/config/info";
 
 export default function AboutPage() {
@@ -28,22 +28,6 @@ export default function AboutPage() {
                 <Badge key={index}>{skill}</Badge>
               ))}
             </div>
-          </CardContent>
-        </Card>
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Professional Experience</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="list-disc list-inside space-y-4">
-              {WORK_EXPERIENCE.map((job, index) => (
-                <li key={index}>
-                  <strong>{job.title}</strong> at {job.company} ({job.period})
-                  <p>{job.description}</p>
-
-                </li>
-              ))}
-            </ul>
           </CardContent>
         </Card>
       </div>
