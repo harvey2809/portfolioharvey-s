@@ -152,9 +152,9 @@ export const WORK_EXPERIENCE = [
 ];
 
 export const CONTACT_INFO = {
-  email: "adityakmr088@gmail.com",
-  phone: "-",
-  location: "Bangalore, India",
+  email: "Hardeepbhatti2809@gmail.com",
+  phone: "+1 437(881)-2809",
+  location: "Lindsay, Ontario, CA",
 };
 
 export const NAV_LINKS = [
