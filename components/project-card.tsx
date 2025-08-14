@@ -6,7 +6,7 @@ interface ProjectCardProps {
   description: string
   category: string
   technologies: string[]
-  rating?: number
+  pdf?: string // ✅ added PDF prop
   backgroundColor?: string
   darkBackgroundColor?: string
 }
@@ -16,19 +16,15 @@ export function ProjectCard({
   description, 
   category, 
   technologies, 
-  rating = 5.0,
+  pdf, // ✅ include in function
   backgroundColor = "bg-pink-50",
   darkBackgroundColor = "dark:bg-pink-900"
 }: ProjectCardProps) {
-  return (
-    <Card className={`${backgroundColor} ${darkBackgroundColor} border-none`}>
+  const CardContentElement = (
+    <Card className={`${backgroundColor} ${darkBackgroundColor} border-none hover:cursor-pointer`}>
       <CardHeader>
         <div className="flex items-center space-x-2">
           <Badge variant="secondary">{category}</Badge>
-          <div className="ml-auto flex items-center">
-            <span className="text-sm font-medium">{rating}</span>
-            <span className="text-yellow-500 ml-1">★</span>
-          </div>
         </div>
         <CardTitle className="text-xl mt-2">{title}</CardTitle>
       </CardHeader>
@@ -43,6 +39,15 @@ export function ProjectCard({
         </div>
       </CardContent>
     </Card>
+  )
+
+  // ✅ If PDF exists, wrap the card in a link
+  return pdf ? (
+    <a href={pdf} target="_blank" rel="noopener noreferrer" className="block">
+      {CardContentElement}
+    </a>
+  ) : (
+    CardContentElement
   )
 }
 
