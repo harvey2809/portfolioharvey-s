@@ -4,10 +4,6 @@ export const SITE_DESCRIPTION =
 
 export const CATEGORIES = [
   "All",
-  "Frontend",
-  "Backend",
-  "Full Stack",
-  "Mobile",
 ];
 
 export const PROJECTS = [
