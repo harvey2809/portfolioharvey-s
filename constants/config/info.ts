@@ -40,7 +40,7 @@ const PROJECTS = [
       description: "A Detailed Natural Heritage Evaluation Report on a Development Area in ORM area.",
       image: "/placeholder.svg?height=400&width=600",
       tags: ["Environmnetal Planning", "EIS", "Policy complience", "Report writing"],
-      pdf: "public/Compensationplan.pdf" 
+      pdf: "/Compensationplan.pdf" 
     },
     {
       title: "Social Media Dashboard",
