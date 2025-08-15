@@ -8,7 +8,7 @@ import {USER_INFO_CONSTANT} from "@/constants/config/info";
 
 export default function Home() {
   const handleDownloadCV   = () => {
-    const url = `https://drive.google.com/file/d/1j5l6uVGV-GFab9W02QE1gVwEUo7l7UxT/view?usp=sharing`;
+    const url = `https://drive.google.com/file/d/1BqjnTGg9WlmuoaHYWen10iFdVaw_8Q0o/view?usp=drive_link`;
 // Create a direct download link by modifying the Google Drive URL
     // This transforms the view URL to an export URL that forces download
     const downloadUrl = url.replace('/view?usp=sharing', '?download=1&format=pdf');
