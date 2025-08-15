@@ -4,9 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SITE_DESCRIPTION, SITE_TITLE } from "@/lib/constants";
-
-// ⬇️ your image (left in assets/)
-import bg from "@/assets/images/pexels-steve-28947860.jpg";
+import backgroundImage from "@/assets/images/pexels-steve-28947860.jpg";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,29 +20,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={inter.className}
-        style={{
-          backgroundImage: `url(${bg.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: "fixed",
-        }}
-      >
+      <body className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {/* dim + blur overlay */}
-          <div
-            className="fixed inset-0 bg-black/35 backdrop-blur-sm pointer-events-none z-0"
-            aria-hidden="true"
-          />
+          <div className="relative min-h-screen flex flex-col">
+            {/* Background Image */}
+            <div className="absolute inset-0 -z-10">
+              <img
+                src={backgroundImage.src}
+                alt="Background"
+                className="w-full h-full object-cover brightness-75 blur-sm"
+              />
+            </div>
 
-          {/* site content above overlay */}
-          <div className="relative z-10 flex flex-col min-h-screen">
+            {/* Page Content */}
             <Header />
             <main className="flex-1 container">{children}</main>
           </div>
