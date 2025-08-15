@@ -39,7 +39,7 @@ const PROJECTS = [
       title: "Natural Neritage Evaluation",
       description: "A Detailed Natural Heritage Evaluation Report on a Development Area in ORM area.",
       image: "/placeholder.svg?height=400&width=600",
-      tags: ["Environmnetal Planning", "EIS", "Policy complience", "Report writing"]
+      tags: ["Environmnetal Planning", "EIS", "Policy complience", "Report writing"],
       pdf: "Public/Municipality-of-Port Hope-compensation-plan-(draft).pdf" 
     },
     {
