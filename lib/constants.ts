@@ -32,7 +32,7 @@ export const PROJECTS = [
     technologies: ["ArcGIS", "Urban Design", "Parks Planning", "Spatial Data interpretation"],
     backgroundColor: "bg-green-50",
     darkBackgroundColor: "dark:bg-green-900",
-    pdf: "public/Compensationplan.pdf",
+    pdf: "https://drive.google.com/file/d/1BguJiV1QxqHRcYIahb6qJp7FTyRGu-X2/view?usp=drive_link",
   },
   {
     title: "More projects Posting Soon",
