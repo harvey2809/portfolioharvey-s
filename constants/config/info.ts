@@ -12,7 +12,7 @@ const USER_INFO = {
 const ABOUT_ME = {
     title: 'About Me',
     description: "I'm a seasoned frontend developer with a passion for creating seamless user experiences. My journey in web development began over 4 years ago, and since then, I've had the privilege of working on a diverse range of projects, from small business websites to large-scale enterprise applications.My expertise lies in building responsive, accessible, and performant web applications using modern technologies like React, Next.js, and TypeScript. I'm constantly exploring new tools and techniques to stay at the forefront of frontend development. When I'm not coding, you can find me contributing to open-source projects, writing technical articles, or mentoring aspiring developers.",
-    imageUrl: 'https://drive.google.com/file/d/1fEMIWOJVpjPx5oB1qj5gTIQDQmi0lC1J/view?usp=sharing',
+    imageUrl: 'https://drive.google.com/file/d/1BqjnTGg9WlmuoaHYWen10iFdVaw_8Q0o/view?usp=sharing',
 }
 
 
