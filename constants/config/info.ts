@@ -17,14 +17,12 @@ const ABOUT_ME = {
 
 
 const SKILLS = [
-        { name: "React", level: 95 },
-        { name: "Next.js", level: 90 },
-        { name: "TypeScript", level: 85 },
-        { name: "JavaScript", level: 95 },
-        { name: "HTML/CSS", level: 90 },
-        { name: "Tailwind CSS", level: 85 },
-        { name: "GraphQL", level: 80 },
-        { name: "Redux", level: 85 },
+        { name: "Report Writing and Documentation", level: 95 },
+        { name: "Interpreting and application of planning laws", level: 90 },
+        { name: "GIS and Spatial Data Analysis", level: 85 },
+        { name: "Public Speaking & Presentations", level: 95 },
+        { name: "Adaptability and Flexibility", level: 90 },
+        { name: "Stakeholder Consultation and Engagement", level: 85 },
     ]
 
 
