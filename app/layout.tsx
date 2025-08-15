@@ -28,8 +28,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="relative min-h-screen flex flex-col">
-            {/* Background Image */}
-            <div className="absolute inset-0 -z-10">
+            {/* Fixed Background Image */}
+            <div className="fixed inset-0 -z-10">
               <img
                 src={backgroundImage.src}
                 alt="Background"
