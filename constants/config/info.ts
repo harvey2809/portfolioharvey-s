@@ -1,7 +1,7 @@
 const USER_INFO = {
     name:'Hardeep Bhatti (Harvey)',
     designation:'Environmental and Land use planner',
-    description: "Hi, I am Hardeep Bhatti (Harvey). Environmnet and Land use planner with of specialization in Policy understanding and Interpretation,rural and Environmental planning and spatial data analysis.\n" +
+    description: "Hi, I am Hardeep Bhatti (Harvey). Environment and Land use planner with of specialization in Policy understanding and Interpretation,rural and Environmental planning and spatial data analysis.\n" +
         "              Demonstrated Expertise in policy writing, legislative research, understanding of Federal, Provincial and Municipal Laws and Spatial Imagery and Mapping using ArcGis and ArcGIS online.\n" +  
         "              Strong collaborator with excellent problem-solving skills, Critical thinking and Public Speaking\n" +
         "              seeking to apply technical expertise and analytical skills to deliver sustainable, impactful planning solutions."
