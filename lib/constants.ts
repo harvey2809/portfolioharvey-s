@@ -15,7 +15,7 @@ export const PROJECTS = [
     technologies: ["Evaluation report", "Policy complience", "Biodiversity Research", " Report writing"],
     backgroundColor: "bg-emerald-50",
     darkBackgroundColor: "dark:bg-emerald-900",
-    pdf: "https://drive.google.com/file/d/1w0PokpklTCgRdwgRmSG0EA4bw-b0l5eg/view?usp=sharing";
+    pdf: "https://drive.google.com/file/d/1w0PokpklTCgRdwgRmSG0EA4bw-b0l5eg/view?usp=sharing",
   },
   {
     title: "Ecological Compensation Policy",
