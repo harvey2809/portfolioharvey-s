@@ -35,10 +35,10 @@ export default function Home() {
               {USER_INFO_CONSTANT.USER_INFO.description}
             </p>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">4 Years Frontend</Badge>
-              <Badge variant="secondary">2 Years Backend</Badge>
-              <Badge variant="secondary">React Expert</Badge>
-              <Badge variant="secondary">Node.js Enthusiast</Badge>
+              <Badge variant="secondary"> </Badge>
+              <Badge variant="secondary"> </Badge>
+              <Badge variant="secondary"> </Badge>
+              <Badge variant="secondary"> </Badge>
             </div>
             <Button onClick={handleDownloadCV} className="mt-4">Download CV</Button>
           </CardContent>
