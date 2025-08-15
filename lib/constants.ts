@@ -53,18 +53,16 @@ export const PROJECTS = [
 ];
 
 export const SKILLS = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Next.js",
-  "Node.js",
-  "Express",
-  "MongoDB",
-  "PostgreSQL",
-  "GraphQL",
-  "Docker",
-  "AWS",
-  "CI/CD",
+  "Land Use Planning & Zoning Interpretation",
+  "Environmental Impact Assessment (EIA)",
+  "GIS Mapping & Spatial Analysis",
+  "Stakeholder Engagement",
+  "Field Data Collection & Analysis",
+  "Report Writing & Policy Review",
+  "Research & Data Synthesis",
+  "Project Coordination",
+  "Public Presentation & Communication",
+  
 ];
 export const CONTACT_INFO = {
   email: "Hardeepbhatti2809@gmail.com",
