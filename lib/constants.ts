@@ -25,6 +25,7 @@ export const PROJECTS = [
     technologies: ["Policy Writing", "Watershed planning", "Spatial analysis"],
     backgroundColor: "bg-grey-50",
     darkBackgroundColor: "dark:bg-grey-900",
+    pdf: "https://drive.google.com/file/d/1lUH71msNZYJC46odYRWhyO8hwa1gn-Yb/view?usp=sharing",
   },
   {
     title: "Provincial Policy Design",
