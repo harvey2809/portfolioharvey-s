@@ -8,7 +8,7 @@ export const CATEGORIES = [
 
 export const PROJECTS = [
   {
-    title: "Natural Neritage Evaluation",
+    title: "Natural Heritage Evaluation",
     description:
       "A Detailed Natural Heritage Evaluation Report on a Development Area in ORM area. ",
     category: "All",
