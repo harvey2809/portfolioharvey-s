@@ -28,12 +28,13 @@ export const PROJECTS = [
     pdf: "https://drive.google.com/file/d/1lUH71msNZYJC46odYRWhyO8hwa1gn-Yb/view?usp=sharing",
   },
   {
-    title: "Provincial Policy Design",
-    description: "A Proposed provincial park design in Goderich, ON after thorough analysis of the Municipal area.",
+    title: "Provincial Park Management plan",
+    description: "A Proposed provincial park management plan and design in Goderich, ON after thorough analysis of the Municipal area.",
     category: "All",
     technologies: ["ArcGIS", "Urban Design", "Parks Planning", "Spatial Data interpretation"],
     backgroundColor: "bg-green-50",
     darkBackgroundColor: "dark:bg-green-900",
+    pdf: "https://drive.google.com/file/d/16ROhLxk66cxV5afCBxlVhEusYjad49qM/view?usp=sharing",
     
   },
   {
