@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const handleDownloadCV = () => {
-    const url = `https://docs.google.com/document/d/1RQlfQdwhqSToVo2MWruVujtR4CPTH9SE/edit?usp=sharing&ouid=103892954101442347126&rtpof=true&sd=true`;
+    const url = `https://docs.google.com/document/d/1DF3JuHlbn68C_nJQXJBAxjYTujI7Dpbg/edit?usp=sharing&ouid=103892954101442347126&rtpof=true&sd=true`;
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("download", "Aditya_Kumar_CV.pdf");
